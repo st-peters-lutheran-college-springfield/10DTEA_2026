@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 10 Digital Technologies — Yarning Circle Monitor: Lesson Plans</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700&display=swap');
+
+  :root {
+    --cream: #F5F8FC;
+    --ochre: #2B8BE0;
+    --ochre-light: #D6E8FB;
+    --ochre-dark: #1A5C9E;
+    --earth: #1A3A5C;
+    --earth-light: #EDF4FB;
+    --green: #2A6B45;
+    --green-light: #D4EAE0;
+    --red: #B03A2E;
+    --red-light: #F5D5D2;
+    --blue: #1A4F7A;
+    --blue-light: #D4E5F5;
+    --purple: #5A2D82;
+    --purple-light: #EBE0F5;
+    --text: #0D1B2A;
+    --text-muted: #3D5A78;
+    --border: #C4D8EE;
+    --white: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ===== COVER ===== */
+  .cover {
+    background: linear-gradient(145deg, #0D1B2A 0%, #0D1B2A 50%, #1A3A5C 100%);
+    color: var(--white);
+    padding: 60px 48px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    border: 2px solid rgba(43,139,224,0.3);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 2px solid rgba(43,139,224,0.2);
+  }
+  .cover-tag {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ochre);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .cover-sub {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .cover-meta-item {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+  .cover-meta-item strong {
+    display: block;
+    color: var(--ochre);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ===== LAYOUT ===== */
+  .content {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+
+  /* ===== OVERVIEW STRIP ===== */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin: 32px 0 48px;
+  }
+  .overview-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .overview-card .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--ochre);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .overview-card .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== SECTION HEADINGS ===== */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--earth);
+    margin: 48px 0 8px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--ochre-light);
+  }
+  .section-intro {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  /* ===== LESSON CARD ===== */
+  .lesson-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 40px;
+    overflow: hidden;
+  }
+  .lesson-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .lesson-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    line-height: 1;
+    color: var(--ochre);
+    min-width: 48px;
+  }
+  .lesson-header-text h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--earth);
+  }
+  .lesson-header-text p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .lesson-body { padding: 24px 28px; }
+
+  /* ===== PILL TAGS ===== */
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0 20px; }
+  .tag {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+  .tag-ochre { background: var(--ochre-light); color: var(--ochre-dark); }
+  .tag-green { background: var(--green-light); color: var(--green); }
+  .tag-blue { background: var(--blue-light); color: var(--blue); }
+  .tag-purple { background: var(--purple-light); color: var(--purple); }
+  .tag-red { background: var(--red-light); color: var(--red); }
+
+  /* ===== TWO-COL ===== */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  @media (max-width: 680px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ===== INFO BOXES ===== */
+  .box {
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .box h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .box-green { background: var(--green-light); border-left: 3px solid var(--green); }
+  .box-green h4 { color: var(--green); }
+  .box-blue { background: var(--blue-light); border-left: 3px solid var(--blue); }
+  .box-blue h4 { color: var(--blue); }
+  .box-ochre { background: var(--ochre-light); border-left: 3px solid var(--ochre); }
+  .box-ochre h4 { color: var(--ochre-dark); }
+  .box-red { background: var(--red-light); border-left: 3px solid var(--red); }
+  .box-red h4 { color: var(--red); }
+  .box-purple { background: var(--purple-light); border-left: 3px solid var(--purple); }
+  .box-purple h4 { color: var(--purple); }
+  .box-earth { background: var(--earth-light); border-left: 3px solid var(--earth); }
+  .box-earth h4 { color: var(--earth); }
+
+  /* ===== TIMING TABLE ===== */
+  .timing-table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+  .timing-table th {
+    background: var(--ochre-light);
+    color: var(--ochre-dark);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .timing-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .timing-table tr:last-child td { border-bottom: none; }
+  .timing-table .time-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--ochre-dark);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .timing-table .phase-badge {
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ===== CODE BLOCKS ===== */
+  pre {
+    background: #0D1B2A;
+    color: #D6E8FB;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 20px 22px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+  .code-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    margin-top: 16px;
+  }
+  .kw { color: #2B8BE0; }
+  .fn { color: #7EC8A0; }
+  .st { color: #98D4F0; }
+  .cm { color: #7A6A5A; font-style: italic; }
+  .num-c { color: #D4A0E0; }
+  .var { color: #D6E8FB; }
+
+  /* ===== STEP LIST ===== */
+  .step-list { list-style: none; padding: 0; margin: 12px 0; }
+  .step-list li {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 14px;
+    align-items: flex-start;
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-num {
+    background: var(--ochre);
+    color: white;
+    border-radius: 50%;
+    min-width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 1px;
+  }
+
+  /* ===== WIRING TABLE ===== */
+  .wire-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  .wire-table th { background: #0D1B2A; color: var(--ochre); padding: 8px 12px; text-align: left; font-weight: 500; font-size: 12px; }
+  .wire-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); font-family: 'DM Mono', monospace; font-size: 12px; }
+  .wire-table tr:last-child td { border-bottom: none; }
+  .pin-badge {
+    background: var(--ochre-light);
+    color: var(--ochre-dark);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  /* ===== DIFF BOXES ===== */
+  .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 680px) { .diff-grid { grid-template-columns: 1fr; } }
+  .diff-support { background: var(--blue-light); border-radius: 10px; padding: 16px 18px; }
+  .diff-extend { background: var(--purple-light); border-radius: 10px; padding: 16px 18px; }
+  .diff-support h4 { color: var(--blue); font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+  .diff-extend h4 { color: var(--purple); font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+  .diff-support ul, .diff-extend ul { padding-left: 16px; font-size: 13px; }
+  .diff-support ul li, .diff-extend ul li { margin-bottom: 4px; }
+
+  /* ===== CHECKPOINT ===== */
+  .checkpoint-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--ochre);
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  /* ===== TEST TABLE ===== */
+  .test-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  .test-table th { background: var(--earth-light); color: var(--earth); padding: 8px 12px; text-align: left; font-weight: 600; font-size: 12px; border-bottom: 2px solid var(--border); }
+  .test-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .test-table tr:last-child td { border-bottom: none; }
+  .result-pass { background: var(--green-light); color: var(--green); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .result-fail { background: var(--red-light); color: var(--red); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+
+  /* ===== PRINT ===== */
+  @media print {
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    pre { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  h3 { font-size: 16px; font-weight: 600; color: var(--earth); margin: 20px 0 8px; }
+  ul, ol { padding-left: 20px; }
+  li { margin-bottom: 4px; font-size: 14px; }
+  p { font-size: 14px; margin-bottom: 8px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  .acara-tag {
+    display: inline-block;
+    background: var(--ochre-light);
+    color: var(--ochre-dark);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-tag">St Peters Lutheran College Springfield &nbsp;·&nbsp; Year 10 Digital Technologies</div>
+  <h1>Yarning Circle Monitor<br>Lesson Resource Pack</h1>
+  <p class="cover-sub">Weeks 3–6 &nbsp;·&nbsp; 4 × 60-minute lessons &nbsp;·&nbsp; Raspberry Pi Pico W + Kit Hardware</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Subject</strong> Digital Technologies</div>
+    <div class="cover-meta-item"><strong>Year level</strong> Year 10</div>
+    <div class="cover-meta-item"><strong>Teacher</strong> Ms Baessler</div>
+    <div class="cover-meta-item"><strong>Assessment</strong> Assessment 2</div>
+    <div class="cover-meta-item"><strong>Hardware</strong> Pico W Kit + DHT22</div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- OVERVIEW STRIP -->
+  <div class="overview-grid">
+    <div class="overview-card"><div class="num">4</div><div class="label">Lessons</div></div>
+    <div class="overview-card"><div class="num">60</div><div class="label">Minutes each</div></div>
+    <div class="overview-card"><div class="num">5</div><div class="label">Kit parts used</div></div>
+    <div class="overview-card"><div class="num">2</div><div class="label">Differentiation tiers</div></div>
+  </div>
+
+  <div class="box box-ochre">
+    <h4>Starting point: what students already have</h4>
+    Students have a working Raspberry Pi Pico W running <code>pico_dht22_led_server.py</code>. The system reads temperature and humidity from a DHT22 sensor on GP13, controls an LED on GP11, and hosts a basic web page on the local network. These four lessons build directly on that foundation.
+  </div>
+
+  <div class="box box-earth">
+    <h4>ACARA curriculum links (Year 9–10 band)</h4>
+    <span class="acara-tag">AC9TDI10K01</span> Digital systems — hardware, software, networks
+    <span class="acara-tag">AC9TDI10K03</span> Representing data
+    <span class="acara-tag">AC9TDI10P01</span> Investigate &amp; define
+    <span class="acara-tag">AC9TDI10P02</span> Generate &amp; design
+    <span class="acara-tag">AC9TDI10P03</span> Produce &amp; implement
+    <span class="acara-tag">AC9TDI10P05</span> Evaluate
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- LESSON 1 -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">Lesson 1</h2>
+  <p class="section-intro">Improving the dashboard for Aunty Leanne — comfort logic and clear visual design</p>
+
+  <div class="lesson-card">
+    <div class="lesson-header">
+      <div class="lesson-num">01</div>
+      <div class="lesson-header-text">
+        <h2>Making the Website Work for Real Users</h2>
+        <p>Week 3 &nbsp;·&nbsp; 60 min &nbsp;·&nbsp; Aligns with Checkpoint 3 (01/06)</p>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="tag-row">
+        <span class="tag tag-ochre">Web server</span>
+        <span class="tag tag-green">MicroPython logic</span>
+        <span class="tag tag-blue">User-centred design</span>
+        <span class="tag tag-purple">HTML/CSS</span>
+      </div>
+
+      <h3>Learning intentions</h3>
+      <ul>
+        <li>Explain how temperature and humidity data flows from sensor to web page</li>
+        <li>Write conditional logic in Python to classify comfort levels</li>
+        <li>Redesign the web page to clearly communicate comfort status to a non-technical user</li>
+      </ul>
+
+      <h3>Success criteria (students can…)</h3>
+      <ul>
+        <li>Add a <code>comfort_status()</code> function that returns a label and colour based on readings</li>
+        <li>Update the HTML template in <code>web_page()</code> to show the comfort label prominently</li>
+        <li>Explain at least two design decisions based on Aunty Leanne's needs</li>
+      </ul>
+
+      <hr>
+
+      <h3>Lesson timing</h3>
+      <table class="timing-table">
+        <thead>
+          <tr><th>Time</th><th>Phase</th><th>Activity</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time-cell">0–10 min</td>
+            <td><span class="phase-badge tag-ochre">Launch</span></td>
+            <td><strong>Who is Aunty Leanne?</strong> Review the user persona. Ask: what does she need at a glance? What would make her trust the system? Students share ideas on a sticky-note board (physical or digital).</td>
+          </tr>
+          <tr>
+            <td class="time-cell">10–20 min</td>
+            <td><span class="phase-badge tag-blue">Explore</span></td>
+            <td><strong>Trace the data journey.</strong> Teacher-led walkthrough: sensor → <code>sensor.measure()</code> → <code>temp</code> variable → <code>web_page()</code> function → HTML string → HTTP response → browser. Students annotate a printed copy of their existing code with arrows showing data flow. This is folio evidence.</td>
+          </tr>
+          <tr>
+            <td class="time-cell">20–35 min</td>
+            <td><span class="phase-badge tag-green">Build</span></td>
+            <td><strong>Add comfort_status() function.</strong> Students type (not copy-paste) the function below into their existing file in Thonny. Teacher demonstrates first on projector. Students test by calling the function directly in the Thonny Shell: <code>comfort_status(28, 55)</code></td>
+          </tr>
+          <tr>
+            <td class="time-cell">35–50 min</td>
+            <td><span class="phase-badge tag-purple">Design</span></td>
+            <td><strong>Update web_page() HTML.</strong> Students modify the HTML template to display the comfort status label prominently. Encourage them to sketch the new layout on paper first (folio evidence). Focus on: large text, clear colour, one key message at the top.</td>
+          </tr>
+          <tr>
+            <td class="time-cell">50–60 min</td>
+            <td><span class="phase-badge tag-ochre">Reflect</span></td>
+            <td><strong>Folio entry.</strong> Students write 2–3 sentences in ClassNotebook: "I changed the website by… because Aunty Leanne needs…" Screenshot the new dashboard. This is direct evidence for the evaluating criterion.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <h3>Thonny tips — before coding</h3>
+      <div class="box box-blue">
+        <h4>Getting started in Thonny</h4>
+        <ul>
+          <li>Plug in the Pico W via USB. In Thonny, go to <strong>Tools → Options → Interpreter</strong> and select <em>MicroPython (Raspberry Pi Pico)</em></li>
+          <li>Open your existing file from the Pico (File → Open → This computer / MicroPython device)</li>
+          <li>The <strong>Shell</strong> panel at the bottom is your live Python console — test small snippets here</li>
+          <li>Press the red <strong>Stop</strong> button before making edits; press the green <strong>Run</strong> button (F5) to restart</li>
+          <li>If the Pico doesn't appear: unplug, hold BOOTSEL, replug, then reflash MicroPython firmware</li>
+        </ul>
+      </div>
+
+      <h3>Code to add — comfort_status() function</h3>
+      <p class="code-label">Add this function BEFORE the web_page() function in your file</p>
+      <pre><span class="cm"># ===== COMFORT LOGIC =====</span>
+<span class="cm"># Temperature and humidity thresholds for Queensland conditions</span>
+<span class="kw">def</span> <span class="fn">comfort_status</span>(<span class="var">temp</span>, <span class="var">hum</span>):
+    <span class="cm"># Too hot OR too humid → unsafe for Elders</span>
+    <span class="kw">if</span> <span class="var">temp</span> &gt; <span class="num-c">30</span> <span class="kw">or</span> <span class="var">hum</span> &gt; <span class="num-c">70</span>:
+        <span class="kw">return</span> <span class="st">"Too Hot / Humid"</span>, <span class="st">"#B03A2E"</span>, <span class="st">"⚠️ Not recommended for session"</span>
+    <span class="cm"># Warm or slightly humid → caution</span>
+    <span class="kw">elif</span> <span class="var">temp</span> &gt; <span class="num-c">26</span> <span class="kw">or</span> <span class="var">hum</span> &gt; <span class="num-c">60</span>:
+        <span class="kw">return</span> <span class="st">"Getting Warm"</span>, <span class="st">"#2B8BE0"</span>, <span class="st">"🌡️ Monitor closely"</span>
+    <span class="cm"># Comfortable range</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="st">"Comfortable"</span>, <span class="st">"#2A6B45"</span>, <span class="st">"✅ Safe for Yarning Circle"</span></pre>
+
+      <h3>Code to update — web_page() function</h3>
+      <p class="code-label">Update web_page() to accept and display the comfort status</p>
+      <pre><span class="cm"># Update the function signature to include status variables</span>
+<span class="kw">def</span> <span class="fn">web_page</span>(<span class="var">temp</span>, <span class="var">hum</span>, <span class="var">led_state</span>, <span class="var">status_label</span>, <span class="var">status_colour</span>, <span class="var">status_msg</span>):
+    <span class="var">led_text</span> = <span class="st">"ON"</span> <span class="kw">if</span> <span class="var">led_state</span> <span class="kw">else</span> <span class="st">"OFF"</span>
+    
+    <span class="kw">return</span> <span class="var">f</span><span class="st">"""&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Yarning Circle Monitor&lt;/title&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta http-equiv="refresh" content="10"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;style&gt;
+        body {{ font-family: Arial, sans-serif; text-align: center;
+                background: #F5F8FC; padding: 20px; }}
+        .status-box {{ background: {status_colour}; color: white;
+                       border-radius: 12px; padding: 20px;
+                       font-size: 28px; font-weight: bold;
+                       margin: 20px auto; max-width: 400px; }}
+        .sub-msg {{ font-size: 16px; margin-top: 8px; }}
+        .readings {{ font-size: 20px; margin: 16px 0; }}
+        button {{ padding: 14px 28px; font-size: 16px;
+                  border: none; border-radius: 8px;
+                  background: #1A3A5C; color: white; cursor: pointer; }}
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Yarning Circle Monitor&lt;/h1&gt;
+    
+    &lt;div class="status-box"&gt;
+        {status_label}
+        &lt;div class="sub-msg"&gt;{status_msg}&lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="readings"&gt;
+        🌡️ Temperature: &lt;strong&gt;{temp} °C&lt;/strong&gt;
+    &lt;/div&gt;
+    &lt;div class="readings"&gt;
+        💧 Humidity: &lt;strong&gt;{hum} %&lt;/strong&gt;
+    &lt;/div&gt;
+    
+    &lt;p&gt;LED is currently &lt;strong&gt;{led_text}&lt;/strong&gt;&lt;/p&gt;
+    
+    &lt;a href="/?led=on"&gt;&lt;button&gt;Turn LED ON&lt;/button&gt;&lt;/a&gt; &nbsp;
+    &lt;a href="/?led=off"&gt;&lt;button&gt;Turn LED OFF&lt;/button&gt;&lt;/a&gt;
+    
+    &lt;p style="color:#888; font-size:13px;"&gt;Updates every 10 seconds&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;"""</span></pre>
+
+      <h3>Code to update — main loop call</h3>
+      <p class="code-label">Find these lines in your main loop and update them</p>
+      <pre><span class="cm"># Inside the while True: loop, update these two lines:</span>
+<span class="var">label</span>, <span class="var">colour</span>, <span class="var">message</span> = <span class="fn">comfort_status</span>(<span class="var">temp</span>, <span class="var">hum</span>)
+<span class="var">response</span> = <span class="fn">web_page</span>(<span class="var">temp</span>, <span class="var">hum</span>, <span class="var">led</span>.<span class="fn">value</span>(), <span class="var">label</span>, <span class="var">colour</span>, <span class="var">message</span>)</pre>
+
+      <hr>
+
+      <div class="diff-grid">
+        <div class="diff-support">
+          <h4>🤝 Support — explicit steps</h4>
+          <ul>
+            <li>Give students the scaffolded version with <code>____</code> blanks in the <code>if/elif/else</code> thresholds to fill in</li>
+            <li>Pair with a stronger student for the HTML section</li>
+            <li>Provide a printed side-by-side of old vs new <code>web_page()</code> with differences highlighted</li>
+            <li>Reduce scope: get "Comfortable" / "Not Comfortable" working first (only 2 outcomes), then add the third</li>
+            <li>Keep the LED buttons from the original — just add the status box above them</li>
+          </ul>
+        </div>
+        <div class="diff-extend">
+          <h4>🚀 Extension — going further</h4>
+          <ul>
+            <li>Add a <strong>heat index calculation</strong> (perceived temperature combining temp + humidity)</li>
+            <li>Add a timestamp to the page showing when it was last refreshed using <code>time.localtime()</code></li>
+            <li>Add a second LED (from the kit, e.g. GP12) that turns red when too hot — controlled automatically from Python without a button press</li>
+            <li>Make the whole page background change colour based on status (not just the box)</li>
+            <li>Add a <strong>reading log</strong>: keep the last 5 readings in a Python list and display them as a table</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="box box-ochre">
+        <h4>Folio evidence this lesson</h4>
+        <ul>
+          <li>Annotated code printout / screenshot showing data flow from sensor to webpage</li>
+          <li>Hand-drawn or digital sketch of new dashboard layout</li>
+          <li>Screenshot of updated website running on the Pico W</li>
+          <li>Written reflection: design decisions linked to Aunty Leanne's needs</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- LESSON 2 -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">Lesson 2</h2>
+  <p class="section-intro">Adding hardware from the kit — pushbutton interaction and buzzer alerts</p>
+
+  <div class="lesson-card">
+    <div class="lesson-header">
+      <div class="lesson-num">02</div>
+      <div class="lesson-header-text">
+        <h2>Wiring Up New Hardware — Button & Buzzer</h2>
+        <p>Week 4 &nbsp;·&nbsp; 60 min &nbsp;·&nbsp; Aligns with Checkpoint 3 (01/06)</p>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="tag-row">
+        <span class="tag tag-ochre">GPIO wiring</span>
+        <span class="tag tag-green">Pushbutton</span>
+        <span class="tag tag-red">Active buzzer</span>
+        <span class="tag tag-blue">Physical computing</span>
+      </div>
+
+      <div class="box box-earth">
+        <h4>Kit parts used this lesson</h4>
+        <strong>Pushbutton (12mm square)</strong> — for triggering a fresh sensor reading on demand<br>
+        <strong>Active buzzer</strong> — for a physical alert when conditions are too hot or humid<br>
+        <strong>2× 10kΩ resistors</strong> — for pull-down resistor wiring (one per component)<br>
+        <strong>Breadboard + M/M jumper wires</strong>
+      </div>
+
+      <h3>Learning intentions</h3>
+      <ul>
+        <li>Connect a pushbutton and active buzzer to the Pico W using a breadboard</li>
+        <li>Use MicroPython <code>Pin</code> with <code>PULL_DOWN</code> to read button state</li>
+        <li>Trigger the buzzer from Python based on comfort status logic</li>
+      </ul>
+
+      <h3>Lesson timing</h3>
+      <table class="timing-table">
+        <thead>
+          <tr><th>Time</th><th>Phase</th><th>Activity</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time-cell">0–12 min</td>
+            <td><span class="phase-badge tag-ochre">Concept</span></td>
+            <td><strong>Digital inputs vs outputs.</strong> Teacher explains: LED is an OUTPUT (Pico sends electricity out), button is an INPUT (Pico reads electricity coming in). Show GPIO pin diagram on projector. Discuss: why does a button need a pull-down resistor? (prevents "floating" — undefined state when not pressed).</td>
+          </tr>
+          <tr>
+            <td class="time-cell">12–28 min</td>
+            <td><span class="phase-badge tag-green">Wire</span></td>
+            <td><strong>Circuit wiring.</strong> Students follow the wiring guide below to connect both components. Teacher circulates and checks each desk before students power on. No code yet — wiring check first. Students photograph their breadboard for folio evidence.</td>
+          </tr>
+          <tr>
+            <td class="time-cell">28–45 min</td>
+            <td><span class="phase-badge tag-blue">Code</span></td>
+            <td><strong>Add button and buzzer to the code.</strong> Students add hardware setup lines and modify the main loop to (1) check the button state and refresh sensor reading when pressed, and (2) activate the buzzer if the status is "Too Hot / Humid".</td>
+          </tr>
+          <tr>
+            <td class="time-cell">45–55 min</td>
+            <td><span class="phase-badge tag-red">Test</span></td>
+            <td><strong>Test both components.</strong> Press button → confirm fresh reading occurs. Use a hairdryer near the sensor (teacher-supervised) or breathe warm air on it to trigger buzzer. Students note what happens if the buzzer won't stop (short beep timer fix).</td>
+          </tr>
+          <tr>
+            <td class="time-cell">55–60 min</td>
+            <td><span class="phase-badge tag-ochre">Folio</span></td>
+            <td><strong>Annotated circuit diagram.</strong> Students draw or screenshot their breadboard setup and label each connection. Describe in 2 sentences what the button and buzzer do and why they were added.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr>
+      <h3>Wiring guide</h3>
+
+      <div class="two-col">
+        <div>
+          <p style="font-weight:600; color: var(--earth); margin-bottom:8px;">Pushbutton (GP14)</p>
+          <table class="wire-table">
+            <thead><tr><th>Button leg</th><th>Connect to</th></tr></thead>
+            <tbody>
+              <tr><td>Leg 1 (left)</td><td><span class="pin-badge">GP14</span></td></tr>
+              <tr><td>Leg 2 (right)</td><td><span class="pin-badge">3.3V</span></td></tr>
+              <tr><td>Leg 1 also</td><td>10kΩ resistor → GND (pull-down)</td></tr>
+            </tbody>
+          </table>
+          <div class="box box-blue" style="margin-top:10px; font-size:13px;">
+            <h4>Why pull-down?</h4>
+            Without a resistor connecting GP14 to GND, the pin "floats" between 0 and 1 randomly when the button isn't pressed. The 10kΩ to GND holds it at 0 (LOW) until the button connects it to 3.3V (HIGH).
+          </div>
+        </div>
+        <div>
+          <p style="font-weight:600; color: var(--earth); margin-bottom:8px;">Active Buzzer (GP15)</p>
+          <table class="wire-table">
+            <thead><tr><th>Buzzer pin</th><th>Connect to</th></tr></thead>
+            <tbody>
+              <tr><td>+ (longer / marked)</td><td><span class="pin-badge">GP15</span></td></tr>
+              <tr><td>– (shorter)</td><td><span class="pin-badge">GND</span></td></tr>
+            </tbody>
+          </table>
+          <div class="box box-red" style="margin-top:10px; font-size:13px;">
+            <h4>Active vs passive buzzer</h4>
+            The kit's <strong>active</strong> buzzer has its own oscillator — it makes a tone as long as power is applied. Just set the pin HIGH. A passive buzzer needs a PWM frequency from Python to make sound (Lesson 4 extension).
+          </div>
+        </div>
+      </div>
+
+      <h3>Code additions — hardware setup section</h3>
+      <p class="code-label">Add to the HARDWARE section near the top of your file</p>
+      <pre><span class="cm"># Add these lines after your existing led and sensor setup</span>
+<span class="var">button</span> = <span class="fn">Pin</span>(<span class="num-c">14</span>, <span class="var">Pin</span>.<span class="var">IN</span>, <span class="var">Pin</span>.<span class="var">PULL_DOWN</span>)
+<span class="var">buzzer</span> = <span class="fn">Pin</span>(<span class="num-c">15</span>, <span class="var">Pin</span>.<span class="var">OUT</span>)
+<span class="var">buzzer</span>.<span class="fn">value</span>(<span class="num-c">0</span>)  <span class="cm"># Start with buzzer OFF</span></pre>
+
+      <h3>Code additions — updated main loop</h3>
+      <p class="code-label">Replace your while True: loop with this updated version</p>
+      <pre><span class="cm"># ===== MAIN LOOP =====</span>
+<span class="kw">while</span> <span class="var">True</span>:
+    <span class="kw">try</span>:
+        <span class="cm"># Read sensor</span>
+        <span class="var">sensor</span>.<span class="fn">measure</span>()
+        <span class="var">temp</span> = <span class="var">sensor</span>.<span class="fn">temperature</span>()
+        <span class="var">hum</span>  = <span class="var">sensor</span>.<span class="fn">humidity</span>()
+        
+        <span class="cm"># Get comfort status</span>
+        <span class="var">label</span>, <span class="var">colour</span>, <span class="var">message</span> = <span class="fn">comfort_status</span>(<span class="var">temp</span>, <span class="var">hum</span>)
+        
+        <span class="cm"># Buzz once (short beep) if too hot/humid</span>
+        <span class="kw">if</span> <span class="var">label</span> == <span class="st">"Too Hot / Humid"</span>:
+            <span class="var">buzzer</span>.<span class="fn">value</span>(<span class="num-c">1</span>)
+            <span class="fn">time</span>.<span class="fn">sleep</span>(<span class="num-c">0.3</span>)  <span class="cm"># Short beep only</span>
+            <span class="var">buzzer</span>.<span class="fn">value</span>(<span class="num-c">0</span>)
+        
+        <span class="cm"># If button is pressed, show a "reading taken" message</span>
+        <span class="kw">if</span> <span class="var">button</span>.<span class="fn">value</span>() == <span class="num-c">1</span>:
+            <span class="fn">print</span>(<span class="st">"Button pressed — fresh reading: "</span>, <span class="var">temp</span>, <span class="st">"°C"</span>, <span class="var">hum</span>, <span class="st">"%"</span>)
+            <span class="cm"># Short LED flash to confirm</span>
+            <span class="var">led</span>.<span class="fn">value</span>(<span class="num-c">1</span>); <span class="fn">time</span>.<span class="fn">sleep</span>(<span class="num-c">0.1</span>); <span class="var">led</span>.<span class="fn">value</span>(<span class="num-c">0</span>)
+        
+        <span class="cm"># Handle web requests</span>
+        <span class="kw">try</span>:
+            <span class="var">client</span>, <span class="var">addr</span> = <span class="var">server</span>.<span class="fn">accept</span>()
+        <span class="kw">except</span>:
+            <span class="kw">continue</span>
+
+        <span class="var">request</span> = <span class="var">client</span>.<span class="fn">recv</span>(<span class="num-c">1024</span>).<span class="fn">decode</span>()
+
+        <span class="kw">if</span> <span class="st">"GET /?led=on"</span> <span class="kw">in</span> <span class="var">request</span>:
+            <span class="var">led</span>.<span class="fn">value</span>(<span class="num-c">1</span>)
+        <span class="kw">elif</span> <span class="st">"GET /?led=off"</span> <span class="kw">in</span> <span class="var">request</span>:
+            <span class="var">led</span>.<span class="fn">value</span>(<span class="num-c">0</span>)
+
+        <span class="var">response</span> = <span class="fn">web_page</span>(<span class="var">temp</span>, <span class="var">hum</span>, <span class="var">led</span>.<span class="fn">value</span>(), <span class="var">label</span>, <span class="var">colour</span>, <span class="var">message</span>)
+        <span class="var">client</span>.<span class="fn">send</span>(<span class="st">"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"</span>)
+        <span class="var">client</span>.<span class="fn">send</span>(<span class="var">response</span>)
+        <span class="var">client</span>.<span class="fn">close</span>()
+
+    <span class="kw">except</span> <span class="fn">Exception</span> <span class="kw">as</span> <span class="var">e</span>:
+        <span class="fn">print</span>(<span class="st">"Error:"</span>, <span class="var">e</span>)
+        <span class="var">buzzer</span>.<span class="fn">value</span>(<span class="num-c">0</span>)  <span class="cm"># Always turn buzzer off on error</span>
+        <span class="fn">time</span>.<span class="fn">sleep</span>(<span class="num-c">2</span>)</pre>
+
+      <hr>
+
+      <div class="diff-grid">
+        <div class="diff-support">
+          <h4>🤝 Support — explicit steps</h4>
+          <ul>
+            <li>Provide a large printed wiring diagram (A4 size) for the breadboard layout</li>
+            <li>Do wiring in two separate stages: button only first → test → then buzzer</li>
+            <li>Give a checklist: ☐ Button wired, ☐ Pull-down resistor added, ☐ Buzzer wired, ☐ Print confirms pin readings</li>
+            <li>Test button before touching code: open Thonny Shell and type <code>from machine import Pin; b = Pin(14, Pin.IN, Pin.PULL_DOWN); print(b.value())</code> — should print 0, then 1 when held</li>
+            <li>If buzzer beeps continuously, check polarity — the + leg must go to GP15</li>
+          </ul>
+        </div>
+        <div class="diff-extend">
+          <h4>🚀 Extension — going further</h4>
+          <ul>
+            <li><strong>Multiple LEDs:</strong> Add a second LED (e.g. GP12 = red, GP11 = green) that light based on comfort status automatically — no button needed</li>
+            <li><strong>Buzzer patterns:</strong> Create different alert patterns (e.g. 3 short beeps vs 1 long) for different status levels using a loop</li>
+            <li><strong>Light sensor:</strong> Read the photocell on GP26 (ADC) to detect if the room lights are on, and add a "Lights on" indicator to the web page</li>
+            <li><strong>Button as web trigger:</strong> When the button is pressed, also add a timestamp and reading to a Python list, and display that history on the web page</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="box box-ochre">
+        <h4>Folio evidence this lesson</h4>
+        <ul>
+          <li>Photograph of breadboard with button and buzzer wired</li>
+          <li>Annotated circuit diagram labelling each pin connection</li>
+          <li>Screenshot of Thonny Shell showing button press detection</li>
+          <li>Description: "I added the buzzer because… This helps Aunty Leanne by…"</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- LESSON 3 -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">Lesson 3</h2>
+  <p class="section-intro">Systematic testing, debugging in Thonny, and documenting the process</p>
+
+  <div class="lesson-card">
+    <div class="lesson-header">
+      <div class="lesson-num">03</div>
+      <div class="lesson-header-text">
+        <h2>Testing, Debugging and Documenting</h2>
+        <p>Week 5 &nbsp;·&nbsp; 60 min &nbsp;·&nbsp; Aligns with Checkpoint 3 → Checkpoint 4</p>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="tag-row">
+        <span class="tag tag-ochre">Testing</span>
+        <span class="tag tag-green">Debugging</span>
+        <span class="tag tag-blue">Folio documentation</span>
+        <span class="tag tag-purple">Refining</span>
+      </div>
+
+      <h3>Learning intentions</h3>
+      <ul>
+        <li>Use a test table to systematically test each feature of the digital solution</li>
+        <li>Use Thonny's Shell, print statements, and error messages to find and fix bugs</li>
+        <li>Document testing evidence in the ClassNotebook folio with annotations</li>
+      </ul>
+
+      <h3>Lesson timing</h3>
+      <table class="timing-table">
+        <thead>
+          <tr><th>Time</th><th>Phase</th><th>Activity</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time-cell">0–10 min</td>
+            <td><span class="phase-badge tag-ochre">Concept</span></td>
+            <td><strong>What is systematic testing?</strong> Teacher explains: testing is not "run it and see." It means writing down what you expect BEFORE you test, then recording what actually happens. Show example test table. Link to the assessment criterion: "test and refine your solution."</td>
+          </tr>
+          <tr>
+            <td class="time-cell">10–25 min</td>
+            <td><span class="phase-badge tag-blue">Explore</span></td>
+            <td><strong>Debug common problems.</strong> Teacher shows 3 deliberate bugs on projector (see list below) and students diagnose each from the error message in Thonny. Students discuss in pairs: what line caused it? What needs to change?</td>
+          </tr>
+          <tr>
+            <td class="time-cell">25–50 min</td>
+            <td><span class="phase-badge tag-green">Test</span></td>
+            <td><strong>Complete the test table</strong> (template below). Students run each test, record expected and actual results, mark pass/fail, and write a fix for any failures. This is the most important folio evidence for the "Evaluating" criterion.</td>
+          </tr>
+          <tr>
+            <td class="time-cell">50–60 min</td>
+            <td><span class="phase-badge tag-purple">Refine</span></td>
+            <td><strong>Make at least one improvement</strong> based on a test failure or usability observation. Write a before/after annotation explaining the change and why it was made. This demonstrates "refining" as required by the task.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <h3>Thonny debugging techniques</h3>
+
+      <div class="box box-blue">
+        <h4>Technique 1 — Read the error message</h4>
+        Error messages in Thonny's Shell always tell you the line number and type. Common ones:<br><br>
+        <code>AttributeError: 'NoneType'...</code> → your variable is None, probably sensor failed to read<br>
+        <code>OSError: [Errno 113]</code> → WiFi connection lost<br>
+        <code>SyntaxError: invalid syntax</code> → missing colon, bracket or quote<br>
+        <code>IndentationError</code> → mixed tabs and spaces (Thonny: Edit → Toggle tabs/spaces)
+      </div>
+
+      <div class="box box-green">
+        <h4>Technique 2 — Add print() statements</h4>
+        Insert <code>print()</code> before and after suspected problem areas to see exactly where it stops:
+      </div>
+
+      <p class="code-label">Debug print example — trace where sensor fails</p>
+      <pre><span class="kw">while</span> <span class="var">True</span>:
+    <span class="fn">print</span>(<span class="st">"About to read sensor..."</span>)   <span class="cm"># Add this</span>
+    <span class="kw">try</span>:
+        <span class="var">sensor</span>.<span class="fn">measure</span>()
+        <span class="var">temp</span> = <span class="var">sensor</span>.<span class="fn">temperature</span>()
+        <span class="fn">print</span>(<span class="st">"Temp read:"</span>, <span class="var">temp</span>)         <span class="cm"># Add this</span>
+        <span class="var">hum</span> = <span class="var">sensor</span>.<span class="fn">humidity</span>()
+        <span class="fn">print</span>(<span class="st">"Hum read:"</span>, <span class="var">hum</span>)          <span class="cm"># Add this</span>
+    <span class="kw">except</span> <span class="fn">Exception</span> <span class="kw">as</span> <span class="var">e</span>:
+        <span class="fn">print</span>(<span class="st">"Sensor error:"</span>, <span class="var">e</span>)        <span class="cm"># This will show what went wrong</span></pre>
+
+      <div class="box box-red">
+        <h4>Technique 3 — Test functions in the Shell</h4>
+        You don't need to run the whole program to test a function. In Thonny's Shell, type:<br><br>
+        <code>comfort_status(28, 55)</code> → should return <code>('Comfortable', '#2A6B45', '✅ ...')</code><br>
+        <code>comfort_status(32, 65)</code> → should return the "Too Hot / Humid" tuple<br><br>
+        If the function isn't loaded yet, press Run (F5) first to load it, then Ctrl+C to stop the loop, then test in the Shell.
+      </div>
+
+      <h3>Common bugs — teacher demo</h3>
+      <div class="two-col">
+        <div>
+          <p class="code-label">Bug 1 — indentation error</p>
+          <pre><span class="kw">def</span> <span class="fn">comfort_status</span>(<span class="var">temp</span>, <span class="var">hum</span>):
+<span class="kw">if</span> <span class="var">temp</span> &gt; <span class="num-c">30</span>:   <span class="cm"># ← no indent!</span>
+    <span class="kw">return</span> <span class="st">"Too Hot"</span></pre>
+          <p class="code-label">Fix — indent the if block</p>
+          <pre><span class="kw">def</span> <span class="fn">comfort_status</span>(<span class="var">temp</span>, <span class="var">hum</span>):
+    <span class="kw">if</span> <span class="var">temp</span> &gt; <span class="num-c">30</span>:  <span class="cm"># ← 4 spaces</span>
+        <span class="kw">return</span> <span class="st">"Too Hot"</span></pre>
+        </div>
+        <div>
+          <p class="code-label">Bug 2 — wrong number of return values</p>
+          <pre><span class="cm"># comfort_status returns 3 values but loop unpacks 2</span>
+<span class="var">label</span>, <span class="var">colour</span> = <span class="fn">comfort_status</span>(<span class="var">temp</span>, <span class="var">hum</span>)
+<span class="cm"># → ValueError: too many values to unpack</span></pre>
+          <p class="code-label">Fix — unpack all 3</p>
+          <pre><span class="var">label</span>, <span class="var">colour</span>, <span class="var">message</span> = <span class="fn">comfort_status</span>(<span class="var">temp</span>, <span class="var">hum</span>)</pre>
+        </div>
+      </div>
+
+      <h3>Test table — copy into ClassNotebook folio</h3>
+      <table class="test-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>What I am testing</th>
+            <th>Steps to test</th>
+            <th>Expected result</th>
+            <th>Actual result</th>
+            <th>Pass/Fail</th>
+            <th>Fix (if failed)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Sensor reads temperature</td>
+            <td>Run code, open Serial in Thonny</td>
+            <td>A number between 10–40 printed</td>
+            <td><em>student fills in</em></td>
+            <td><span class="result-pass">PASS</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Web page loads in browser</td>
+            <td>Connect phone/laptop to same WiFi, enter IP address</td>
+            <td>Dashboard page appears with temp and humidity</td>
+            <td><em>student fills in</em></td>
+            <td><span class="result-pass">PASS</span></td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>LED turns ON via website</td>
+            <td>Click "Turn LED ON" button on web page</td>
+            <td>LED physically lights up, page shows "ON"</td>
+            <td><em>student fills in</em></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Comfort status shows "Comfortable"</td>
+            <td>Ensure room temp is below 26°C, check web page</td>
+            <td>Green "Comfortable" status box</td>
+            <td><em>student fills in</em></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Buzzer alerts when too hot</td>
+            <td>Change threshold to temp > 22 temporarily, rerun</td>
+            <td>Short beep from buzzer</td>
+            <td><em>student fills in</em></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Button press detected</td>
+            <td>Press physical button, watch Shell output</td>
+            <td>Message printed + LED flashes</td>
+            <td><em>student fills in</em></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Page readable for Aunty Leanne</td>
+            <td>Show web page to someone unfamiliar with the system</td>
+            <td>They understand the status without explanation</td>
+            <td><em>student fills in</em></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Auto-refresh works</td>
+            <td>Wait 10 seconds on the page</td>
+            <td>Page reloads automatically</td>
+            <td><em>student fills in</em></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <div class="diff-grid">
+        <div class="diff-support">
+          <h4>🤝 Support — explicit steps</h4>
+          <ul>
+            <li>Provide test table pre-printed — students only need to fill in actual result and pass/fail</li>
+            <li>For bug demos: give a printed "bug hunt" sheet with 3 buggy code snippets and space to write the fix</li>
+            <li>Allow students to test one feature at a time with teacher help before moving to the next</li>
+            <li>Focus on tests 1–4 as minimum requirement; 5–8 are for confidence</li>
+          </ul>
+        </div>
+        <div class="diff-extend">
+          <h4>🚀 Extension — going further</h4>
+          <ul>
+            <li><strong>Edge cases:</strong> What happens if the sensor is disconnected mid-run? Add better error handling that shows "Sensor Error" on the web page instead of crashing</li>
+            <li><strong>Photocell test:</strong> Add the light sensor (photocell on ADC pin 26) and test if it correctly reads high in bright light, low in dark</li>
+            <li><strong>Trimpot as threshold control:</strong> Use the 10kΩ trimpot on GP27 (ADC) to let a user physically dial the temperature threshold instead of hard-coding it in Python</li>
+            <li><strong>Usability test:</strong> Show the dashboard to a family member and record their feedback. What confused them? What would you change?</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="box box-ochre">
+        <h4>Folio evidence this lesson</h4>
+        <ul>
+          <li>Completed test table (digital copy in ClassNotebook — not just a photo)</li>
+          <li>At least one screenshot of a bug/error in Thonny with an annotation explaining the fix</li>
+          <li>Before and after screenshots of an improvement made based on testing</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- LESSON 4 -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">Lesson 4</h2>
+  <p class="section-intro">Evaluation, folio completion and video demonstration preparation</p>
+
+  <div class="lesson-card">
+    <div class="lesson-header">
+      <div class="lesson-num">04</div>
+      <div class="lesson-header-text">
+        <h2>Evaluating, Reflecting and Presenting</h2>
+        <p>Week 6 &nbsp;·&nbsp; 60 min &nbsp;·&nbsp; Aligns with Checkpoint 4 (08/06)</p>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="tag-row">
+        <span class="tag tag-ochre">Evaluation</span>
+        <span class="tag tag-blue">Folio</span>
+        <span class="tag tag-purple">Video presentation</span>
+        <span class="tag tag-green">Reflection</span>
+      </div>
+
+      <div class="checkpoint-badge">✓ Checkpoint 4 — Evaluating (08/06/2026)</div>
+
+      <h3>Learning intentions</h3>
+      <ul>
+        <li>Evaluate the solution against the design criteria and Aunty Leanne's needs using specific evidence</li>
+        <li>Identify at least two strengths and two genuine limitations of the solution</li>
+        <li>Prepare and record a structured 3-minute video demonstration</li>
+      </ul>
+
+      <h3>Lesson timing</h3>
+      <table class="timing-table">
+        <thead>
+          <tr><th>Time</th><th>Phase</th><th>Activity</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time-cell">0–15 min</td>
+            <td><span class="phase-badge tag-ochre">Evaluate</span></td>
+            <td><strong>Evaluation writing — using the criteria.</strong> Teacher models an A-grade evaluation response vs a C-grade response on projector. Students write their evaluation using the structured frame provided below. Must reference specific features of their solution AND link to Aunty Leanne's needs.</td>
+          </tr>
+          <tr>
+            <td class="time-cell">15–30 min</td>
+            <td><span class="phase-badge tag-blue">Folio</span></td>
+            <td><strong>Folio self-check.</strong> Students use the checklist below to confirm they have all required evidence. Missing sections get completed now. Teacher circulates for final folio checks.</td>
+          </tr>
+          <tr>
+            <td class="time-cell">30–50 min</td>
+            <td><span class="phase-badge tag-purple">Video</span></td>
+            <td><strong>Video planning and recording.</strong> Students plan their 3-minute video using the script scaffold below, then record using their phone or a school device. Can record in parts and present just the final video — no editing required. Teacher checks any screen recording setup.</td>
+          </tr>
+          <tr>
+            <td class="time-cell">50–60 min</td>
+            <td><span class="phase-badge tag-green">Peer review</span></td>
+            <td><strong>Watch one peer's video.</strong> Give one piece of specific positive feedback and one improvement suggestion using the sentence starters: "Your solution clearly shows… because…" and "One way you could improve is… because…"</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <h3>Evaluation writing frame</h3>
+      <div class="box box-green">
+        <h4>How to structure your evaluation</h4>
+        Use these sentence starters in ClassNotebook. Replace the brackets with your own specific evidence. Aim for 200–300 words.
+      </div>
+
+      <table class="test-table">
+        <thead>
+          <tr><th>Section</th><th>Sentence starters and prompts</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600; color:var(--green)">Meets user needs</td>
+            <td>
+              "My solution meets Aunty Leanne's need for [clear/simple information] because…"<br>
+              "The [comfort status box / colour / label] makes it easy for her to [understand / decide] because…"
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--green)">Functional evidence</td>
+            <td>
+              "The system successfully [reads temperature / displays status / alerts with buzzer] as shown in my test table where…"<br>
+              "When I tested [condition], the result was [result], which [confirms/shows]…"
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--ochre-dark)">Limitations</td>
+            <td>
+              "A limitation of my solution is that it [does not / cannot]…"<br>
+              "For example, if [WiFi drops / sensor fails], the system…"<br>
+              "This could be a problem for Aunty Leanne because…"
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--blue)">Improvements</td>
+            <td>
+              "If I had more time, I would improve the solution by [adding / changing]… because this would [help Aunty Leanne / make the system more reliable]…"<br>
+              "An alternative approach could have been [trimpot threshold / multiple LEDs / data logging] which would…"
+            </td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--purple)">Alternative solution</td>
+            <td>
+              "An alternative digital solution could have been [a phone app / commercial sensor / standalone alarm]…"<br>
+              "I chose a Pico W web server instead because… A drawback of my approach compared to [alternative] is…"
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Video script scaffold — 3 minutes</h3>
+      <table class="timing-table">
+        <thead>
+          <tr><th>Time</th><th>What to say/show</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time-cell">0:00–0:30</td>
+            <td><strong>Intro.</strong> "My name is [name] and this is my Yarning Circle Monitor. The problem I solved was [describe in one sentence]. My user is Aunty Leanne, a community facilitator who needs [her needs]."</td>
+          </tr>
+          <tr>
+            <td class="time-cell">0:30–1:30</td>
+            <td><strong>Demo the solution.</strong> Show the web page loading on a device. Point out: comfort status label, temperature reading, humidity reading, colour coding. Press button if added. Trigger/show the buzzer. Show the LED control buttons working.</td>
+          </tr>
+          <tr>
+            <td class="time-cell">1:30–2:15</td>
+            <td><strong>Explain how it works.</strong> Show your code briefly in Thonny — point to the <code>comfort_status()</code> function and explain in plain English: "This function checks if the temperature is above 30 or humidity above 70, and if so it returns 'Too Hot' which shows as a red box on the website."</td>
+          </tr>
+          <tr>
+            <td class="time-cell">2:15–3:00</td>
+            <td><strong>Evaluate.</strong> "My solution works well because [strength 1] and [strength 2]. A limitation is [limitation]. If I had more time I would [improvement]. I think this would [benefit to Aunty Leanne]."</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <h3>Folio self-check — before submitting</h3>
+      <div class="box box-earth">
+        <h4>Investigating and defining</h4>
+        <ul>
+          <li>☐ Problem description — why does this matter to the community?</li>
+          <li>☐ User persona reference — Aunty Leanne's needs listed</li>
+          <li>☐ Design criteria (at least 3 specific requirements)</li>
+        </ul>
+      </div>
+      <div class="box box-green">
+        <h4>Generating and designing</h4>
+        <ul>
+          <li>☐ Algorithm — flowchart OR pseudocode for the main system loop</li>
+          <li>☐ Sketch/wireframe of website layout</li>
+          <li>☐ Description of how users interact with the website</li>
+        </ul>
+      </div>
+      <div class="box box-blue">
+        <h4>Producing and implementing</h4>
+        <ul>
+          <li>☐ Screenshot of code in Thonny (annotated)</li>
+          <li>☐ Photo of hardware setup (breadboard, wiring)</li>
+          <li>☐ Screenshot of web page running on a device</li>
+        </ul>
+      </div>
+      <div class="box box-purple">
+        <h4>Evaluating</h4>
+        <ul>
+          <li>☐ Completed test table (8 tests minimum)</li>
+          <li>☐ Evaluation written using the frame above (strengths, limitations, improvements, alternatives)</li>
+          <li>☐ 3-minute video demonstration submitted</li>
+        </ul>
+      </div>
+
+      <div class="diff-grid">
+        <div class="diff-support">
+          <h4>🤝 Support — explicit steps</h4>
+          <ul>
+            <li>Pre-structure the evaluation in ClassNotebook with the headings from the frame already typed — student just fills in the blanks</li>
+            <li>Allow the video to be recorded as 3 separate short clips (intro, demo, evaluation) if doing it in one take is overwhelming</li>
+            <li>Suggest recording in front of a mirror first to practise</li>
+            <li>For the folio: go through each ☐ item with the student individually to confirm what they have</li>
+          </ul>
+        </div>
+        <div class="diff-extend">
+          <h4>🚀 Extension — going further</h4>
+          <ul>
+            <li><strong>Stakeholder elicited user stories:</strong> Write 3 formal user stories in the format "As Aunty Leanne, I want [feature] so that [benefit]" and evaluate each one with specific evidence</li>
+            <li><strong>Alternative solution comparison:</strong> Research a commercial IoT temperature monitor. Compare it to your solution — cost, ease of use, reliability, cultural fit</li>
+            <li><strong>Reflective analysis:</strong> Write about one decision you made early in design that you would change now, and explain why with evidence</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- EXTENSION PROJECTS -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">Extension — Using More Kit Hardware</h2>
+  <p class="section-intro">For students who have completed the core requirements ahead of time</p>
+
+  <div class="lesson-card">
+    <div class="lesson-header">
+      <div class="lesson-num" style="font-size:28px;">+</div>
+      <div class="lesson-header-text">
+        <h2>Extension Project Ideas Using the Full Kit</h2>
+        <p>Self-directed &nbsp;·&nbsp; Consult your teacher before starting these</p>
+      </div>
+    </div>
+    <div class="lesson-body">
+
+      <h3>1. Photocell (light sensor) — GP26 (ADC)</h3>
+      <div class="two-col">
+        <div>
+          <p>The photocell is an analogue sensor — it doesn't give 0 or 1 like a button, it gives a value from 0 to 65535 depending on light level. You need to use an <code>ADC</code> (Analogue-to-Digital Converter) pin.</p>
+          <p style="margin-top:8px;"><strong>Project idea:</strong> Add "Room Light Status" to your web page — if light is below 10,000 it shows "Room is Dark" as a prompt to turn lights on before the session.</p>
+        </div>
+        <div>
+          <p class="code-label">Photocell reading</p>
+          <pre><span class="kw">from</span> <span class="var">machine</span> <span class="kw">import</span> <span class="var">ADC</span>
+
+<span class="var">light_sensor</span> = <span class="fn">ADC</span>(<span class="fn">Pin</span>(<span class="num-c">26</span>))
+
+<span class="cm"># In your main loop:</span>
+<span class="var">light_val</span> = <span class="var">light_sensor</span>.<span class="fn">read_u16</span>()
+<span class="cm"># 0 = very dark, 65535 = very bright</span>
+<span class="fn">print</span>(<span class="st">"Light level:"</span>, <span class="var">light_val</span>)</pre>
+        </div>
+      </div>
+
+      <h3>2. Trimpot (variable resistor) — GP27 (ADC)</h3>
+      <div class="two-col">
+        <div>
+          <p>The 10kΩ trimpot with knob lets you input a variable value by turning the dial. This can act as a physical "threshold adjuster" — Aunty Leanne could turn a knob to set her preferred maximum temperature.</p>
+          <p style="margin-top:8px;"><strong>Project idea:</strong> Replace the hard-coded <code>30</code> threshold with a value read from the trimpot, mapped to the range 22–35°C. Display the current threshold on the web page.</p>
+        </div>
+        <div>
+          <p class="code-label">Trimpot reading and mapping</p>
+          <pre><span class="var">pot</span> = <span class="fn">ADC</span>(<span class="fn">Pin</span>(<span class="num-c">27</span>))
+
+<span class="cm"># Map 0–65535 to 22–35°C</span>
+<span class="kw">def</span> <span class="fn">read_threshold</span>():
+    <span class="var">raw</span> = <span class="var">pot</span>.<span class="fn">read_u16</span>()
+    <span class="cm"># Scale to 22–35 range</span>
+    <span class="var">threshold</span> = <span class="num-c">22</span> + (<span class="var">raw</span> / <span class="num-c">65535</span>) * <span class="num-c">13</span>
+    <span class="kw">return</span> <span class="fn">round</span>(<span class="var">threshold</span>, <span class="num-c">1</span>)</pre>
+        </div>
+      </div>
+
+      <h3>3. Multiple LEDs — visual traffic light</h3>
+      <div class="two-col">
+        <div>
+          <p>Using two more 5mm LEDs from your kit (220Ω resistor each), create a traffic light system where green = comfortable, amber = warm, red = too hot. These update automatically — no web page needed.</p>
+          <p style="margin-top:8px;"><strong>Pins:</strong> Green LED → GP11, Amber LED → GP12, Red LED → GP10</p>
+        </div>
+        <div>
+          <p class="code-label">Traffic light LED logic</p>
+          <pre><span class="var">led_green</span>  = <span class="fn">Pin</span>(<span class="num-c">11</span>, <span class="var">Pin</span>.<span class="var">OUT</span>)
+<span class="var">led_amber</span>  = <span class="fn">Pin</span>(<span class="num-c">12</span>, <span class="var">Pin</span>.<span class="var">OUT</span>)
+<span class="var">led_red</span>    = <span class="fn">Pin</span>(<span class="num-c">10</span>, <span class="var">Pin</span>.<span class="var">OUT</span>)
+
+<span class="kw">def</span> <span class="fn">update_leds</span>(<span class="var">label</span>):
+    <span class="var">led_green</span>.<span class="fn">value</span>(<span class="num-c">1</span> <span class="kw">if</span> <span class="var">label</span> == <span class="st">"Comfortable"</span> <span class="kw">else</span> <span class="num-c">0</span>)
+    <span class="var">led_amber</span>.<span class="fn">value</span>(<span class="num-c">1</span> <span class="kw">if</span> <span class="var">label</span> == <span class="st">"Getting Warm"</span> <span class="kw">else</span> <span class="num-c">0</span>)
+    <span class="var">led_red</span>.<span class="fn">value</span>(<span class="num-c">1</span> <span class="kw">if</span> <span class="var">label</span> == <span class="st">"Too Hot / Humid"</span> <span class="kw">else</span> <span class="num-c">0</span>)</pre>
+        </div>
+      </div>
+
+      <h3>4. Reading history log</h3>
+      <div class="two-col">
+        <div>
+          <p>Store the last 5 readings in a Python list and display them as a table on the web page. This gives community staff a sense of whether conditions are improving or getting worse.</p>
+          <p style="margin-top:8px;"><strong>Note:</strong> The Pico W only has 264KB of RAM, so keep your history list small (max 20 readings).</p>
+        </div>
+        <div>
+          <p class="code-label">History log in Python</p>
+          <pre><span class="cm"># Outside the loop (initialise once)</span>
+<span class="var">history</span> = []
+
+<span class="cm"># Inside the loop, after reading sensor:</span>
+<span class="var">history</span>.<span class="fn">append</span>((<span class="var">temp</span>, <span class="var">hum</span>, <span class="var">label</span>))
+<span class="kw">if</span> <span class="fn">len</span>(<span class="var">history</span>) &gt; <span class="num-c">5</span>:
+    <span class="var">history</span>.<span class="fn">pop</span>(<span class="num-c">0</span>)  <span class="cm"># Remove oldest</span>
+
+<span class="cm"># Pass history to web_page() to display in HTML table</span></pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TROUBLESHOOTING -->
+  <!-- ============================================================ -->
+  <h2 class="section-title">Troubleshooting Reference</h2>
+  <p class="section-intro">Common problems and solutions — print this for student desks</p>
+
+  <div class="lesson-card">
+    <div class="lesson-body">
+      <table class="test-table">
+        <thead>
+          <tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Web page won't load on phone</td>
+            <td>Phone on different WiFi, or IP has changed</td>
+            <td>Check phone is on same WiFi as Pico. Rerun code and read the new IP from Thonny Shell.</td>
+          </tr>
+          <tr>
+            <td>Thonny says "No device"</td>
+            <td>Wrong interpreter selected, or USB cable issue</td>
+            <td>Tools → Options → Interpreter → MicroPython (Raspberry Pi Pico). Try a different USB cable (some are charge-only).</td>
+          </tr>
+          <tr>
+            <td>Sensor reads -999 or crashes</td>
+            <td>Loose wire, or sensor read too frequently</td>
+            <td>DHT22 needs 2 seconds between reads minimum. Check GP13 wire is firmly in the right hole. The try/except block should catch the crash — confirm it is there.</td>
+          </tr>
+          <tr>
+            <td>Buzzer keeps buzzing constantly</td>
+            <td>Missing <code>buzzer.value(0)</code> after the beep</td>
+            <td>Ensure you have <code>buzzer.value(0)</code> after <code>time.sleep(0.3)</code> in your buzzer block. Also add <code>buzzer.value(0)</code> in the except block.</td>
+          </tr>
+          <tr>
+            <td>Button always reads 1 (stuck)</td>
+            <td>Pull-down resistor missing or wired incorrectly</td>
+            <td>Confirm 10kΩ from GP14 to GND. Pin should read 0 when not pressed, 1 when pressed to 3.3V.</td>
+          </tr>
+          <tr>
+            <td>SyntaxError in f-string</td>
+            <td>Curly braces in HTML not escaped</td>
+            <td>In f-strings, literal <code>{</code> and <code>}</code> in CSS must be doubled: <code>{{</code> and <code>}}</code>. Variable substitutions stay single: <code>{temp}</code></td>
+          </tr>
+          <tr>
+            <td>Pico freezes after a while</td>
+            <td>Memory leak or unhandled exception</td>
+            <td>Add <code>import gc; gc.collect()</code> at the start of each loop iteration to run garbage collection. The try/except block should prevent full crashes.</td>
+          </tr>
+          <tr>
+            <td>WiFi connects but drops out</td>
+            <td>Distance from router, or AP interference</td>
+            <td>Move Pico closer to router. Add a WiFi reconnect check: <code>if not wlan.isconnected(): wlan.connect(ssid, password)</code> at the top of the loop.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="text-align:center; padding:32px 0 16px; border-top: 1px solid var(--border); margin-top:40px;">
+    <p style="color:var(--text-muted); font-size:13px;">St Peters Lutheran College Springfield · Year 10 Digital Technologies · Ms Baessler · Assessment 2 · 2026</p>
+    <p style="color:var(--text-muted); font-size:12px; margin-top:4px;">ACARA Year 9–10 Digital Technologies Band · MicroPython on Raspberry Pi Pico W</p>
+  </div>
+
+</div>
+</body>
+</html>

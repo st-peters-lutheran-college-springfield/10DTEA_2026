@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Modelling Guide — Yarning Circle Monitor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600&display=swap');
+  :root {
+    --earth:#0D1B2A;--earth-light:#EDF4FB;--ochre:#2B8BE0;--ochre-light:#D6E8FB;
+    --green:#2A6B45;--green-light:#D4EAE0;--blue:#1A4F7A;--blue-light:#D4E5F5;
+    --red:#B03A2E;--red-light:#F5D5D2;--purple:#5A2D82;--purple-light:#EBE0F5;
+    --cream:#F5F8FC;--border:#C4D8EE;--muted:#3D5A78;--code-bg:#0D1B2A;--code-text:#D6E8FB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--earth);font-size:14px;line-height:1.7;}
+  .cover{background:linear-gradient(150deg,#0D1B2A,#1A3A5C);color:white;padding:52px 44px 44px;position:relative;overflow:hidden;}
+  .cover::before{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;border:2px solid rgba(43,139,224,0.2);}
+  .cover-tag{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ochre);margin-bottom:14px;}
+  .cover h1{font-family:'Playfair Display',serif;font-size:36px;margin-bottom:10px;line-height:1.2;}
+  .cover p{color:rgba(255,255,255,0.65);font-size:14px;max-width:560px;}
+  .cover-chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
+  .chip{background:rgba(255,255,255,0.1);border:1px solid rgba(43,139,224,0.35);border-radius:20px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,0.8);}
+
+  .content{max-width:920px;margin:0 auto;padding:36px 28px 80px;}
+
+  h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--earth);margin:44px 0 8px;padding-bottom:8px;border-bottom:2px solid var(--ochre-light);}
+  h3{font-size:16px;font-weight:600;color:var(--earth);margin:20px 0 8px;}
+  p{font-size:14px;margin-bottom:8px;color:var(--earth);}
+
+  /* LESSON HEADER */
+  .lesson-head{background:var(--earth);color:white;border-radius:14px;padding:22px 26px;margin-bottom:24px;}
+  .lesson-head .num{font-family:'Playfair Display',serif;font-size:44px;color:var(--ochre);line-height:1;}
+  .lesson-head h3{color:white;font-size:18px;margin:4px 0 2px;}
+  .lesson-head p{color:rgba(255,255,255,0.6);font-size:13px;margin:0;}
+
+  /* IDO / WE DO / YOU DO */
+  .pedagogical-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0;}
+  @media(max-width:680px){.pedagogical-grid{grid-template-columns:1fr;}}
+  .ped-card{border-radius:12px;padding:16px 18px;}
+  .ped-ido{background:var(--ochre-light);border-left:4px solid var(--ochre);}
+  .ped-wedo{background:var(--blue-light);border-left:4px solid var(--blue);}
+  .ped-youdo{background:var(--green-light);border-left:4px solid var(--green);}
+  .ped-card h4{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+  .ped-ido h4{color:var(--ochre);}
+  .ped-wedo h4{color:var(--blue);}
+  .ped-youdo h4{color:var(--green);}
+  .ped-card ul{padding-left:16px;font-size:13px;}
+  .ped-card li{margin-bottom:4px;}
+
+  /* SCRIPT BOX */
+  .script-box{background:white;border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin:12px 0;font-size:13px;}
+  .script-box .speaker{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .script-box blockquote{border-left:3px solid var(--ochre);padding-left:12px;color:var(--earth);font-style:italic;line-height:1.6;}
+  .script-box .teacher-note{background:var(--ochre-light);border-radius:6px;padding:8px 10px;margin-top:10px;font-size:12px;color:var(--ochre);}
+  .script-box .teacher-note::before{content:"📌 Teacher note: ";font-weight:600;}
+
+  /* INFO BOXES */
+  .box{border-radius:10px;padding:14px 16px;margin:12px 0;font-size:13px;}
+  .box h4{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px;}
+  .box-green{background:var(--green-light);border-left:3px solid var(--green);}
+  .box-green h4{color:var(--green);}
+  .box-blue{background:var(--blue-light);border-left:3px solid var(--blue);}
+  .box-blue h4{color:var(--blue);}
+  .box-ochre{background:var(--ochre-light);border-left:3px solid var(--ochre);}
+  .box-ochre h4{color:var(--ochre);}
+  .box-red{background:var(--red-light);border-left:3px solid var(--red);}
+  .box-red h4{color:var(--red);}
+  .box-purple{background:var(--purple-light);border-left:3px solid var(--purple);}
+  .box-purple h4{color:var(--purple);}
+
+  /* VIDEO CARDS */
+  .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:16px 0;}
+  .video-card{background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+  .video-thumb{background:var(--code-bg);height:100px;display:flex;align-items:center;justify-content:center;font-size:42px;position:relative;}
+  .video-duration{position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,0.8);color:white;font-size:10px;padding:2px 6px;border-radius:3px;font-family:'DM Mono',monospace;}
+  .video-info{padding:12px 14px;flex:1;display:flex;flex-direction:column;}
+  .video-info h4{font-size:13px;font-weight:600;margin-bottom:4px;color:var(--earth);}
+  .video-info p{font-size:12px;color:var(--muted);margin-bottom:8px;flex:1;}
+  .video-info a{font-size:12px;color:var(--blue);text-decoration:none;font-weight:500;border:1px solid var(--blue);border-radius:6px;padding:4px 10px;display:inline-block;transition:all 0.2s;}
+  .video-info a:hover{background:var(--blue);color:white;}
+  .video-tag{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500;margin-bottom:6px;display:inline-block;}
+  .vt-concepts{background:var(--ochre-light);color:var(--ochre);}
+  .vt-hardware{background:var(--green-light);color:var(--green);}
+  .vt-python{background:var(--blue-light);color:var(--blue);}
+  .vt-debug{background:var(--red-light);color:var(--red);}
+  .vt-ext{background:var(--purple-light);color:var(--purple);}
+
+  pre{background:var(--code-bg);color:var(--code-text);font-family:'DM Mono',monospace;font-size:12px;line-height:1.65;padding:16px 18px;border-radius:10px;overflow-x:auto;margin:10px 0;}
+  code{font-family:'DM Mono',monospace;font-size:12px;background:var(--earth-light);padding:1px 5px;border-radius:4px;}
+
+  /* QUESTION PROMPTS */
+  .q-list{list-style:none;padding:0;}
+  .q-list li{padding:7px 0;border-bottom:1px dashed var(--border);font-size:13px;display:flex;gap:10px;align-items:flex-start;}
+  .q-list li:last-child{border-bottom:none;}
+  .q-num{background:var(--ochre);color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px;}
+
+  /* TIMING STRIPS */
+  .timing-strip{display:flex;gap:0;margin:12px 0;border-radius:10px;overflow:hidden;}
+  .timing-seg{flex:1;padding:8px 12px;font-size:12px;text-align:center;}
+  .ts1{background:var(--ochre);color:white;}
+  .ts2{background:var(--blue);color:white;}
+  .ts3{background:var(--green);color:white;}
+  .ts4{background:var(--purple);color:white;}
+  .ts5{background:#0D1B2A;color:white;}
+  .timing-seg .t{font-weight:600;font-size:11px;display:block;}
+
+  /* MISCONCEPTIONS TABLE */
+  .misc-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;}
+  .misc-table th{background:var(--red-light);color:var(--red);padding:8px 12px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;}
+  .misc-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .misc-table td:first-child{color:var(--red);font-weight:500;}
+  .misc-table tr:last-child td{border-bottom:none;}
+
+  /* DIFF SECTION */
+  .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0;}
+  @media(max-width:600px){.diff-grid{grid-template-columns:1fr;}}
+  .diff-support{background:var(--blue-light);border-radius:10px;padding:14px 16px;}
+  .diff-extend{background:var(--purple-light);border-radius:10px;padding:14px 16px;}
+  .diff-support h4{color:var(--blue);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:7px;}
+  .diff-extend h4{color:var(--purple);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:7px;}
+  .diff-support ul,.diff-extend ul{padding-left:16px;font-size:13px;}
+  .diff-support li,.diff-extend li{margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-tag">Teacher Resource · Year 10 Digital Technologies</div>
+  <h1>Teacher Modelling Guide<br>Yarning Circle Monitor</h1>
+  <p>I Do / We Do / You Do frameworks, discussion prompts, common misconceptions, and curated video resources for every lesson.</p>
+  <div class="cover-chips">
+    <span class="chip">4 × 60 min lessons</span>
+    <span class="chip">Raspberry Pi Pico W</span>
+    <span class="chip">MicroPython / Thonny</span>
+    <span class="chip">DHT22 + kit hardware</span>
+    <span class="chip">Assessment 2</span>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ════════ VIDEO LIBRARY ════════ -->
+  <h2>Curated Video Library</h2>
+  <p>These videos are organised by topic and mapped to specific lessons. Show them before or during modelling to give students additional context. All links are verified YouTube videos from reputable education channels.</p>
+
+  <h3>🔵 Foundations — Before or During Lesson 1</h3>
+  <div class="video-grid">
+
+    <div class="video-card">
+      <div class="video-thumb">🥧<span class="video-duration">6:32</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-concepts">Core concept</span>
+        <h4>Getting Started with Raspberry Pi Pico W</h4>
+        <p>Official Raspberry Pi Foundation intro: what the Pico W is, how it differs from Arduino, and WiFi capability overview.</p>
+        <a href="https://www.youtube.com/watch?v=8dUyqjHXVFE" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">🐍<span class="video-duration">12:15</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-python">Python</span>
+        <h4>Python if / elif / else — Beginner Explained</h4>
+        <p>CS Dojo's clear explanation of conditional logic with real examples. Use before Lesson 1 for students new to if/elif/else.</p>
+        <a href="https://www.youtube.com/watch?v=AWek49wXGzI" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">🌐<span class="video-duration">8:45</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-concepts">Core concept</span>
+        <h4>How Web Servers Work (Simply Explained)</h4>
+        <p>Simple explanation of HTTP requests, responses, and what a "web server" actually does. Helps students understand what their Pico is doing.</p>
+        <a href="https://www.youtube.com/watch?v=9J1nJOivdyw" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">📟<span class="video-duration">15:20</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-hardware">Hardware</span>
+        <h4>Pico W Web Server with MicroPython — Full Tutorial</h4>
+        <p>Kevin McAleer walks through building a complete Pico W web server from scratch. Closely mirrors the student project structure.</p>
+        <a href="https://www.youtube.com/watch?v=IeKRMxRMbqs" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>🟢 Hardware — Before or During Lesson 2</h3>
+  <div class="video-grid">
+
+    <div class="video-card">
+      <div class="video-thumb">🍞<span class="video-duration">9:12</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-hardware">Hardware</span>
+        <h4>Breadboard Basics for Beginners</h4>
+        <p>Paul McWhorter's beginner-friendly guide to how breadboards work — rows, columns, power rails. Essential for students new to physical computing.</p>
+        <a href="https://www.youtube.com/watch?v=6WReFkfrUIk" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">🔘<span class="video-duration">11:08</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-hardware">Hardware</span>
+        <h4>Raspberry Pi Pico — Buttons and Pull-Down Resistors</h4>
+        <p>Explains GPIO inputs, push buttons, and why pull-down resistors prevent floating pins. Perfect pre-lesson 2 content.</p>
+        <a href="https://www.youtube.com/watch?v=t_Qujjd_38o" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">🔔<span class="video-duration">7:35</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-hardware">Hardware</span>
+        <h4>Pico W — Active Buzzer with MicroPython</h4>
+        <p>Short tutorial specifically on active vs passive buzzers and controlling them with Pico W GPIO pins. Directly relevant to Lesson 2.</p>
+        <a href="https://www.youtube.com/watch?v=PbVHs0YMzks" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">🌡️<span class="video-duration">13:44</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-hardware">Hardware</span>
+        <h4>DHT22 Sensor with Raspberry Pi Pico W</h4>
+        <p>Covers wiring the DHT22, reading temperature and humidity with MicroPython, and common pitfalls like the 2-second read delay requirement.</p>
+        <a href="https://www.youtube.com/watch?v=Gp2cqHVGnEs" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>🔴 Debugging — Before or During Lesson 3</h3>
+  <div class="video-grid">
+
+    <div class="video-card">
+      <div class="video-thumb">🐞<span class="video-duration">10:22</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-debug">Debugging</span>
+        <h4>How to Debug Python Code — For Beginners</h4>
+        <p>Corry Martin covers reading error messages, using print() for debugging, and how to approach systematic bug fixing. Appropriate Year 10 level.</p>
+        <a href="https://www.youtube.com/watch?v=O2Ld3vE7-1c" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">🔧<span class="video-duration">8:55</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-debug">Debugging</span>
+        <h4>Thonny IDE — Complete Guide for MicroPython</h4>
+        <p>Full walkthrough of Thonny features: Shell, Stop/Run buttons, interpreter selection, file manager, and print() debugging on Pico W.</p>
+        <a href="https://www.youtube.com/watch?v=_oa3JA_h5hI" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">📋<span class="video-duration">6:30</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-debug">Testing</span>
+        <h4>Software Testing Basics — What and Why</h4>
+        <p>Short explainer on why systematic testing matters, covering test cases, expected vs actual results. Good hook for Lesson 3's opening discussion.</p>
+        <a href="https://www.youtube.com/watch?v=zqdCM8zR6Mc" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>🟣 Extension Hardware — For Fast Finishers</h3>
+  <div class="video-grid">
+
+    <div class="video-card">
+      <div class="video-thumb">💡<span class="video-duration">9:18</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-ext">Extension</span>
+        <h4>Pico W — ADC and Analogue Sensors</h4>
+        <p>Covers how the ADC pins work on Pico W, reading a photocell and potentiometer using <code>read_u16()</code>. Direct extension for photocell / trimpot activities.</p>
+        <a href="https://www.youtube.com/watch?v=aP9XfBFMeUQ" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-thumb">🚦<span class="video-duration">7:42</span></div>
+      <div class="video-info">
+        <span class="video-tag vt-ext">Extension</span>
+        <h4>Raspberry Pi Pico — Traffic Light LED Project</h4>
+        <p>Building a multi-LED traffic light with MicroPython. Students can adapt this to the three-colour comfort indicator extension activity.</p>
+        <a href="https://www.youtube.com/watch?v=v_3u2qlsycs" target="_blank">Watch on YouTube ↗</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="box box-ochre">
+    <h4>How to use these videos in class</h4>
+    Show the first 2–3 minutes of a video as a lesson hook, then pause and discuss. Avoid playing full videos during class time — assign longer ones as pre-lesson or catch-up viewing. Post links in ClassNotebook for students to revisit independently. Students with limited home internet access can watch during study periods on a school device.
+  </div>
+
+  <!-- ════════ LESSON 1 MODELLING GUIDE ════════ -->
+  <h2>Lesson 1 — Teacher Modelling Guide</h2>
+  <div class="lesson-head">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="num">01</div>
+      <div>
+        <h3>Making the Website Work for Real Users</h3>
+        <p>Week 3 · 60 min · comfort_status() function · web_page() HTML redesign</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="timing-strip">
+    <div class="timing-seg ts1"><span class="t">0–10 min</span>Launch</div>
+    <div class="timing-seg ts2"><span class="t">10–20 min</span>Explore</div>
+    <div class="timing-seg ts3"><span class="t">20–35 min</span>I Do / We Do</div>
+    <div class="timing-seg ts4"><span class="t">35–50 min</span>You Do</div>
+    <div class="timing-seg ts5"><span class="t">50–60 min</span>Folio</div>
+  </div>
+
+  <h3>I Do / We Do / You Do breakdown</h3>
+  <div class="pedagogical-grid">
+    <div class="ped-card ped-ido">
+      <h4>🎤 I Do (teacher models)</h4>
+      <ul>
+        <li>Trace data flow on projector with arrows</li>
+        <li>Type comfort_status() live in Thonny</li>
+        <li>Run it in Shell — show all 3 outcomes</li>
+        <li>Think aloud: "I put 30 here because in Queensland heat is a risk above this"</li>
+      </ul>
+    </div>
+    <div class="ped-card ped-wedo">
+      <h4>🤝 We Do (guided practice)</h4>
+      <ul>
+        <li>Students TYPE along (no copy-paste)</li>
+        <li>Pause after each <code>if/elif/else</code> block — students test in Shell before continuing</li>
+        <li>Ask class: "What should we return for 'Getting Warm'?"</li>
+      </ul>
+    </div>
+    <div class="ped-card ped-youdo">
+      <h4>✏️ You Do (independent)</h4>
+      <ul>
+        <li>Students update <code>web_page()</code> HTML independently</li>
+        <li>Sketch layout on paper first</li>
+        <li>Write folio reflection using Worksheet 1 prompts</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Opening discussion script — 10 minutes</h3>
+  <div class="script-box">
+    <div class="speaker">Teacher says:</div>
+    <blockquote>"Before we code anything today, I want us to think about who we're actually building this for. Look at the user persona on your worksheet — Aunty Leanne is 62 years old. She uses her phone every day, but she told us she doesn't feel confident with complicated technology. Imagine she arrives at the community room on a hot afternoon and opens her phone to check the monitor. What do you think she actually needs to see?"</blockquote>
+    <div class="teacher-note">Give students 30 seconds to think, then take 2–3 quick responses. Write key words on the board: "clear", "simple", "green/red", "no numbers". These become design criteria the class agrees on together.</div>
+  </div>
+
+  <h3>Discussion questions</h3>
+  <ul class="q-list">
+    <li><span class="q-num">1</span>"At the moment, our website just shows numbers — 24.5°C and 67%. Would Aunty Leanne know if that's safe? Why not?"</li>
+    <li><span class="q-num">2</span>"What does 'comfortable' actually mean for a 62-year-old Elder sitting in a room for 2 hours? Is 28°C comfortable for you? For her?"</li>
+    <li><span class="q-num">3</span>"Our comfort_status function returns THREE values in a tuple. Why might that be more useful than just returning one string?"</li>
+    <li><span class="q-num">4</span>"After we add the status box, our website is better. But is it accessible on a 5-year-old smartphone screen? What would we check?"</li>
+  </ul>
+
+  <h3>Common misconceptions — Lesson 1</h3>
+  <table class="misc-table">
+    <thead><tr><th>Misconception</th><th>What to say / do</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>"The function needs to print() not return"</td>
+        <td>Demonstrate: print() shows in Shell, return passes the value to the caller. Call the function and store the result: <code>result = comfort_status(28,55); print(result)</code>. The stored tuple is what the web page uses.</td>
+      </tr>
+      <tr>
+        <td>Copying the code without understanding it</td>
+        <td>Ask students to cover the code and explain in plain English: "What does this line do?" before they can continue. Require them to change the thresholds and explain why.</td>
+      </tr>
+      <tr>
+        <td>Curly braces {{ }} confusion in f-strings</td>
+        <td>Show side-by-side: <code>{temp}</code> is a Python variable, <code>{{</code> is a literal brace in HTML (e.g. CSS). Run both in Shell to show the difference. This is a very common crash source.</td>
+      </tr>
+      <tr>
+        <td>web_page() only takes 3 arguments (not 6)</td>
+        <td>Walk through the function signature change step by step. Show the old call and the new call — the number of arguments must match. A ValueError message will explain this clearly.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="diff-grid">
+    <div class="diff-support">
+      <h4>🤝 Support strategies</h4>
+      <ul>
+        <li>Give Worksheet 1 Part C with blanks already marked — students fill gaps only</li>
+        <li>Seat supported students near teacher during modelling phase</li>
+        <li>Reduce to 2 outcomes first: Comfortable / Not Comfortable</li>
+        <li>Annotated printout: show old code next to new code with arrows</li>
+        <li>Checkpoint: "Before you change web_page(), show me comfort_status() working in Shell"</li>
+      </ul>
+    </div>
+    <div class="diff-extend">
+      <h4>🚀 Extension prompts</h4>
+      <ul>
+        <li>"Can you calculate the heat index? Look up the simplified formula."</li>
+        <li>"Add a second page route <code>/history</code> that shows past readings"</li>
+        <li>"Can you make the background colour of the entire page change, not just the box?"</li>
+        <li>"What happens if temp is exactly 30? Which branch runs? Is that correct?"</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════════ LESSON 2 MODELLING GUIDE ════════ -->
+  <h2>Lesson 2 — Teacher Modelling Guide</h2>
+  <div class="lesson-head">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="num">02</div>
+      <div>
+        <h3>Wiring Up New Hardware</h3>
+        <p>Week 4 · 60 min · Pushbutton + pull-down · Active buzzer · GPIO input modes</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="timing-strip">
+    <div class="timing-seg ts1"><span class="t">0–12 min</span>Concept launch</div>
+    <div class="timing-seg ts2"><span class="t">12–28 min</span>I Do — wire</div>
+    <div class="timing-seg ts3"><span class="t">28–45 min</span>We Do — code</div>
+    <div class="timing-seg ts4"><span class="t">45–55 min</span>You Do — test</div>
+    <div class="timing-seg ts5"><span class="t">55–60 min</span>Folio</div>
+  </div>
+
+  <h3>I Do / We Do / You Do breakdown</h3>
+  <div class="pedagogical-grid">
+    <div class="ped-card ped-ido">
+      <h4>🎤 I Do (teacher models)</h4>
+      <ul>
+        <li>Wire button live on teacher breadboard — narrate every step</li>
+        <li>Test in Shell BEFORE adding code — confirm 0/1 values</li>
+        <li>Wire buzzer, test HIGH/LOW</li>
+        <li>Add both to code on projector</li>
+      </ul>
+    </div>
+    <div class="ped-card ped-wedo">
+      <h4>🤝 We Do (guided practice)</h4>
+      <ul>
+        <li>Students wire button while teacher circulates</li>
+        <li>STOP — whole class tests button in Shell together</li>
+        <li>Students wire buzzer — class tests together</li>
+        <li>Add code as a group before releasing independently</li>
+      </ul>
+    </div>
+    <div class="ped-card ped-youdo">
+      <h4>✏️ You Do (independent)</h4>
+      <ul>
+        <li>Test both components with actual sensor readings</li>
+        <li>Photograph breadboard for folio</li>
+        <li>Annotate circuit diagram on Worksheet 2</li>
+        <li>Write folio reflection</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Concept introduction script — inputs vs outputs</h3>
+  <div class="script-box">
+    <div class="speaker">Teacher says:</div>
+    <blockquote>"So far, our Pico has only sent information OUT — turning an LED on or off, sending a web page over WiFi. Today we're going to add components that send information IN to the Pico. When someone presses a button, the Pico needs to detect that. This is a digital input — it reads whether there's voltage on a pin or not. One important thing — if a pin is set as an input but nothing is connected to it, it 'floats' — it randomly reads 0 and 1 like a bad coin flip. That's why we use a pull-down resistor. Can anyone guess what it might do?"</blockquote>
+    <div class="teacher-note">Allow 2–3 guesses before explaining: the resistor connects the pin to GND through a high resistance — it holds the pin at LOW (0) until the button physically connects it to 3.3V (HIGH). Draw this on the whiteboard.</div>
+  </div>
+
+  <h3>Key safety reminder — show before wiring</h3>
+  <div class="box box-red">
+    <h4>Wiring safety — tell students every time</h4>
+    Always disconnect USB before adding or moving wires. Only reconnect after the wiring has been checked. The Pico W's 3.3V pins can be damaged if shorted directly to GND without a resistor. The active buzzer does NOT need a resistor — it has its own internal limit. Never connect the buzzer + pin directly to 5V or the computer's USB power — always use a GPIO pin.
+  </div>
+
+  <h3>Discussion questions</h3>
+  <ul class="q-list">
+    <li><span class="q-num">1</span>"Why do we use a SHORT beep (0.3 sec) for the buzzer rather than leaving it on while the room is too hot?"</li>
+    <li><span class="q-num">2</span>"If Aunty Leanne is already in the room when it becomes too hot, should the system buzz every loop iteration? What would that be like?"</li>
+    <li><span class="q-num">3</span>"The button currently prints a message and flashes the LED. How would you make it actually force a fresh web page to load?"</li>
+    <li><span class="q-num">4</span>"Look at the <code>Pin.PULL_DOWN</code> constant. Can you find <code>Pin.PULL_UP</code> in the MicroPython docs? When would you use that instead?"</li>
+  </ul>
+
+  <h3>Common misconceptions — Lesson 2</h3>
+  <table class="misc-table">
+    <thead><tr><th>Misconception</th><th>What to say / do</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Buzzer buzzes constantly and won't stop</td>
+        <td>Almost always: missing <code>buzzer.value(0)</code> after the sleep, OR the except block doesn't turn it off. Show the fix live — and explain: always put buzzer.value(0) in the except block too, so any crash turns it off.</td>
+      </tr>
+      <tr>
+        <td>Button always reads 1 even when not pressed</td>
+        <td>Pull-down resistor is missing or connected to wrong row. Check: the resistor should go from the SAME row as GP14 to GND, not a different row. Probe the row in Shell.</td>
+      </tr>
+      <tr>
+        <td>Wiring button legs incorrectly (3 or 4 leg confusion)</td>
+        <td>The 12mm button has 4 legs but only 2 unique connections (legs are paired diagonally). Demonstrate which diagonal pair to use. Bridging the breadboard gap ensures you're using different pairs.</td>
+      </tr>
+      <tr>
+        <td>Active buzzer polarity reversed</td>
+        <td>The buzzer will be silent (not damaged). The longer leg is always +. If they've already wired it, swap it — Pico W GPIO is current-limited and won't be harmed by brief reverse polarity.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="diff-grid">
+    <div class="diff-support">
+      <h4>🤝 Support strategies</h4>
+      <ul>
+        <li>Print A4 wiring diagram — laminate and reuse each year</li>
+        <li>Wire in two separate stages with a teacher check between</li>
+        <li>Give a printed test checklist (Worksheet 2 Part B)</li>
+        <li>Pair weaker students for the wiring phase</li>
+        <li>Do buzzer first (simpler — just + and –) before button</li>
+      </ul>
+    </div>
+    <div class="diff-extend">
+      <h4>🚀 Extension prompts</h4>
+      <ul>
+        <li>"Wire a second LED on GP12 — make it light red automatically when 'Too Hot'"</li>
+        <li>"Add the photocell on GP26 (ADC) — what new information does this give Aunty Leanne?"</li>
+        <li>"Can you make the buzzer only beep once per status change rather than every loop? You'll need a variable to track the previous status."</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════════ LESSON 3 MODELLING GUIDE ════════ -->
+  <h2>Lesson 3 — Teacher Modelling Guide</h2>
+  <div class="lesson-head">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="num">03</div>
+      <div>
+        <h3>Testing, Debugging and Documenting</h3>
+        <p>Week 5 · 60 min · Systematic test table · Bug hunt · Thonny debugging techniques</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="timing-strip">
+    <div class="timing-seg ts1"><span class="t">0–10 min</span>Concept launch</div>
+    <div class="timing-seg ts2"><span class="t">10–25 min</span>Bug hunt demo</div>
+    <div class="timing-seg ts3"><span class="t">25–50 min</span>Test table</div>
+    <div class="timing-seg ts4"><span class="t">50–60 min</span>Improve + folio</div>
+  </div>
+
+  <h3>Bug hunt — demonstrate on projector, students work on Worksheet 3 Part A</h3>
+  <div class="script-box">
+    <div class="speaker">Teacher says:</div>
+    <blockquote>"I'm going to show you three broken programs. Without running them, I want you to look at the code and — in pairs — write down what you think the problem is and what error message Thonny would show. You have 2 minutes."</blockquote>
+    <div class="teacher-note">Show each bug on the slide (these are in Slide 15 of the PPTX). After 2 minutes, ask pairs to share. Then reveal the fix. Key learning: students should be able to read an error message and work backwards to the cause — this is a core programming skill at the Year 10 band.</div>
+  </div>
+
+  <h3>Discussion questions</h3>
+  <ul class="q-list">
+    <li><span class="q-num">1</span>"If you just run the code and it works, have you tested it? Why or why not?"</li>
+    <li><span class="q-num">2</span>"Look at Test 7 in the test table — 'unfamiliar user understands the page.' Why is this a valid test for a digital system?"</li>
+    <li><span class="q-num">3</span>"What's the minimum number of tests needed to properly test the comfort_status() function? Think about edge cases — what if temp is exactly 30?"</li>
+    <li><span class="q-num">4</span>"Your test table is folio evidence. What does a 'fail' result in your test table actually demonstrate about you as a developer?"</li>
+  </ul>
+
+  <div class="box box-green">
+    <h4>Reframing test failures as evidence</h4>
+    Students often hide failures or only test things they know will pass. Explicitly reframe this: a documented failure with a fix demonstrates higher-order thinking and is direct evidence for the "test and refine" criterion. A perfect test table with all passes is suspicious — it likely means the student only tested the happy path.
+  </div>
+
+  <div class="diff-grid">
+    <div class="diff-support">
+      <h4>🤝 Support strategies</h4>
+      <ul>
+        <li>Pre-fill "What I am testing" and "Expected result" columns — students only fill actual + pass/fail + fix</li>
+        <li>Work through tests 1–4 as a whole class before releasing independently</li>
+        <li>Print bug hunt sheet from Worksheet 3 — students annotate on paper</li>
+        <li>Pair students for the usability test (Test 7)</li>
+      </ul>
+    </div>
+    <div class="diff-extend">
+      <h4>🚀 Extension prompts</h4>
+      <ul>
+        <li>"Add edge-case tests: what happens if the sensor is disconnected mid-run?"</li>
+        <li>"Write a test for the trimpot threshold — if you added that extension"</li>
+        <li>"How would a professional developer automate these tests? Research 'unit testing in Python'"</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ════════ LESSON 4 MODELLING GUIDE ════════ -->
+  <h2>Lesson 4 — Teacher Modelling Guide</h2>
+  <div class="lesson-head">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="num">04</div>
+      <div>
+        <h3>Evaluating, Reflecting and Presenting</h3>
+        <p>Week 6 · 60 min · Evaluation writing · Folio completion · 3-min video</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="timing-strip">
+    <div class="timing-seg ts1"><span class="t">0–15 min</span>A vs C model</div>
+    <div class="timing-seg ts2"><span class="t">15–30 min</span>Write evaluation</div>
+    <div class="timing-seg ts3"><span class="t">30–50 min</span>Video plan + record</div>
+    <div class="timing-seg ts4"><span class="t">50–60 min</span>Peer feedback</div>
+  </div>
+
+  <h3>Modelling A-grade vs C-grade evaluation — 15 minutes</h3>
+  <div class="script-box">
+    <div class="speaker">Teacher says:</div>
+    <blockquote>"I'm going to read you two evaluations of the same solution. As I read, I want you to notice — which one makes specific claims? Which one links every claim to Aunty Leanne's actual needs? Which one mentions evidence from testing?"</blockquote>
+    <div class="teacher-note">Read both examples from Slide 17 of the PPTX aloud. After each, ask: "What did this evaluation DO that the other didn't?" Build a criteria list on the board collaboratively: specific evidence · linked to user needs · mentions limitations honestly · proposes concrete improvements · compares alternatives.</div>
+  </div>
+
+  <h3>Discussion questions</h3>
+  <ul class="q-list">
+    <li><span class="q-num">1</span>"A limitation is NOT a weakness to hide — it's an honest acknowledgement of scope. What is a real limitation of YOUR solution that would matter to Aunty Leanne?"</li>
+    <li><span class="q-num">2</span>"What would a commercial alternative look like? Think about what's in shops — would it be better or worse for Aunty Leanne? Why?"</li>
+    <li><span class="q-num">3</span>"Your video is 3 minutes. If you spend 2 minutes showing the hardware and 30 seconds evaluating, is that a balanced submission? What does the rubric weight most heavily?"</li>
+    <li><span class="q-num">4</span>"If you didn't have a pull-down resistor, would your solution be reliable? What happens to a system that works 95% of the time in a community health context?"</li>
+  </ul>
+
+  <div class="box box-purple">
+    <h4>Connecting evaluation to the rubric — A vs B language</h4>
+    At A: <em>discerning critical evaluation of alternative solutions against stakeholder elicited user stories</em> — students must compare their solution to at least one alternative and reference specific user needs (not just "it works"). At B: <em>effective critical evaluation</em> — strong evidence but comparison may be less developed. Prompt B-range students: "You've described how it works well. Now describe an alternative approach, and explain a drawback of yours compared to it."
+  </div>
+
+  <div class="diff-grid">
+    <div class="diff-support">
+      <h4>🤝 Support strategies</h4>
+      <ul>
+        <li>Provide the Worksheet 4 Part A sentence starters pre-typed in ClassNotebook — students fill in the brackets</li>
+        <li>Allow video to be split into 3–4 short clips if one take is too much</li>
+        <li>Sit with student during video planning — help them identify 2 specific strengths from their test table</li>
+        <li>Folio checklist: go through every ☐ item individually in a 5-minute 1:1</li>
+      </ul>
+    </div>
+    <div class="diff-extend">
+      <h4>🚀 Extension prompts</h4>
+      <ul>
+        <li>"Write 3 formal user stories: 'As Aunty Leanne, I want X so that Y.' Then evaluate each with evidence."</li>
+        <li>"Research a commercial IoT temperature/humidity sensor. Compare price, ease of setup, and cultural appropriateness."</li>
+        <li>"Reflect on one design decision you made early that you would now change. What evidence led you to that conclusion?"</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- GENERAL RESOURCES -->
+  <h2>General Classroom Resources</h2>
+
+  <h3>Pico W GPIO pin reference</h3>
+  <div class="box box-blue">
+    <h4>Pins used in this project</h4>
+    <strong>GP13</strong> — DHT22 data · <strong>GP11</strong> — LED (original) · <strong>GP14</strong> — Pushbutton input · <strong>GP15</strong> — Active buzzer · <strong>GP10</strong> — Red LED (extension) · <strong>GP12</strong> — Amber LED (extension) · <strong>GP26</strong> — Photocell ADC (extension) · <strong>GP27</strong> — Trimpot ADC (extension)<br>
+    <strong>3.3V</strong> — Button other leg · <strong>GND</strong> — All component ground connections · <strong>VBUS</strong> — 5V (avoid for sensors, use 3.3V)
+  </div>
+
+  <h3>Recommended MicroPython documentation links</h3>
+  <ul style="font-size:13px;padding-left:20px;">
+    <li style="margin-bottom:6px;"><a href="https://docs.micropython.org/en/latest/library/machine.Pin.html" target="_blank" style="color:var(--blue);">machine.Pin — MicroPython docs</a> — Pin modes, input/output, pull-up/down</li>
+    <li style="margin-bottom:6px;"><a href="https://docs.micropython.org/en/latest/library/machine.ADC.html" target="_blank" style="color:var(--blue);">machine.ADC — MicroPython docs</a> — Analogue inputs (photocell, trimpot)</li>
+    <li style="margin-bottom:6px;"><a href="https://datasheets.raspberrypi.com/picow/pico-w-datasheet.pdf" target="_blank" style="color:var(--blue);">Pico W Datasheet — official PDF</a> — GPIO pinout diagram (page 4)</li>
+    <li style="margin-bottom:6px;"><a href="https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico" target="_blank" style="color:var(--blue);">Getting Started with Pico — Raspberry Pi Foundation</a> — Step-by-step guide with Thonny</li>
+    <li style="margin-bottom:6px;"><a href="https://fivebridges.org.au/programs" target="_blank" style="color:var(--blue);">Five Bridges Programs</a> — Community context for the assessment scenario</li>
+  </ul>
+
+  <h3>Print resources to have ready each lesson</h3>
+  <div class="box box-ochre">
+    <h4>Recommended print preparation</h4>
+    <strong>Every lesson:</strong> Pico W GPIO pinout (A5, laminated) · Troubleshooting reference card (from Lesson Plans pack)<br>
+    <strong>Lesson 1:</strong> Worksheet 1 (printed) · Annotated code scaffold for supported students<br>
+    <strong>Lesson 2:</strong> A4 wiring diagram (laminated for reuse) · Wiring checklist<br>
+    <strong>Lesson 3:</strong> Bug hunt sheet (Worksheet 3 Part A) · Blank test table · 3-column sticky notes for bug fix / fix / lesson learnt<br>
+    <strong>Lesson 4:</strong> Evaluation sentence starters · Folio checklist · Rubric (assessment descriptor page)
+  </div>
+
+  <div style="text-align:center;padding:32px 0 16px;border-top:1px solid var(--border);margin-top:40px;">
+    <p style="color:var(--muted);font-size:13px;">St Peters Lutheran College Springfield · Year 10 Digital Technologies · Ms Baessler · Assessment 2 · 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
