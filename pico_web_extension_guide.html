@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pico W Web Server — Extension Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0D1117;
+    --surface: #161B22;
+    --surface2: #21262D;
+    --border: #30363D;
+    --text: #E6EDF3;
+    --muted: #8B949E;
+    --green: #3FB950;
+    --green-bg: #0D2818;
+    --green-border: #238636;
+    --blue: #58A6FF;
+    --blue-bg: #0C2D6B;
+    --blue-border: #1F6FEB;
+    --amber: #E3B341;
+    --amber-bg: #2D1F00;
+    --amber-border: #9E6A03;
+    --red: #FF7B72;
+    --red-bg: #2D0F0F;
+    --red-border: #B62324;
+    --purple: #BC8CFF;
+    --purple-bg: #1A0F2E;
+    --purple-border: #6E40C9;
+    --code-bg: #0D1117;
+    --code-border: #30363D;
+    --support: #238636;
+    --extend: #6E40C9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── STICKY NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(13,17,23,0.95);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding: 0 12px;
+  }
+  .nav-brand {
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--green);
+    white-space: nowrap;
+    padding: 12px 16px 12px 4px;
+    border-right: 1px solid var(--border);
+    margin-right: 4px;
+    letter-spacing: 0.5px;
+  }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 14px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--green); border-bottom-color: var(--green); }
+
+  /* ── PANELS ── */
+  .panel { display: none; max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+  .panel.active { display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 32px 28px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green), var(--blue), var(--purple));
+  }
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .hero p { color: var(--muted); font-size: 14px; max-width: 600px; }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  /* ── SECTION HEADINGS ── */
+  h2 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text);
+    margin: 32px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .h2-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  h3 { font-size: 15px; font-weight: 700; color: var(--text); margin: 20px 0 8px; }
+
+  /* ── BOXES ── */
+  .box {
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    border-left: 3px solid;
+  }
+  .box-green { background: var(--green-bg); border-color: var(--green); }
+  .box-blue { background: var(--blue-bg); border-color: var(--blue); }
+  .box-amber { background: var(--amber-bg); border-color: var(--amber); }
+  .box-red { background: var(--red-bg); border-color: var(--red); }
+  .box-purple { background: var(--purple-bg); border-color: var(--purple); }
+  .box-surface { background: var(--surface); border-color: var(--border); border-left: none; border: 1px solid var(--border); }
+  
+  .box .box-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .box-green .box-title { color: var(--green); }
+  .box-blue .box-title { color: var(--blue); }
+  .box-amber .box-title { color: var(--amber); }
+  .box-red .box-title { color: var(--red); }
+  .box-purple .box-title { color: var(--purple); }
+  .box p, .box li { font-size: 14px; color: var(--muted); }
+  .box strong { color: var(--text); }
+  .box ul { padding-left: 18px; }
+  .box li { margin-bottom: 4px; }
+
+  /* ── TEACHER BOX ── */
+  .teacher-box {
+    background: var(--surface2);
+    border: 1px solid var(--amber-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+  .teacher-box .tb-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .tb-badge {
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-border);
+    color: var(--amber);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  /* ── DIFF TIERS ── */
+  .tier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  @media(max-width: 600px) { .tier-grid { grid-template-columns: 1fr; } }
+  .tier-support {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .tier-extend {
+    background: var(--purple-bg);
+    border: 1px solid var(--purple-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .tier-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .tier-support .tier-label { color: var(--green); }
+  .tier-extend .tier-label { color: var(--purple); }
+  .tier-support ul, .tier-extend ul { padding-left: 16px; }
+  .tier-support li, .tier-extend li { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+
+  /* ── CODE BLOCKS ── */
+  .code-wrap {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 10px;
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  .code-header {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .code-filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .code-copy {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--muted);
+    font-size: 11px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    padding: 3px 10px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .code-copy:hover { color: var(--text); border-color: var(--text); }
+  pre {
+    padding: 16px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .c-green { color: #3FB950; }
+  .c-blue { color: #79C0FF; }
+  .c-amber { color: #E3B341; }
+  .c-red { color: #FF7B72; }
+  .c-purple { color: #D2A8FF; }
+  .c-muted { color: #8B949E; }
+  .c-str { color: #A5D6FF; }
+
+  /* ── STEP CARDS ── */
+  .step-list { list-style: none; padding: 0; }
+  .step-item {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .step-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 36px;
+    bottom: -12px;
+    width: 2px;
+    background: var(--border);
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 2px solid var(--green-border);
+    color: var(--green);
+    font-weight: 800;
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-body { flex: 1; padding-top: 4px; }
+  .step-body strong { color: var(--text); font-size: 15px; display: block; margin-bottom: 6px; }
+  .step-body p { font-size: 14px; color: var(--muted); }
+
+  /* ── CHECKPOINT ── */
+  .checkpoint {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 20px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .cp-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .cp-body { font-size: 14px; }
+  .cp-body strong { color: var(--green); display: block; margin-bottom: 4px; }
+  .cp-body p { color: var(--muted); }
+  .cp-list { padding-left: 16px; margin-top: 6px; }
+  .cp-list li { color: var(--muted); font-size: 13px; margin-bottom: 3px; }
+
+  /* ── EXTENSION CARDS ── */
+  .ext-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 16px 0; }
+  .ext-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .ext-card:hover { border-color: var(--purple-border); background: var(--surface2); }
+  .ext-card .ext-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: var(--text); }
+  .ext-card .ext-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .ext-card .ext-diff {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  .diff-1 { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .diff-2 { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .diff-3 { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border); }
+
+  /* ── COLLAPSE PANELS ── */
+  .collapse-section { margin: 10px 0; }
+  .collapse-header {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .collapse-header:hover { background: var(--surface); }
+  .collapse-header .ch-left { display: flex; align-items: center; gap: 10px; }
+  .collapse-arrow { color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .collapse-content { display: none; padding: 4px 0 8px; }
+  .collapse-content.open { display: block; }
+  .collapse-arrow.open { transform: rotate(180deg); }
+
+  /* ── FAQ ── */
+  .faq-item { margin-bottom: 12px; }
+  .faq-q {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--amber);
+    margin-bottom: 4px;
+  }
+  .faq-a { font-size: 14px; color: var(--muted); }
+
+  /* ── INLINE CODE ── */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--green);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  th { background: var(--surface2); color: var(--muted); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+  td:first-child { color: var(--text); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">🔧 Pico W Guide</div>
+  <button class="nav-btn active" onclick="show('start')">Start Here</button>
+  <button class="nav-btn" onclick="show('html')">Styling the Page</button>
+  <button class="nav-btn" onclick="show('extend')">Extensions</button>
+  <button class="nav-btn" onclick="show('teacher')">Teacher Guide</button>
+  <button class="nav-btn" onclick="show('help')">Troubleshoot</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PANEL 1 — START HERE                                  -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="panel-start" class="panel active">
+
+  <div class="hero">
+    <div class="hero-tag">Year 10 Digital Technologies · Assessment 2</div>
+    <h1>Extending Your<br>Pico W Web Server</h1>
+    <p>You already have a working system. Now it's time to make it look great and add new features. Follow the steps on each tab at your own pace.</p>
+    <div class="hero-chips">
+      <span class="chip">Raspberry Pi Pico W</span>
+      <span class="chip">MicroPython</span>
+      <span class="chip">DHT22 sensor</span>
+      <span class="chip">HTML + CSS</span>
+      <span class="chip">Thonny IDE</span>
+    </div>
+  </div>
+
+  <!-- WHERE ARE YOU -->
+  <h2><span class="h2-icon" style="background:#0D2818;">✅</span> What you already have</h2>
+  <p style="color:var(--muted); margin-bottom:14px;">Your Pico W is already running this code. It reads temperature and humidity from a DHT22 sensor, controls a red LED, and shows a basic webpage on the local network.</p>
+
+  <div class="box box-surface">
+    <table>
+      <tr><th>Hardware</th><th>Pin</th><th>What it does</th></tr>
+      <tr><td>DHT22 sensor</td><td><code>GP13</code></td><td>Reads temperature &amp; humidity</td></tr>
+      <tr><td>Red LED</td><td><code>GP11</code></td><td>Turns on/off from the webpage</td></tr>
+      <tr><td>Wi-Fi</td><td>Built-in</td><td>Hosts a webpage on your network</td></tr>
+    </table>
+  </div>
+
+  <!-- HOW THIS GUIDE WORKS -->
+  <h2><span class="h2-icon" style="background:#0C2D6B;">📖</span> How to use this guide</h2>
+
+  <div class="tier-grid">
+    <div class="tier-support">
+      <div class="tier-label">🟢 Support pathway</div>
+      <ul>
+        <li>Follow every step exactly as shown</li>
+        <li>Copy the code blocks provided</li>
+        <li>Check the ✅ checkpoint after each step</li>
+        <li>Ask your teacher if you get stuck</li>
+        <li>Aim to complete <strong style="color:var(--text)">Styling the Page</strong> tab</li>
+      </ul>
+    </div>
+    <div class="tier-extend">
+      <div class="tier-label">🟣 Extension pathway</div>
+      <ul>
+        <li>Style the page your own way</li>
+        <li>Choose 1–2 hardware extensions</li>
+        <li>Add new features from the kit</li>
+        <li>Document each change in your folio</li>
+        <li>Aim to complete the <strong style="color:var(--text)">Extensions</strong> tab</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BEFORE YOU START -->
+  <h2><span class="h2-icon" style="background:#2D1F00;">⚡</span> Before you start</h2>
+
+  <ul class="step-list">
+    <li class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Open Thonny</strong>
+        <p>Launch Thonny on your computer. Make sure your Pico W is plugged in via USB. You should see <code>MicroPython (Raspberry Pi Pico)</code> in the bottom-right corner.</p>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Open your file</strong>
+        <p>Go to <strong style="color:var(--text)">Files</strong> panel → look under <strong style="color:var(--text)">Raspberry Pi Pico</strong> → open <code>main.py</code> or your saved Python file.</p>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Run it and check it works</strong>
+        <p>Press the green ▶ Run button. In the Shell at the bottom you should see <code>Connected! IP: 192.168.x.x</code>. Type that address into a browser on any device on the same Wi-Fi.</p>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>You're ready!</strong>
+        <p>Go to the <strong style="color:var(--text)">Styling the Page</strong> tab to start improving the look of your webpage.</p>
+      </div>
+    </li>
+  </ul>
+
+  <div class="checkpoint">
+    <div class="cp-icon">🏁</div>
+    <div class="cp-body">
+      <strong>Quick check before moving on</strong>
+      <ul class="cp-list">
+        <li>Thonny is open and can see your Pico W</li>
+        <li>Your Python file is open in the editor</li>
+        <li>The webpage loads when you visit the IP address in a browser</li>
+        <li>Temperature and humidity numbers show on the page</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PANEL 2 — STYLING THE PAGE                            -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="panel-html" class="panel">
+
+  <div class="hero">
+    <div class="hero-tag">Tab 2 · Everyone starts here</div>
+    <h1>Styling Your Webpage</h1>
+    <p>The only part of the code you need to change is the HTML inside the <code>web_page()</code> function. Everything else stays the same.</p>
+  </div>
+
+  <!-- WHERE IS THE HTML -->
+  <h2><span class="h2-icon" style="background:#0D2818;">🔍</span> Finding the HTML in your code</h2>
+  <p style="color:var(--muted); margin-bottom:14px;">Your Python file has a function called <code>web_page()</code>. The HTML lives inside the triple-quoted string — between the <code>return f"""</code> and the closing <code>"""</code>. This is the only section you are editing today.</p>
+
+  <div class="box box-amber">
+    <div class="box-title">Important rule</div>
+    <p>Do <strong>not</strong> change anything above or below the <code>web_page()</code> function unless you are on the extension pathway. Only edit the HTML inside the function.</p>
+  </div>
+
+  <!-- THE STARTING CODE -->
+  <h2><span class="h2-icon" style="background:#0C2D6B;">📄</span> The current HTML (what you have now)</h2>
+  <p style="color:var(--muted); margin-bottom:8px;">Here is the <code>web_page()</code> function exactly as it is. We will replace the HTML section step by step.</p>
+
+  <div class="code-wrap">
+    <div class="code-header">
+      <span class="code-filename">main.py — web_page() function (current version)</span>
+      <button class="code-copy" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="c-muted"># This is the function that builds the webpage</span>
+<span class="c-blue">def</span> <span class="c-green">web_page</span>(temp, hum, led_state):
+    led_text = <span class="c-str">"ON"</span> <span class="c-blue">if</span> led_state <span class="c-blue">else</span> <span class="c-str">"OFF"</span>
+    led_color = <span class="c-str">"green"</span> <span class="c-blue">if</span> led_state <span class="c-blue">else</span> <span class="c-str">"red"</span>
+
+    <span class="c-blue">return</span> <span class="c-amber">f"""&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Pico Dashboard&lt;/title&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta http-equiv="refresh" content="5"&gt;
+&lt;/head&gt;
+&lt;body style="font-family: Arial; text-align:center;"&gt;
+
+    &lt;h1&gt;&#128202; Pico Dashboard&lt;/h1&gt;
+    &lt;h2&gt;&#127777; Temperature: {temp} &amp;deg;C&lt;/h2&gt;
+    &lt;h2&gt;&#128167; Humidity: {hum} %&lt;/h2&gt;
+    &lt;h3 style="color:{led_color};"&gt;&#128161; LED is {led_text}&lt;/h3&gt;
+
+    &lt;a href="/?led=on"&gt;
+        &lt;button style="padding:15px; font-size:18px;"&gt;Turn LED ON&lt;/button&gt;
+    &lt;/a&gt;
+    &lt;a href="/?led=off"&gt;
+        &lt;button style="padding:15px; font-size:18px;"&gt;Turn LED OFF&lt;/button&gt;
+    &lt;/a&gt;
+
+    &lt;p&gt;Auto refresh every 5 seconds&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</span>
+"""</pre>
+  </div>
+
+  <!-- STEP BY STEP REPLACEMENTS -->
+  <h2><span class="h2-icon" style="background:#0D2818;">🛠️</span> Step-by-step improvements</h2>
+
+  <!-- STEP 1: PAGE TITLE & BACKGROUND -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left"><span style="color:var(--green);font-weight:800;">Step 1</span> &nbsp;·&nbsp; Change the page title and background colour</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content open">
+      <div style="height:10px;"></div>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:12px;">Find the <code>&lt;head&gt;</code> section in your HTML and replace it with the version below. This gives your page a proper title and a background colour.</p>
+      <div class="box box-green">
+        <div class="box-title">🟢 Support pathway — copy this exactly</div>
+        <p>Replace the whole <code>&lt;head&gt;...&lt;/head&gt;</code> block with the code below. Choose any colour name you like for <code>background-color</code> — try <code>lightyellow</code>, <code>lightblue</code>, or <code>#f0f4f8</code>.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Replace your &lt;head&gt; block with this</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-amber">&lt;head&gt;</span>
+    <span class="c-amber">&lt;title&gt;</span>Yarning Circle Monitor<span class="c-amber">&lt;/title&gt;</span>
+    <span class="c-amber">&lt;meta</span> <span class="c-blue">charset</span>=<span class="c-str">"UTF-8"</span><span class="c-amber">&gt;</span>
+    <span class="c-amber">&lt;meta</span> <span class="c-blue">http-equiv</span>=<span class="c-str">"refresh"</span> <span class="c-blue">content</span>=<span class="c-str">"5"</span><span class="c-amber">&gt;</span>
+    <span class="c-amber">&lt;style&gt;</span>
+        body {{
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }}
+    <span class="c-amber">&lt;/style&gt;</span>
+<span class="c-amber">&lt;/head&gt;</span></pre>
+      </div>
+      <div class="box box-purple">
+        <div class="box-title">🟣 Extension pathway — customise it</div>
+        <p>Change the <code>background-color</code> to any hex colour you like. Try <a href="https://www.color-hex.com/" target="_blank" style="color:var(--blue);">color-hex.com</a> to find one. Also add <code>font-family: 'Segoe UI', sans-serif;</code> for a cleaner look. What colours would Aunty Leanne find calming and easy to read?</p>
+      </div>
+      <div class="checkpoint">
+        <div class="cp-icon">✅</div>
+        <div class="cp-body">
+          <strong>Checkpoint</strong>
+          <p>Save your file (Ctrl+S), run it (▶), and reload the webpage. The page background should now be a colour, not plain white.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: STYLED HEADING -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left"><span style="color:var(--green);font-weight:800;">Step 2</span> &nbsp;·&nbsp; Add a styled heading and description</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:12px;">Replace the plain <code>&lt;h1&gt;</code> with a styled header box. This makes the page look like a real app instead of a basic HTML file.</p>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Replace your &lt;h1&gt; line with this block</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"background: #2c5f2e; color: white; padding: 20px;
+         border-radius: 12px; margin-bottom: 24px;"</span><span class="c-amber">&gt;</span>
+    <span class="c-amber">&lt;h1&gt;</span>🌿 Yarning Circle Monitor<span class="c-amber">&lt;/h1&gt;</span>
+    <span class="c-amber">&lt;p&gt;</span>Live environment data · Updates every 5 seconds<span class="c-amber">&lt;/p&gt;</span>
+<span class="c-amber">&lt;/div&gt;</span></pre>
+      </div>
+      <div class="box box-green">
+        <div class="box-title">🟢 Support tip</div>
+        <p>The colour <code>#2c5f2e</code> is a dark green. You can change this to any colour. The <code>border-radius: 12px</code> rounds the corners. Try making it bigger — like <code>20px</code> — to see the effect.</p>
+      </div>
+      <div class="checkpoint">
+        <div class="cp-icon">✅</div>
+        <div class="cp-body">
+          <strong>Checkpoint</strong>
+          <p>Save and run. Your page should now have a coloured header banner at the top with white text and rounded corners.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: DATA CARDS -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left"><span style="color:var(--green);font-weight:800;">Step 3</span> &nbsp;·&nbsp; Display temperature and humidity as cards</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:12px;">Instead of two plain <code>&lt;h2&gt;</code> lines, we'll display the data in side-by-side cards. This is much easier for Aunty Leanne to read at a glance.</p>
+      <div class="box box-amber">
+        <div class="box-title">⚠️ Important — Python f-string curly braces</div>
+        <p>Inside a Python f-string, <strong>CSS uses double curly braces</strong> <code>{{</code> and <code>}}</code> instead of single ones, so Python doesn't confuse them with variables. The temperature and humidity values still use single braces: <code>{'{'}temp{'}'}</code> and <code>{'{'}hum{'}'}</code>.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Replace both &lt;h2&gt; lines (temp and humidity) with this</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"display: flex; justify-content: center;
+         gap: 20px; flex-wrap: wrap; margin: 20px 0;"</span><span class="c-amber">&gt;</span>
+
+    <span class="c-muted">&lt;!-- Temperature card --&gt;</span>
+    <span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"background: white; border-radius: 12px;
+             padding: 20px 30px; min-width: 160px;
+             box-shadow: 0 2px 8px rgba(0,0,0,0.1);"</span><span class="c-amber">&gt;</span>
+        <span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"font-size: 40px;"</span><span class="c-amber">&gt;</span>🌡️<span class="c-amber">&lt;/div&gt;</span>
+        <span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"font-size: 32px; font-weight: bold; color: #d73027;"</span><span class="c-amber">&gt;</span>
+            {temp} °C
+        <span class="c-amber">&lt;/div&gt;</span>
+        <span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"color: #888; font-size: 14px;"</span><span class="c-amber">&gt;</span>Temperature<span class="c-amber">&lt;/div&gt;</span>
+    <span class="c-amber">&lt;/div&gt;</span>
+
+    <span class="c-muted">&lt;!-- Humidity card --&gt;</span>
+    <span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"background: white; border-radius: 12px;
+             padding: 20px 30px; min-width: 160px;
+             box-shadow: 0 2px 8px rgba(0,0,0,0.1);"</span><span class="c-amber">&gt;</span>
+        <span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"font-size: 40px;"</span><span class="c-amber">&gt;</span>💧<span class="c-amber">&lt;/div&gt;</span>
+        <span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"font-size: 32px; font-weight: bold; color: #1a88c9;"</span><span class="c-amber">&gt;</span>
+            {hum} %
+        <span class="c-amber">&lt;/div&gt;</span>
+        <span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"color: #888; font-size: 14px;"</span><span class="c-amber">&gt;</span>Humidity<span class="c-amber">&lt;/div&gt;</span>
+    <span class="c-amber">&lt;/div&gt;</span>
+
+<span class="c-amber">&lt;/div&gt;</span></pre>
+      </div>
+      <div class="checkpoint">
+        <div class="cp-icon">✅</div>
+        <div class="cp-body">
+          <strong>Checkpoint</strong>
+          <p>Save and run. You should now see two white cards side by side — one for temperature, one for humidity — with large readable numbers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: COMFORT STATUS -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left"><span style="color:var(--green);font-weight:800;">Step 4</span> &nbsp;·&nbsp; Add a comfort status message</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:12px;">This is the most important part for Aunty Leanne. Rather than just showing numbers, the page tells her clearly whether the room is comfortable. We add this logic in the <strong style="color:var(--text)">Python</strong> part of the function, then display it in the HTML.</p>
+
+      <div class="box box-blue">
+        <div class="box-title">Two-part change — Python + HTML</div>
+        <p>First add the logic at the <strong>top of the <code>web_page()</code> function</strong> (before the <code>return</code>), then add the display HTML inside the page.</p>
+      </div>
+
+      <h3>Part A — Add this Python logic at the top of <code>web_page()</code></h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Add INSIDE web_page() — before the return statement</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-muted"># Decide comfort status</span>
+<span class="c-blue">if</span> <span class="c-green">18</span> &lt;= temp &lt;= <span class="c-green">26</span> <span class="c-blue">and</span> hum &lt;= <span class="c-green">70</span>:
+    comfort_msg = <span class="c-str">"✅ Room is comfortable"</span>
+    comfort_color = <span class="c-str">"#2c5f2e"</span>
+    comfort_bg = <span class="c-str">"#d4edda"</span>
+<span class="c-blue">elif</span> temp &gt; <span class="c-green">30</span> <span class="c-blue">or</span> hum &gt; <span class="c-green">80</span>:
+    comfort_msg = <span class="c-str">"🔴 Too hot or humid — not suitable"</span>
+    comfort_color = <span class="c-str">"#7f0000"</span>
+    comfort_bg = <span class="c-str">"#f8d7da"</span>
+<span class="c-blue">else</span>:
+    comfort_msg = <span class="c-str">"🟡 Borderline — check with staff"</span>
+    comfort_color = <span class="c-str">"#856404"</span>
+    comfort_bg = <span class="c-str">"#fff3cd"</span></pre>
+      </div>
+
+      <h3>Part B — Add this HTML inside the page body</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Add after the data cards in your HTML</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"background: {comfort_bg}; color: {comfort_color};
+         border-radius: 12px; padding: 16px 24px;
+         font-size: 20px; font-weight: bold;
+         margin: 20px auto; max-width: 400px;"</span><span class="c-amber">&gt;</span>
+    {comfort_msg}
+<span class="c-amber">&lt;/div&gt;</span></pre>
+      </div>
+      <div class="checkpoint">
+        <div class="cp-icon">✅</div>
+        <div class="cp-body">
+          <strong>Checkpoint</strong>
+          <p>Save and run. The page should now show a green, yellow, or red status banner below the sensor cards. The colour changes automatically based on the temperature and humidity reading.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: BETTER BUTTONS -->
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left"><span style="color:var(--green);font-weight:800;">Step 5</span> &nbsp;·&nbsp; Style the LED buttons</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:12px;">Replace the plain unstyled buttons with large, clearly labelled, accessible buttons. Aunty Leanne needs to be able to tap these easily on a tablet or phone.</p>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Replace both &lt;a href&gt; button blocks with this</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-amber">&lt;div</span> <span class="c-blue">style</span>=<span class="c-str">"margin: 24px 0;"</span><span class="c-amber">&gt;</span>
+    <span class="c-amber">&lt;p</span> <span class="c-blue">style</span>=<span class="c-str">"color: #555; margin-bottom: 14px;"</span><span class="c-amber">&gt;</span>
+        LED Status:
+        <span class="c-amber">&lt;strong</span> <span class="c-blue">style</span>=<span class="c-str">"color: {led_color};"</span><span class="c-amber">&gt;</span>{led_text}<span class="c-amber">&lt;/strong&gt;</span>
+    <span class="c-amber">&lt;/p&gt;</span>
+
+    <span class="c-amber">&lt;a</span> <span class="c-blue">href</span>=<span class="c-str">"/?led=on"</span><span class="c-amber">&gt;</span>
+        <span class="c-amber">&lt;button</span> <span class="c-blue">style</span>=<span class="c-str">"background: #2c5f2e; color: white;
+                 border: none; border-radius: 10px;
+                 padding: 18px 36px; font-size: 18px;
+                 cursor: pointer; margin: 8px;"</span><span class="c-amber">&gt;</span>
+            💡 Turn LED ON
+        <span class="c-amber">&lt;/button&gt;</span>
+    <span class="c-amber">&lt;/a&gt;</span>
+
+    <span class="c-amber">&lt;a</span> <span class="c-blue">href</span>=<span class="c-str">"/?led=off"</span><span class="c-amber">&gt;</span>
+        <span class="c-amber">&lt;button</span> <span class="c-blue">style</span>=<span class="c-str">"background: #7f0000; color: white;
+                 border: none; border-radius: 10px;
+                 padding: 18px 36px; font-size: 18px;
+                 cursor: pointer; margin: 8px;"</span><span class="c-amber">&gt;</span>
+            🔴 Turn LED OFF
+        <span class="c-amber">&lt;/button&gt;</span>
+    <span class="c-amber">&lt;/a&gt;</span>
+<span class="c-amber">&lt;/div&gt;</span></pre>
+      </div>
+      <div class="checkpoint">
+        <div class="cp-icon">✅</div>
+        <div class="cp-body">
+          <strong>Checkpoint — Core task complete!</strong>
+          <p>Your page now has a header, data cards, a comfort status, and styled buttons. You have completed the core extension. <strong style="color:var(--green)">Screenshot your page</strong> and add it to your digital folio as evidence of your HTML improvements.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL FINISHED VERSION -->
+  <h2><span class="h2-icon" style="background:#0D2818;">📋</span> The complete finished web_page() function</h2>
+  <p style="color:var(--muted); margin-bottom:8px;">If you want to see all five steps combined into one working function, expand this.</p>
+  <div class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left"><span style="color:var(--amber);">▶ Full combined code</span> — click to expand</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <div class="box box-amber">
+        <div class="box-title">Only use this if you're stuck</div>
+        <p>Try to build it yourself step by step first. Only paste this full version if something went wrong and you need to start the HTML fresh. The WiFi settings and hardware pins at the top of your file don't change.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Complete web_page() function — paste to replace your existing one</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-blue">def</span> <span class="c-green">web_page</span>(temp, hum, led_state):
+    led_text = <span class="c-str">"ON"</span> <span class="c-blue">if</span> led_state <span class="c-blue">else</span> <span class="c-str">"OFF"</span>
+    led_color = <span class="c-str">"green"</span> <span class="c-blue">if</span> led_state <span class="c-blue">else</span> <span class="c-str">"red"</span>
+
+    <span class="c-muted"># Comfort status logic</span>
+    <span class="c-blue">if</span> <span class="c-green">18</span> &lt;= temp &lt;= <span class="c-green">26</span> <span class="c-blue">and</span> hum &lt;= <span class="c-green">70</span>:
+        comfort_msg = <span class="c-str">"✅ Room is comfortable"</span>
+        comfort_color = <span class="c-str">"#2c5f2e"</span>
+        comfort_bg = <span class="c-str">"#d4edda"</span>
+    <span class="c-blue">elif</span> temp &gt; <span class="c-green">30</span> <span class="c-blue">or</span> hum &gt; <span class="c-green">80</span>:
+        comfort_msg = <span class="c-str">"🔴 Too hot or humid — not suitable"</span>
+        comfort_color = <span class="c-str">"#7f0000"</span>
+        comfort_bg = <span class="c-str">"#f8d7da"</span>
+    <span class="c-blue">else</span>:
+        comfort_msg = <span class="c-str">"🟡 Borderline — check with staff"</span>
+        comfort_color = <span class="c-str">"#856404"</span>
+        comfort_bg = <span class="c-str">"#fff3cd"</span>
+
+    <span class="c-blue">return</span> <span class="c-amber">f"""&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Yarning Circle Monitor&lt;/title&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta http-equiv="refresh" content="5"&gt;
+    &lt;style&gt;
+        body {{ font-family: Arial, sans-serif; background: #f0f4f8;
+                color: #333; text-align: center; padding: 20px; }}
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div style="background:#2c5f2e;color:white;padding:20px;
+            border-radius:12px;margin-bottom:24px;"&gt;
+    &lt;h1&gt;🌿 Yarning Circle Monitor&lt;/h1&gt;
+    &lt;p&gt;Live environment data · Updates every 5 seconds&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div style="display:flex;justify-content:center;
+            gap:20px;flex-wrap:wrap;margin:20px 0;"&gt;
+    &lt;div style="background:white;border-radius:12px;
+                padding:20px 30px;min-width:160px;
+                box-shadow:0 2px 8px rgba(0,0,0,0.1);"&gt;
+        &lt;div style="font-size:40px;"&gt;🌡️&lt;/div&gt;
+        &lt;div style="font-size:32px;font-weight:bold;color:#d73027;"&gt;{temp} °C&lt;/div&gt;
+        &lt;div style="color:#888;font-size:14px;"&gt;Temperature&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div style="background:white;border-radius:12px;
+                padding:20px 30px;min-width:160px;
+                box-shadow:0 2px 8px rgba(0,0,0,0.1);"&gt;
+        &lt;div style="font-size:40px;"&gt;💧&lt;/div&gt;
+        &lt;div style="font-size:32px;font-weight:bold;color:#1a88c9;"&gt;{hum} %&lt;/div&gt;
+        &lt;div style="color:#888;font-size:14px;"&gt;Humidity&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div style="background:{comfort_bg};color:{comfort_color};
+            border-radius:12px;padding:16px 24px;
+            font-size:20px;font-weight:bold;
+            margin:20px auto;max-width:400px;"&gt;
+    {comfort_msg}
+&lt;/div&gt;
+
+&lt;div style="margin:24px 0;"&gt;
+    &lt;p style="color:#555;margin-bottom:14px;"&gt;
+        LED: &lt;strong style="color:{led_color};"&gt;{led_text}&lt;/strong&gt;
+    &lt;/p&gt;
+    &lt;a href="/?led=on"&gt;
+        &lt;button style="background:#2c5f2e;color:white;border:none;
+                       border-radius:10px;padding:18px 36px;
+                       font-size:18px;cursor:pointer;margin:8px;"&gt;
+            💡 Turn LED ON
+        &lt;/button&gt;
+    &lt;/a&gt;
+    &lt;a href="/?led=off"&gt;
+        &lt;button style="background:#7f0000;color:white;border:none;
+                       border-radius:10px;padding:18px 36px;
+                       font-size:18px;cursor:pointer;margin:8px;"&gt;
+            🔴 Turn LED OFF
+        &lt;/button&gt;
+    &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</span>
+"""</pre>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PANEL 3 — EXTENSIONS                                  -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="panel-extend" class="panel">
+
+  <div class="hero">
+    <div class="hero-tag">Tab 3 · Extension pathway</div>
+    <h1>Add More Features</h1>
+    <p>You've completed the core web page improvements. Now choose from these hardware and software extensions. Each one is self-contained — you can do them in any order.</p>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">⚠️ Before you start any extension</div>
+    <p><strong>Save a backup copy</strong> of your working code first. In Thonny: File → Save As → give it a name like <code>backup_working.py</code> on your computer. That way if something breaks you can always go back.</p>
+  </div>
+
+  <h2><span class="h2-icon" style="background:#1A0F2E;">🧩</span> Choose your extension</h2>
+
+  <div class="ext-grid">
+    <div class="ext-card" onclick="toggleCollapse(document.querySelector('#ext-buzzer .collapse-arrow').closest('.collapse-header'))">
+      <div class="ext-title">🔔 Buzzer alert</div>
+      <div class="ext-desc">Sound an alarm when the room gets too hot or too humid. Uses the passive buzzer from your kit.</div>
+      <span class="ext-diff diff-2">Intermediate</span>
+    </div>
+    <div class="ext-card" onclick="toggleCollapse(document.querySelector('#ext-button .collapse-arrow').closest('.collapse-header'))">
+      <div class="ext-title">🔘 Push button</div>
+      <div class="ext-desc">Add a physical button on the breadboard that silences the buzzer or resets a status flag.</div>
+      <span class="ext-diff diff-2">Intermediate</span>
+    </div>
+    <div class="ext-card" onclick="toggleCollapse(document.querySelector('#ext-traffic .collapse-arrow').closest('.collapse-header'))">
+      <div class="ext-title">🚦 Traffic light LEDs</div>
+      <div class="ext-desc">Wire up a green + yellow + red LED to visually show comfort level — great for Aunty Leanne.</div>
+      <span class="ext-diff diff-2">Intermediate</span>
+    </div>
+    <div class="ext-card" onclick="toggleCollapse(document.querySelector('#ext-history .collapse-arrow').closest('.collapse-header'))">
+      <div class="ext-title">📊 Reading history</div>
+      <div class="ext-desc">Store the last 5 readings and display them as a simple table on the webpage.</div>
+      <span class="ext-diff diff-3">Advanced</span>
+    </div>
+  </div>
+
+  <!-- EXTENSION: BUZZER -->
+  <div id="ext-buzzer" class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left">🔔 &nbsp;<strong>Extension A</strong> — Passive buzzer alert</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <div class="box box-surface">
+        <div class="box-title">Kit parts needed</div>
+        <p>Passive buzzer · One female-to-male jumper wire · Breadboard</p>
+      </div>
+
+      <h3>Wiring</h3>
+      <table>
+        <tr><th>Buzzer pin</th><th>Connect to</th></tr>
+        <tr><td>Positive (+)</td><td>Pico <code>GP15</code></td></tr>
+        <tr><td>Negative (–)</td><td>Pico <code>GND</code> (any GND pin)</td></tr>
+      </table>
+
+      <h3>Code — add to the top of your file (after hardware setup)</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Add after your existing hardware setup lines</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-blue">from</span> machine <span class="c-blue">import</span> PWM
+
+buzzer = PWM(Pin(<span class="c-green">15</span>))
+
+<span class="c-blue">def</span> <span class="c-green">alert_beep</span>():
+    <span class="c-muted"># Short double-beep to signal alert</span>
+    <span class="c-blue">for</span> _ <span class="c-blue">in</span> range(<span class="c-green">2</span>):
+        buzzer.freq(<span class="c-green">1000</span>)
+        buzzer.duty_u16(<span class="c-green">30000</span>)
+        time.sleep(<span class="c-green">0.2</span>)
+        buzzer.duty_u16(<span class="c-green">0</span>)
+        time.sleep(<span class="c-green">0.1</span>)</pre>
+      </div>
+
+      <h3>Calling the alert — add inside your main loop</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Add inside the while True loop, after reading the sensor</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-muted"># After sensor.measure() / temp / hum lines:</span>
+<span class="c-blue">if</span> temp &gt; <span class="c-green">30</span> <span class="c-blue">or</span> hum &gt; <span class="c-green">80</span>:
+    alert_beep()</pre>
+      </div>
+
+      <div class="box box-green">
+        <div class="box-title">🟢 Support tip</div>
+        <p>If the buzzer doesn't sound, check that the <strong>positive wire</strong> goes to GP15, not GND. Also make sure you added the <code>from machine import PWM</code> line — it must be at the top with your other imports.</p>
+      </div>
+
+      <div class="box box-purple">
+        <div class="box-title">🟣 Extension idea</div>
+        <p>Change the <code>buzzer.freq(1000)</code> value. Try <code>500</code> for a low tone, <code>2000</code> for a high pitch. Could you play different tones for temperature alerts vs humidity alerts?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTENSION: BUTTON -->
+  <div id="ext-button" class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left">🔘 &nbsp;<strong>Extension B</strong> — Physical push button</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <div class="box box-surface">
+        <div class="box-title">Kit parts needed</div>
+        <p>Tactile push button · Breadboard · Two male-to-male jumper wires</p>
+      </div>
+
+      <h3>Wiring</h3>
+      <table>
+        <tr><th>Button pin</th><th>Connect to</th></tr>
+        <tr><td>One leg</td><td>Pico <code>GP14</code></td></tr>
+        <tr><td>Other leg</td><td>Pico <code>GND</code></td></tr>
+      </table>
+
+      <h3>Code — add to hardware setup</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Add with your other hardware lines</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-muted"># Button on GP14 — uses internal pull-up resistor</span>
+button = Pin(<span class="c-green">14</span>, Pin.IN, Pin.PULL_UP)
+
+<span class="c-muted"># Flag to track if alert has been silenced</span>
+alert_silenced = <span class="c-blue">False</span></pre>
+      </div>
+
+      <h3>Code — read button in the main loop</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Add at the start of your while True loop</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-muted"># Check if button is pressed (reads 0 when pressed with PULL_UP)</span>
+<span class="c-blue">if</span> button.value() == <span class="c-green">0</span>:
+    alert_silenced = <span class="c-blue">True</span>
+    time.sleep(<span class="c-green">0.3</span>)  <span class="c-muted"># debounce delay</span></pre>
+      </div>
+
+      <div class="box box-green">
+        <div class="box-title">🟢 Why PULL_UP?</div>
+        <p>The Pico has a built-in resistor that keeps the pin reading <code>1</code> (high) when the button isn't pressed. When you press it, the circuit connects to GND and the pin reads <code>0</code> (low). This is the most reliable way to wire a button.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTENSION: TRAFFIC LIGHT -->
+  <div id="ext-traffic" class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left">🚦 &nbsp;<strong>Extension C</strong> — Traffic light LEDs</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <div class="box box-surface">
+        <div class="box-title">Kit parts needed</div>
+        <p>Green LED · Yellow LED · Red LED (you already have one) · Three 220Ω resistors · Breadboard · Jumper wires</p>
+      </div>
+
+      <h3>Wiring</h3>
+      <table>
+        <tr><th>LED</th><th>Long leg (+) → via 220Ω resistor</th><th>Short leg (–)</th></tr>
+        <tr><td>Green</td><td>Pico <code>GP10</code></td><td>GND</td></tr>
+        <tr><td>Yellow</td><td>Pico <code>GP11</code> (your existing LED pin)</td><td>GND</td></tr>
+        <tr><td>Red</td><td>Pico <code>GP12</code></td><td>GND</td></tr>
+      </table>
+
+      <div class="box box-amber">
+        <div class="box-title">⚠️ Pin change</div>
+        <p>This extension moves the existing red LED from GP11 to GP12, and uses GP11 for the yellow. Update <code>led = Pin(11, Pin.OUT)</code> in your code if you want the web page buttons to still control the yellow LED.</p>
+      </div>
+
+      <h3>Code — hardware setup</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Replace or add to your hardware setup section</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre">led_green  = Pin(<span class="c-green">10</span>, Pin.OUT)
+led_yellow = Pin(<span class="c-green">11</span>, Pin.OUT)
+led_red    = Pin(<span class="c-green">12</span>, Pin.OUT)</pre>
+      </div>
+
+      <h3>Code — comfort function to control the lights</h3>
+      <div class="code-wrap">
+        <div class="code-header">
+          <span class="code-filename">Add this function before your main loop</span>
+          <button class="code-copy" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="c-blue">def</span> <span class="c-green">update_traffic_lights</span>(temp, hum):
+    <span class="c-blue">if</span> <span class="c-green">18</span> &lt;= temp &lt;= <span class="c-green">26</span> <span class="c-blue">and</span> hum &lt;= <span class="c-green">70</span>:
+        led_green.value(<span class="c-green">1</span>)
+        led_yellow.value(<span class="c-green">0</span>)
+        led_red.value(<span class="c-green">0</span>)
+    <span class="c-blue">elif</span> temp &gt; <span class="c-green">30</span> <span class="c-blue">or</span> hum &gt; <span class="c-green">80</span>:
+        led_green.value(<span class="c-green">0</span>)
+        led_yellow.value(<span class="c-green">0</span>)
+        led_red.value(<span class="c-green">1</span>)
+    <span class="c-blue">else</span>:
+        led_green.value(<span class="c-green">0</span>)
+        led_yellow.value(<span class="c-green">1</span>)
+        led_red.value(<span class="c-green">0</span>)</pre>
+      </div>
+
+      <h3>Call it in your main loop</h3>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-filename">Add after sensor.measure() lines</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre>update_traffic_lights(temp, hum)</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTENSION: HISTORY -->
+  <div id="ext-history" class="collapse-section">
+    <div class="collapse-header" onclick="toggleCollapse(this)">
+      <span class="ch-left">📊 &nbsp;<strong>Extension D</strong> — Reading history table</span>
+      <span class="collapse-arrow">▼</span>
+    </div>
+    <div class="collapse-content">
+      <div style="height:10px;"></div>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:12px;">Store the last 5 readings in a Python list and display them in an HTML table on the webpage. This is a pure software change — no new hardware needed.</p>
+
+      <h3>Step 1 — Create the history list before your loop</h3>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-filename">Add before while True:</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre>reading_history = []  <span class="c-muted"># stores up to 5 recent readings</span></pre>
+      </div>
+
+      <h3>Step 2 — Update history in the main loop</h3>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-filename">Add after reading temp and hum</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-muted"># Add new reading to history</span>
+reading_history.append((temp, hum))
+<span class="c-muted"># Keep only the most recent 5</span>
+<span class="c-blue">if</span> len(reading_history) &gt; <span class="c-green">5</span>:
+    reading_history.pop(<span class="c-green">0</span>)</pre>
+      </div>
+
+      <h3>Step 3 — Add history table to web_page() function</h3>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:8px;">Change the function signature to also receive the history list:</p>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-filename">Update the function signature</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-blue">def</span> <span class="c-green">web_page</span>(temp, hum, led_state, history):</pre>
+      </div>
+      <p style="color:var(--muted); font-size:14px; margin: 12px 0 8px;">Add this HTML at the bottom of your page body, before <code>&lt;/body&gt;</code>:</p>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-filename">Add inside the HTML, before &lt;/body&gt;</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-amber">&lt;h3&gt;</span>Recent Readings<span class="c-amber">&lt;/h3&gt;</span>
+<span class="c-amber">&lt;table</span> <span class="c-blue">style</span>=<span class="c-str">"margin:0 auto;border-collapse:collapse;
+              background:white;border-radius:8px;overflow:hidden;"</span><span class="c-amber">&gt;</span>
+    <span class="c-amber">&lt;tr&gt;&lt;th</span> <span class="c-blue">style</span>=<span class="c-str">"padding:8px 20px;background:#eee;"</span><span class="c-amber">&gt;</span>#<span class="c-amber">&lt;/th&gt;</span>
+        <span class="c-amber">&lt;th</span> <span class="c-blue">style</span>=<span class="c-str">"padding:8px 20px;background:#eee;"</span><span class="c-amber">&gt;</span>Temp °C<span class="c-amber">&lt;/th&gt;</span>
+        <span class="c-amber">&lt;th</span> <span class="c-blue">style</span>=<span class="c-str">"padding:8px 20px;background:#eee;"</span><span class="c-amber">&gt;</span>Humidity %<span class="c-amber">&lt;/th&gt;&lt;/tr&gt;</span>
+    {"".join(
+        f'&lt;tr&gt;&lt;td style="padding:8px 20px;border-top:1px solid #eee;"&gt;{i+1}&lt;/td&gt;'
+        f'&lt;td style="padding:8px 20px;border-top:1px solid #eee;"&gt;{r[0]}&lt;/td&gt;'
+        f'&lt;td style="padding:8px 20px;border-top:1px solid #eee;"&gt;{r[1]}&lt;/td&gt;&lt;/tr&gt;'
+        for i, r in enumerate(history)
+    )}
+<span class="c-amber">&lt;/table&gt;</span></pre>
+      </div>
+      <p style="color:var(--muted); font-size:14px; margin: 12px 0 8px;">Update the call to <code>web_page()</code> in your main loop to pass the history:</p>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-filename">Update the web_page() call in your main loop</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre>response = web_page(temp, hum, led.value(), reading_history)</pre>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PANEL 4 — TEACHER GUIDE                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="panel-teacher" class="panel">
+
+  <div class="hero">
+    <div class="hero-tag">Teacher reference · Not a technology specialist? That's fine.</div>
+    <h1>Teacher's Session Guide</h1>
+    <p>You don't need to know how to code to run this class. This tab gives you everything you need — what to say, what to watch for, and how to help students who are stuck.</p>
+  </div>
+
+  <div class="teacher-box">
+    <div class="tb-header">
+      <span class="tb-badge">Teacher note</span>
+      <span style="font-size:13px;color:var(--muted);">Read before the lesson starts</span>
+    </div>
+    <p style="font-size:14px; color:var(--muted);">All students already have a <strong style="color:var(--text)">working system</strong> from the previous lessons. Today is about extending that existing code — not starting from scratch. Your role is to keep students on task, help them open the right file, and use this guide when they get stuck.</p>
+  </div>
+
+  <h2><span class="h2-icon" style="background:#2D1F00;">⏱️</span> Session structure (60 minutes)</h2>
+
+  <table>
+    <tr><th>Time</th><th>What happens</th><th>Your role</th></tr>
+    <tr><td>0–5 min</td><td>Students open Thonny, connect Pico W, run their existing code and show it working in a browser</td><td>Walk around and check everyone can see their IP address in the Shell panel. If not, see troubleshooting tab.</td></tr>
+    <tr><td>5–10 min</td><td>Whole-class: explain the two pathways using the <strong>Start Here</strong> tab on this guide</td><td>Show this guide on the board. Ask: "Which tab will you follow?" Support = green, Extension = purple.</td></tr>
+    <tr><td>10–45 min</td><td>Students work independently through their chosen pathway</td><td>Circulate. The most common issues are in the Troubleshoot tab. Students should not be asking you to write code — the steps are all here.</td></tr>
+    <tr><td>45–55 min</td><td>Students screenshot their finished webpage and add it to their ClassNotebook folio</td><td>Remind students: open ClassNotebook in Teams, go to their folio page, paste the screenshot and write 1–2 sentences describing what they changed.</td></tr>
+    <tr><td>55–60 min</td><td>Pack up — Pico W stays plugged in until code is saved</td><td>Remind students to save their file before unplugging. File → Save in Thonny. Check a few screens.</td></tr>
+  </table>
+
+  <h2><span class="h2-icon" style="background:#0D2818;">💬</span> Suggested things to say</h2>
+
+  <div class="box box-green">
+    <div class="box-title">Opening the lesson</div>
+    <p><em>"Last lesson you got your Pico working as a web server. Today we're making it more useful — better looking, and with some extra features. Open Thonny, plug in your Pico, and follow the steps on the guide on Teams."</em></p>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">When a student says "I don't know what to do"</div>
+    <p><em>"Start on the Start Here tab. It tells you exactly what to open. Then go to Styling the Page and follow Step 1."</em></p>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">When a student finishes the core steps early</div>
+    <p><em>"Great — now go to the Extensions tab and pick one hardware extension. You'll need to wire something up. Start with the buzzer or traffic light."</em></p>
+  </div>
+
+  <h2><span class="h2-icon" style="background:#1A0F2E;">🎯</span> What to look for in student work</h2>
+
+  <div class="tier-grid">
+    <div class="tier-support">
+      <div class="tier-label">Minimum expected (all students)</div>
+      <ul>
+        <li>Changed background colour in HTML</li>
+        <li>Temperature and humidity displayed as cards</li>
+        <li>Comfort status message showing (green/yellow/red)</li>
+        <li>Screenshot in ClassNotebook folio</li>
+        <li>Can explain what the comfort logic does</li>
+      </ul>
+    </div>
+    <div class="tier-extend">
+      <div class="tier-label">Extension evidence</div>
+      <ul>
+        <li>At least one new hardware component wired up</li>
+        <li>New Python code added and working</li>
+        <li>Can explain the pin connections they made</li>
+        <li>Folio documents the change and shows a test</li>
+        <li>Able to describe a design decision they made</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="h2-icon" style="background:#0D2818;">📋</span> Assessment connection</h2>
+  <p style="color:var(--muted); font-size:14px; margin-bottom:12px;">This work connects to Assessment 2. Students should be saving evidence as they go. The key evidence items are:</p>
+
+  <table>
+    <tr><th>Evidence</th><th>Where to save it</th><th>Criteria it addresses</th></tr>
+    <tr><td>Screenshot of improved webpage</td><td>ClassNotebook folio</td><td>Data representation · Producing &amp; implementing</td></tr>
+    <tr><td>Updated .py file</td><td>Saved to Pico + computer backup</td><td>Implementing algorithms</td></tr>
+    <tr><td>Short written explanation of changes</td><td>ClassNotebook folio</td><td>Evaluating · Digital systems knowledge</td></tr>
+    <tr><td>Photo of hardware if extended</td><td>ClassNotebook folio</td><td>Producing &amp; implementing</td></tr>
+  </table>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- PANEL 5 — TROUBLESHOOT                                -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="panel-help" class="panel">
+
+  <div class="hero">
+    <div class="hero-tag">Tab 5 · Common issues and fixes</div>
+    <h1>Troubleshooting</h1>
+    <p>Find your error message or symptom below. Most problems have a simple fix.</p>
+  </div>
+
+  <h2><span class="h2-icon" style="background:#2D0F0F;">🔴</span> Python errors in Thonny</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">SyntaxError — invalid syntax</div>
+    <div class="faq-a">Usually a missing quote, bracket, or colon. Look at the line number Thonny highlights. Check that all <code>"</code> and <code>'</code> are matched, and that any <code>if:</code> / <code>def:</code> lines end with a colon.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">IndentationError</div>
+    <div class="faq-a">Python cares deeply about spaces. Make sure you haven't mixed tabs and spaces. In Thonny, press Ctrl+A to select all, then use Format → Fix Indentation to tidy it up.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">KeyError or NameError — variable not found</div>
+    <div class="faq-a">A variable like <code>comfort_msg</code> or <code>comfort_bg</code> is used before it's defined. Make sure the comfort logic block is at the TOP of the <code>web_page()</code> function, before the <code>return</code> statement.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">The page shows raw HTML text instead of a formatted page</div>
+    <div class="faq-a">There's a problem with the f-string — likely an unmatched <code>"""</code>. Make sure the <code>return f"""</code> at the start of the HTML has a matching <code>"""</code> at the very end of the HTML block, on its own line.</div>
+  </div>
+
+  <h2><span class="h2-icon" style="background:#0C2D6B;">🔵</span> Connection issues</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">Shell shows "Connecting to WiFi..." but never connects</div>
+    <div class="faq-a">Check that <code>ssid</code> and <code>password</code> at the top of your file are exactly right — including capital letters. Also check your device and the Pico are on the same Wi-Fi network (not a 5GHz vs 2.4GHz mismatch).</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Webpage won't load in the browser</div>
+    <div class="faq-a">Make sure you're typing <code>http://</code> before the IP address — not <code>https://</code>. Your device must also be on the same Wi-Fi as the Pico W. Try another device (phone vs laptop) to rule out network issues.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Thonny can't see the Pico W (no MicroPython option)</div>
+    <div class="faq-a">Try a different USB cable — some cables are charge-only with no data wires. If the cable is fine, hold the BOOTSEL button on the Pico while plugging it in, then reinstall MicroPython firmware via Thonny → Run → Configure Interpreter.</div>
+  </div>
+
+  <h2><span class="h2-icon" style="background:#2D1F00;">🟡</span> HTML / display issues</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">My CSS styles aren't showing up</div>
+    <div class="faq-a">Remember that inside a Python f-string, CSS curly braces must be doubled: <code>{{</code> and <code>}}</code>. Single curly braces are treated as Python variable placeholders and will cause errors or disappear.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">The comfort status always shows green even when temperature is high</div>
+    <div class="faq-a">Make sure the <code>if 18 &lt;= temp &lt;= 26</code> logic block is inside the <code>web_page()</code> function and uses the <code>temp</code> and <code>hum</code> parameters — not hard-coded numbers. Check for typos in the variable names.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">The page doesn't auto-refresh</div>
+    <div class="faq-a">Check that your <code>&lt;head&gt;</code> section still includes: <code>&lt;meta http-equiv="refresh" content="5"&gt;</code>. It may have been accidentally deleted when you replaced the head block.</div>
+  </div>
+
+  <h2><span class="h2-icon" style="background:#1A0F2E;">🟣</span> Extension hardware issues</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">Buzzer doesn't make any sound</div>
+    <div class="faq-a">Check: (1) positive leg is on GP15, negative on GND. (2) <code>from machine import PWM</code> is at the top of the file. (3) <code>buzzer.duty_u16(0)</code> isn't accidentally being called right after the beep. If using an active buzzer instead of passive, just use <code>buzzer = Pin(15, Pin.OUT)</code> and <code>buzzer.value(1)</code> / <code>buzzer.value(0)</code>.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">LED doesn't light up</div>
+    <div class="faq-a">Check: (1) long leg (anode) goes through a 220Ω resistor to the GP pin — NOT directly. (2) short leg (cathode) goes to GND. (3) the pin number in code matches the pin number on the board. GP pin numbers are printed beside each pin on the Pico.</div>
+  </div>
+
+  <div class="box box-amber" style="margin-top:24px;">
+    <div class="box-title">Still stuck?</div>
+    <p>Take a photo of your screen showing the error, and a photo of your wiring. Your teacher can send these to the DT teacher for help. Most problems can be solved remotely from a photo.</p>
+  </div>
+
+</div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function toggleCollapse(header) {
+    const arrow = header.querySelector('.collapse-arrow');
+    const content = header.nextElementSibling;
+    const isOpen = content.classList.contains('open');
+    content.classList.toggle('open', !isOpen);
+    arrow.classList.toggle('open', !isOpen);
+  }
+
+  function copyCode(btn) {
+    const pre = btn.closest('.code-wrap').querySelector('pre');
+    const text = pre.innerText || pre.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      btn.style.color = 'var(--green)';
+      btn.style.borderColor = 'var(--green)';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1800);
+    });
+  }
+</script>
+</body>
+</html>
