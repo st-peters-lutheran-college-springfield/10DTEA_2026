@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Worksheets — Yarning Circle Monitor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --cream: #F5F8FC; --earth: #0D1B2A; --earth-light: #EDF4FB;
+    --ochre: #2B8BE0; --ochre-light: #D6E8FB; --ochre-dark: #1A5C9E;
+    --green: #2A6B45; --green-light: #D4EAE0;
+    --blue: #1A4F7A; --blue-light: #D4E5F5;
+    --red: #B03A2E; --red-light: #F5D5D2;
+    --purple: #5A2D82; --purple-light: #EBE0F5;
+    --border: #C4D8EE; --muted: #3D5A78;
+    --code-bg: #0D1B2A; --code-text: #D6E8FB;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--earth); font-size: 14px; line-height: 1.6; }
+
+  /* ── TABS ── */
+  .tab-bar { display: flex; background: var(--earth); position: sticky; top: 0; z-index: 100; overflow-x: auto; }
+  .tab-btn { flex: 1; min-width: 140px; padding: 14px 16px; background: none; border: none; color: rgba(255,255,255,0.55); font-family: 'DM Sans',sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; }
+  .tab-btn:hover { color: white; }
+  .tab-btn.active { color: var(--ochre); border-bottom-color: var(--ochre); }
+  .tab-panel { display: none; max-width: 860px; margin: 0 auto; padding: 32px 24px 80px; }
+  .tab-panel.active { display: block; }
+
+  /* ── WORKSHEET HEADER ── */
+  .ws-header { background: var(--earth); color: white; border-radius: 14px; padding: 28px 28px 24px; margin-bottom: 28px; position: relative; overflow: hidden; }
+  .ws-header::after { content: ''; position: absolute; right: -30px; top: -30px; width: 180px; height: 180px; border-radius: 50%; border: 2px solid rgba(43,139,224,0.25); }
+  .ws-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--ochre); margin-bottom: 8px; }
+  .ws-header h1 { font-size: 24px; font-weight: 600; margin-bottom: 6px; }
+  .ws-header p { font-size: 13px; color: rgba(255,255,255,0.65); }
+  .ws-meta { display: flex; gap: 20px; margin-top: 18px; flex-wrap: wrap; }
+  .ws-meta-item { font-size: 12px; }
+  .ws-meta-item strong { display: block; color: var(--ochre); font-size: 13px; }
+
+  /* ── SECTIONS ── */
+  .section { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; margin-bottom: 20px; }
+  .section-title { font-size: 15px; font-weight: 600; color: var(--earth); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .section-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .icon-ochre { background: var(--ochre-light); }
+  .icon-green { background: var(--green-light); }
+  .icon-blue { background: var(--blue-light); }
+  .icon-red { background: var(--red-light); }
+  .icon-purple { background: var(--purple-light); }
+
+  /* ── FORM ELEMENTS ── */
+  .field-label { font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 4px; letter-spacing: 0.3px; }
+  .field-group { margin-bottom: 14px; }
+  textarea, input[type="text"] { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-family: 'DM Sans',sans-serif; font-size: 13px; color: var(--earth); background: var(--cream); resize: vertical; line-height: 1.5; transition: border 0.2s; }
+  textarea:focus, input[type="text"]:focus { outline: none; border-color: var(--ochre); background: white; }
+  textarea { min-height: 70px; }
+  .short { min-height: 42px; }
+
+  /* ── CODE BLOCKS ── */
+  pre { background: var(--code-bg); color: var(--code-text); font-family: 'DM Mono',monospace; font-size: 12px; line-height: 1.65; padding: 16px 18px; border-radius: 10px; overflow-x: auto; margin: 10px 0; }
+  .code-gap { display: inline-block; background: var(--ochre-light); border: 1px dashed var(--ochre); border-radius: 4px; min-width: 100px; height: 18px; vertical-align: middle; cursor: text; padding: 0 4px; font-family: 'DM Mono',monospace; font-size: 12px; color: var(--earth); }
+  .code-gap:focus { outline: none; background: white; border-color: var(--ochre); }
+
+  /* ── TABLES ── */
+  .ws-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .ws-table th { background: var(--earth-light); color: var(--earth); padding: 8px 10px; text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .ws-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .ws-table td input[type="text"] { padding: 5px 8px; font-size: 12px; min-height: 30px; }
+  .ws-table td select { padding: 5px 8px; font-size: 12px; border: 1px solid var(--border); border-radius: 6px; font-family: 'DM Sans',sans-serif; background: var(--cream); color: var(--earth); cursor: pointer; }
+  .ws-table td select:focus { outline: none; border-color: var(--ochre); }
+
+  /* ── DIAGRAM AREA ── */
+  .diagram-box { border: 2px dashed var(--border); border-radius: 10px; padding: 12px; background: #FDFAF6; min-height: 160px; display: flex; flex-direction: column; gap: 8px; }
+  .diagram-box p { font-size: 12px; color: var(--muted); font-style: italic; }
+
+  /* ── DRAG/DROP FLOWCHART ── */
+  .flow-palette { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .flow-item { padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: grab; user-select: none; border: 1px solid; }
+  .flow-start { background: var(--green-light); border-color: var(--green); color: var(--green); border-radius: 20px; }
+  .flow-process { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+  .flow-decision { background: var(--ochre-light); border-color: var(--ochre); color: var(--ochre-dark); transform: none; }
+  .flow-output { background: var(--purple-light); border-color: var(--purple); color: var(--purple); }
+  .flow-end { background: var(--red-light); border-color: var(--red); color: var(--red); border-radius: 20px; }
+
+  .flow-canvas { min-height: 200px; border: 2px dashed var(--border); border-radius: 10px; background: #FDFAF6; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .flow-canvas.drag-over { border-color: var(--ochre); background: var(--ochre-light); }
+  .flow-dropped { display: flex; align-items: center; gap: 6px; }
+  .flow-arrow { color: var(--muted); font-size: 18px; margin: 0 8px; }
+
+  /* ── BOXES ── */
+  .info-box { border-radius: 10px; padding: 14px 16px; margin: 12px 0; font-size: 13px; }
+  .box-green { background: var(--green-light); border-left: 3px solid var(--green); }
+  .box-blue { background: var(--blue-light); border-left: 3px solid var(--blue); }
+  .box-ochre { background: var(--ochre-light); border-left: 3px solid var(--ochre); }
+  .box-red { background: var(--red-light); border-left: 3px solid var(--red); }
+  .box-purple { background: var(--purple-light); border-left: 3px solid var(--purple); }
+  .info-box h4 { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .box-green h4 { color: var(--green); }
+  .box-blue h4 { color: var(--blue); }
+  .box-ochre h4 { color: var(--ochre-dark); }
+  .box-red h4 { color: var(--red); }
+  .box-purple h4 { color: var(--purple); }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--border); font-size: 13px; }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist input[type="checkbox"] { width: 17px; height: 17px; margin-top: 1px; accent-color: var(--ochre); flex-shrink: 0; cursor: pointer; }
+
+  /* ── PASS/FAIL ── */
+  .pf-select { padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 12px; font-family: 'DM Sans',sans-serif; background: var(--cream); cursor: pointer; }
+
+  /* ── RATING ── */
+  .rating-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+  .rating-row label { font-size: 13px; color: var(--earth); min-width: 200px; }
+  .star-group { display: flex; gap: 4px; }
+  .star-group input { display: none; }
+  .star-group label { font-size: 22px; cursor: pointer; color: var(--border); transition: color 0.1s; }
+  .star-group input:checked ~ label,
+  .star-group label:hover,
+  .star-group label:hover ~ label { color: var(--ochre); }
+
+  /* ── PRINT BTN ── */
+  .print-btn { background: var(--ochre); color: white; border: none; border-radius: 8px; padding: 10px 20px; font-family: 'DM Sans',sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 20px; }
+  .print-btn:hover { background: var(--ochre-dark); }
+
+  /* ── PROGRESS ── */
+  .progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin-top: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--ochre); border-radius: 3px; transition: width 0.4s; }
+
+  /* ── DIFF TAGS ── */
+  .diff-tag { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+  .tag-support { background: var(--blue-light); color: var(--blue); }
+  .tag-extend { background: var(--purple-light); color: var(--purple); }
+  .tag-all { background: var(--ochre-light); color: var(--ochre-dark); }
+
+  @media print {
+    .tab-bar, .print-btn { display: none; }
+    .tab-panel { display: block !important; page-break-before: always; }
+    .tab-panel:first-child { page-break-before: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── TAB BAR ── -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('ws1')">Lesson 1<br><small>Comfort Logic</small></button>
+  <button class="tab-btn" onclick="switchTab('ws2')">Lesson 2<br><small>Button & Buzzer</small></button>
+  <button class="tab-btn" onclick="switchTab('ws3')">Lesson 3<br><small>Testing & Debugging</small></button>
+  <button class="tab-btn" onclick="switchTab('ws4')">Lesson 4<br><small>Evaluation & Video</small></button>
+  <button class="tab-btn" onclick="switchTab('folio')">Folio Checklist</button>
+</div>
+
+<!-- ════════════════════════════════ WORKSHEET 1 ════════════════════════════════ -->
+<div id="ws1" class="tab-panel active">
+  <button class="print-btn" onclick="window.print()">🖨️ Print this worksheet</button>
+
+  <div class="ws-header">
+    <div class="ws-tag">Lesson 1 · Week 3</div>
+    <h1>Making the Website Work for Real Users</h1>
+    <p>Comfort logic · User-centred design · Data flow</p>
+    <div class="ws-meta">
+      <div class="ws-meta-item"><strong>Name</strong><input type="text" style="width:160px;margin-top:2px;" placeholder="Your name"></div>
+      <div class="ws-meta-item"><strong>Date</strong><input type="text" style="width:100px;margin-top:2px;" placeholder="Date"></div>
+    </div>
+  </div>
+
+  <!-- PART A: USER PERSONA -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-ochre">👤</span> Part A — Know Your User</div>
+    <div class="info-box box-ochre">
+      <h4>Aunty Leanne — User Persona</h4>
+      Age 62 · Regional Queensland · Community facilitator · Uses smartphone & tablet · Not confident with complex systems · Needs information at a glance
+    </div>
+    <div class="field-group">
+      <div class="field-label">What are 3 things Aunty Leanne specifically NEEDS from this system?</div>
+      <textarea placeholder="1. She needs...&#10;2. She needs...&#10;3. She needs..."></textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">What would make her NOT want to use the system? (Think about what might confuse her)</div>
+      <textarea class="short" placeholder="Things that might confuse Aunty Leanne..."></textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Based on her needs, write 3 design criteria — specific requirements your website must meet:</div>
+      <textarea placeholder="1. The website must...&#10;2. The website must...&#10;3. The website must..."></textarea>
+    </div>
+  </div>
+
+  <!-- PART B: DATA FLOW -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-blue">🔗</span> Part B — Trace the Data Journey</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Fill in the missing steps to show how temperature gets from the sensor to the browser. Use the word bank below.</p>
+    <div class="info-box box-blue">
+      <h4>Word bank</h4>
+      <code>sensor.measure()</code> · <code>web_page()</code> · HTTP response · Browser displays · <code>comfort_status()</code> · <code>temp = sensor.temperature()</code>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:0;align-items:flex-start;">
+      <div style="background:var(--green-light);border:1px solid var(--green);border-radius:20px;padding:7px 18px;font-size:13px;font-weight:500;color:var(--green);">START: DHT22 sensor detects temperature</div>
+      <div style="margin:2px 0 2px 38px;color:var(--muted);">↓</div>
+      <input type="text" placeholder="Step 2 (Python command to read sensor)..." style="width:340px;">
+      <div style="margin:2px 0 2px 38px;color:var(--muted);">↓</div>
+      <input type="text" placeholder="Step 3 (store value in variable)..." style="width:340px;">
+      <div style="margin:2px 0 2px 38px;color:var(--muted);">↓</div>
+      <input type="text" placeholder="Step 4 (classify the reading)..." style="width:340px;">
+      <div style="margin:2px 0 2px 38px;color:var(--muted);">↓</div>
+      <input type="text" placeholder="Step 5 (build the HTML page)..." style="width:340px;">
+      <div style="margin:2px 0 2px 38px;color:var(--muted);">↓</div>
+      <input type="text" placeholder="Step 6 (send over WiFi)..." style="width:340px;">
+      <div style="margin:2px 0 2px 38px;color:var(--muted);">↓</div>
+      <div style="background:var(--ochre-light);border:1px solid var(--ochre);border-radius:20px;padding:7px 18px;font-size:13px;font-weight:500;color:var(--ochre-dark);">END: User sees status on screen</div>
+    </div>
+  </div>
+
+  <!-- PART C: CODE COMPLETION -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-green">🐍</span> Part C — Code Completion <span class="diff-tag tag-all">All students</span></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Fill in the blanks in the comfort_status() function. Use the clues to help you.</p>
+
+    <pre>def comfort_status(<contenteditable="true" class="code-gap" style="min-width:60px;"></contenteditable>, <span contenteditable="true" class="code-gap" style="min-width:50px;"></span>):
+    # Too hot OR too humid — unsafe
+    <span contenteditable="true" class="code-gap" style="min-width:30px;"></span> temp > <span contenteditable="true" class="code-gap" style="min-width:40px;"></span> <span contenteditable="true" class="code-gap" style="min-width:25px;"></span> hum > <span contenteditable="true" class="code-gap" style="min-width:40px;"></span>:
+        return "Too Hot / Humid", "#B03A2E", "Not recommended"
+    # Getting warm — caution
+    <span contenteditable="true" class="code-gap" style="min-width:40px;"></span> temp > 26 or hum > 60:
+        return "Getting Warm", "#2B8BE0", "Monitor closely"
+    # Comfortable
+    <span contenteditable="true" class="code-gap" style="min-width:40px;"></span>:
+        return "Comfortable", "#2A6B45", "Safe for Yarning Circle"</pre>
+
+    <div class="info-box box-green">
+      <h4>Clues</h4>
+      Parameters should be <code>temp</code> and <code>hum</code> · First condition uses <code>if</code> · Use <code>or</code> to combine conditions · Second uses <code>elif</code> · Third uses <code>else</code> · Temperature threshold = 30 · Humidity threshold = 70
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">Test this function in Thonny's Shell. Write what you typed and what the result was:</div>
+      <table class="ws-table" style="margin-top:6px;">
+        <thead><tr><th>What you typed in Shell</th><th>Result you got</th><th>Expected?</th></tr></thead>
+        <tbody>
+          <tr><td><input type="text" placeholder="comfort_status(24, 50)"></td><td><input type="text" placeholder="Result..."></td><td><select class="pf-select"><option>—</option><option>✅ Yes</option><option>❌ No</option></select></td></tr>
+          <tr><td><input type="text" placeholder="comfort_status(28, 62)"></td><td><input type="text" placeholder="Result..."></td><td><select class="pf-select"><option>—</option><option>✅ Yes</option><option>❌ No</option></select></td></tr>
+          <tr><td><input type="text" placeholder="comfort_status(32, 75)"></td><td><input type="text" placeholder="Result..."></td><td><select class="pf-select"><option>—</option><option>✅ Yes</option><option>❌ No</option></select></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PART D: WEBSITE SKETCH -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-purple">✏️</span> Part D — Website Layout Sketch</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Sketch your redesigned dashboard in the box below. Remember Aunty Leanne's needs. Label each element and explain why you included it.</p>
+    <div class="diagram-box" style="min-height:220px;">
+      <p>Draw your website layout here — you can type labels/annotations in the field below</p>
+      <div style="height:140px;border:1px dashed var(--border);border-radius:6px;background:white;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;">[ Sketch area — draw on paper then photograph for folio ]</div>
+    </div>
+    <div class="field-group" style="margin-top:10px;">
+      <div class="field-label">Annotations — describe each element you included and link it to Aunty Leanne's needs:</div>
+      <textarea placeholder="Large colour-coded box at top → because Aunty Leanne needs to see the status at a glance without reading numbers...&#10;Plain English label ('Comfortable') → because she is not confident with technical data..."></textarea>
+    </div>
+  </div>
+
+  <!-- PART E: FOLIO REFLECTION -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-ochre">📓</span> Part E — Folio Reflection</div>
+    <div class="field-group">
+      <div class="field-label">Complete this sentence for your ClassNotebook folio entry:</div>
+      <textarea placeholder="I changed the website by... because Aunty Leanne needs... This design decision was effective because..."></textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Extension only — if you added a heat index or reading history, describe what you added and why:</div>
+      <textarea class="short" placeholder="I extended the solution by..."></textarea>
+    </div>
+    <div class="info-box box-green">
+      <h4>Folio evidence to screenshot and save today</h4>
+      ☐ Annotated code showing data flow &nbsp;&nbsp; ☐ Comfort_status() function in Thonny &nbsp;&nbsp; ☐ Updated website running on a device &nbsp;&nbsp; ☐ Layout sketch with annotations
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════ WORKSHEET 2 ════════════════════════════════ -->
+<div id="ws2" class="tab-panel">
+  <button class="print-btn" onclick="window.print()">🖨️ Print this worksheet</button>
+
+  <div class="ws-header">
+    <div class="ws-tag">Lesson 2 · Week 4</div>
+    <h1>Wiring Up New Hardware</h1>
+    <p>Pushbutton · Active buzzer · GPIO inputs vs outputs · Breadboard wiring</p>
+    <div class="ws-meta">
+      <div class="ws-meta-item"><strong>Name</strong><input type="text" style="width:160px;margin-top:2px;" placeholder="Your name"></div>
+      <div class="ws-meta-item"><strong>Date</strong><input type="text" style="width:100px;margin-top:2px;" placeholder="Date"></div>
+    </div>
+  </div>
+
+  <!-- PART A: CONCEPTS -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-blue">💡</span> Part A — Digital Inputs vs Outputs</div>
+    <div class="info-box box-blue">
+      <h4>Remember</h4>
+      A digital <strong>output</strong> pin sends electricity OUT (e.g. LED, buzzer). A digital <strong>input</strong> pin READS electricity coming in (e.g. button). Both use the <code>Pin</code> class from <code>machine</code> but with different modes.
+    </div>
+    <table class="ws-table">
+      <thead><tr><th>Component</th><th>Input or Output?</th><th>GPIO Pin</th><th>Pin mode to use</th></tr></thead>
+      <tbody>
+        <tr><td>LED (from Lesson 1)</td><td><select class="pf-select"><option>—</option><option>Input</option><option>Output</option></select></td><td><input type="text" placeholder="GP??"></td><td><input type="text" placeholder="Pin.___"></td></tr>
+        <tr><td>Pushbutton (new)</td><td><select class="pf-select"><option>—</option><option>Input</option><option>Output</option></select></td><td><input type="text" placeholder="GP??"></td><td><input type="text" placeholder="Pin.___ with ___"></td></tr>
+        <tr><td>Active Buzzer (new)</td><td><select class="pf-select"><option>—</option><option>Input</option><option>Output</option></select></td><td><input type="text" placeholder="GP??"></td><td><input type="text" placeholder="Pin.___"></td></tr>
+        <tr><td>DHT22 sensor</td><td><select class="pf-select"><option>—</option><option>Input</option><option>Output</option></select></td><td><input type="text" placeholder="GP??"></td><td><input type="text" placeholder="dht.DHT22()"></td></tr>
+      </tbody>
+    </table>
+    <div class="field-group" style="margin-top:12px;">
+      <div class="field-label">In your own words — why does the pushbutton need a pull-down resistor?</div>
+      <textarea class="short" placeholder="Without the pull-down resistor, the pin would..."></textarea>
+    </div>
+  </div>
+
+  <!-- PART B: WIRING CHECKLIST -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-ochre">🔌</span> Part B — Wiring Checklist</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Complete each step in order. DO NOT power on until you have ticked every step in Stage 1.</p>
+
+    <p style="font-weight:600;margin-bottom:8px;color:var(--earth);">Stage 1 — Pushbutton</p>
+    <ul class="checklist">
+      <li><input type="checkbox"> Pushbutton placed in the breadboard across the centre gap</li>
+      <li><input type="checkbox"> Jumper wire from Button leg 1 → GP14 on the Pico W</li>
+      <li><input type="checkbox"> Jumper wire from Button leg 2 → 3.3V pin on the Pico W</li>
+      <li><input type="checkbox"> 10kΩ resistor from Button leg 1 row → GND rail on the breadboard</li>
+      <li><input type="checkbox"> Checked with teacher — wiring is correct</li>
+      <li><input type="checkbox"> Tested in Shell: <code>from machine import Pin; b = Pin(14, Pin.IN, Pin.PULL_DOWN); print(b.value())</code> → prints 0 when not pressed, 1 when held</li>
+    </ul>
+
+    <p style="font-weight:600;margin-bottom:8px;margin-top:14px;color:var(--earth);">Stage 2 — Active Buzzer</p>
+    <ul class="checklist">
+      <li><input type="checkbox"> Buzzer placed in breadboard with + (longer leg) identified</li>
+      <li><input type="checkbox"> + leg connected to GP15 on the Pico W</li>
+      <li><input type="checkbox"> – leg connected to GND rail</li>
+      <li><input type="checkbox"> Tested in Shell: <code>from machine import Pin; bz = Pin(15, Pin.OUT); bz.value(1)</code> → buzzer makes sound</li>
+      <li><input type="checkbox"> <code>bz.value(0)</code> turns it off</li>
+      <li><input type="checkbox"> Photographed the breadboard for folio</li>
+    </ul>
+  </div>
+
+  <!-- PART C: CIRCUIT DIAGRAM -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-green">📐</span> Part C — Circuit Annotation</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Sketch or photograph your breadboard setup and annotate the connections below.</p>
+    <div class="diagram-box" style="min-height:180px;">
+      <p>Draw or paste your circuit diagram / breadboard photo here</p>
+      <div style="height:120px;border:1px dashed var(--border);border-radius:6px;background:white;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;">[ Diagram area — photograph breadboard and paste into ClassNotebook ]</div>
+    </div>
+    <div class="field-group" style="margin-top:10px;">
+      <div class="field-label">Label each connection. Fill in the table:</div>
+      <table class="ws-table" style="margin-top:6px;">
+        <thead><tr><th>From</th><th>To</th><th>Wire colour you used</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>GP14</td><td><input type="text" placeholder="..."></td><td><input type="text" placeholder="..."></td><td>Button signal wire</td></tr>
+          <tr><td>3.3V</td><td><input type="text" placeholder="..."></td><td><input type="text" placeholder="..."></td><td><input type="text" placeholder="..."></td></tr>
+          <tr><td><input type="text" placeholder="..."></td><td>GND</td><td><input type="text" placeholder="..."></td><td>Pull-down for button</td></tr>
+          <tr><td>GP15</td><td><input type="text" placeholder="..."></td><td><input type="text" placeholder="..."></td><td><input type="text" placeholder="..."></td></tr>
+          <tr><td><input type="text" placeholder="..."></td><td>GND</td><td><input type="text" placeholder="..."></td><td>Buzzer negative</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PART D: CODE GAPS -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-purple">🐍</span> Part D — Code Gaps</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Fill in the blanks to complete the hardware setup and buzzer alert code:</p>
+    <pre># Hardware setup — add after existing led and sensor setup
+button = Pin(<span contenteditable="true" class="code-gap"></span>, Pin.<span contenteditable="true" class="code-gap"></span>, Pin.<span contenteditable="true" class="code-gap"></span>)
+buzzer = Pin(<span contenteditable="true" class="code-gap"></span>, Pin.<span contenteditable="true" class="code-gap"></span>)
+buzzer.value(<span contenteditable="true" class="code-gap"></span>)  # Start buzzer OFF
+
+# Inside while True: loop — buzzer alert
+if label == <span contenteditable="true" class="code-gap" style="min-width:120px;"></span>:
+    buzzer.value(<span contenteditable="true" class="code-gap"></span>)    # Turn ON
+    time.sleep(<span contenteditable="true" class="code-gap"></span>)      # Short beep
+    buzzer.value(<span contenteditable="true" class="code-gap"></span>)    # Turn OFF</pre>
+  </div>
+
+  <!-- PART E: REFLECTION -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-ochre">📓</span> Part E — Folio Reflection</div>
+    <div class="field-group">
+      <div class="field-label">Explain why you added the buzzer to this solution. How does it help Aunty Leanne?</div>
+      <textarea placeholder="I added the buzzer because... This helps Aunty Leanne by... For example, if the room reaches 31°C..."></textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">The buzzer gives a SHORT beep (0.3 seconds) instead of staying on constantly. Why is this a better design?</div>
+      <textarea class="short" placeholder="A short beep is better because..."></textarea>
+    </div>
+
+    <div class="info-box box-blue">
+      <h4>Extension challenge — try one of these</h4>
+      ☐ Add a second LED (GP12) that lights red automatically when "Too Hot" · 
+      ☐ Add 3-beep pattern for different status levels · 
+      ☐ Read the photocell on GP26 (ADC) and add room light status to the web page
+    </div>
+    <div class="field-group">
+      <div class="field-label">Extension — describe what you added and how it works:</div>
+      <textarea class="short" placeholder="I extended by adding..."></textarea>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════ WORKSHEET 3 ════════════════════════════════ -->
+<div id="ws3" class="tab-panel">
+  <button class="print-btn" onclick="window.print()">🖨️ Print this worksheet</button>
+
+  <div class="ws-header">
+    <div class="ws-tag">Lesson 3 · Week 5</div>
+    <h1>Testing, Debugging and Documenting</h1>
+    <p>Systematic testing · Bug hunt · Thonny debugging · Folio evidence</p>
+    <div class="ws-meta">
+      <div class="ws-meta-item"><strong>Name</strong><input type="text" style="width:160px;margin-top:2px;" placeholder="Your name"></div>
+      <div class="ws-meta-item"><strong>Date</strong><input type="text" style="width:100px;margin-top:2px;" placeholder="Date"></div>
+    </div>
+  </div>
+
+  <!-- PART A: BUG HUNT -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-red">🐛</span> Part A — Bug Hunt</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Each code snippet below has one bug. Identify the bug and write the fix.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:4px;">Bug 1</p>
+        <pre style="font-size:11px;">def comfort_status(temp, hum):
+if temp > 30:
+    return "Too Hot"</pre>
+        <div class="field-group" style="margin-top:6px;">
+          <div class="field-label">What type of error?</div>
+          <select style="padding:6px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;width:100%;">
+            <option>— select —</option>
+            <option>IndentationError</option>
+            <option>SyntaxError</option>
+            <option>ValueError</option>
+            <option>AttributeError</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Fix:</div>
+          <textarea class="short" placeholder="The fix is..."></textarea>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:4px;">Bug 2</p>
+        <pre style="font-size:11px;">label, colour = comfort_status(
+    temp, hum)
+# comfort_status returns 3 values</pre>
+        <div class="field-group" style="margin-top:6px;">
+          <div class="field-label">What type of error?</div>
+          <select style="padding:6px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;width:100%;">
+            <option>— select —</option>
+            <option>IndentationError</option>
+            <option>SyntaxError</option>
+            <option>ValueError</option>
+            <option>AttributeError</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Fix:</div>
+          <textarea class="short" placeholder="The fix is..."></textarea>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:4px;">Bug 3</p>
+        <pre style="font-size:11px;">sensor = dht.DHT22(Pin(13))
+# In loop:
+sensor.measure()
+sensor.measure()  # immediate
+temp = sensor.temperature()</pre>
+        <div class="field-group" style="margin-top:6px;">
+          <div class="field-label">What is the problem?</div>
+          <textarea class="short" placeholder="The problem is... DHT22 sensors need..."></textarea>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Fix:</div>
+          <textarea class="short" placeholder="The fix is..."></textarea>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--red);margin-bottom:4px;">Bug 4</p>
+        <pre style="font-size:11px;">if label == "Too Hot / Humid":
+    buzzer.value(1)
+    time.sleep(0.3)
+# Missing something here!</pre>
+        <div class="field-group" style="margin-top:6px;">
+          <div class="field-label">What is missing?</div>
+          <textarea class="short" placeholder="The missing line is..."></textarea>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Why is this important?</div>
+          <textarea class="short" placeholder="If we don't add this line, the buzzer will..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART B: TEST TABLE -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-green">✅</span> Part B — Systematic Test Table</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Complete each test. Write expected result BEFORE running the test. Be honest — record what actually happened.</p>
+
+    <table class="ws-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>What I am testing</th>
+          <th>Expected result</th>
+          <th>Actual result</th>
+          <th>P/F</th>
+          <th>Fix if failed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Sensor reads temperature and humidity</td>
+          <td>Numbers printed in Thonny Shell (10–40°C range)</td>
+          <td><input type="text" placeholder="What happened..."></td>
+          <td><select class="pf-select"><option>—</option><option>✅ Pass</option><option>❌ Fail</option></select></td>
+          <td><input type="text" placeholder="Fix..."></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Web page loads in browser</td>
+          <td>Dashboard appears with temp + humidity</td>
+          <td><input type="text" placeholder="What happened..."></td>
+          <td><select class="pf-select"><option>—</option><option>✅ Pass</option><option>❌ Fail</option></select></td>
+          <td><input type="text" placeholder="Fix..."></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Comfort status shows correct label</td>
+          <td><input type="text" placeholder="Expected label for current room conditions..."></td>
+          <td><input type="text" placeholder="What appeared..."></td>
+          <td><select class="pf-select"><option>—</option><option>✅ Pass</option><option>❌ Fail</option></select></td>
+          <td><input type="text" placeholder="Fix..."></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>LED turns ON via website button</td>
+          <td>LED physically lights, page shows "ON"</td>
+          <td><input type="text" placeholder="What happened..."></td>
+          <td><select class="pf-select"><option>—</option><option>✅ Pass</option><option>❌ Fail</option></select></td>
+          <td><input type="text" placeholder="Fix..."></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Buzzer alerts when threshold exceeded</td>
+          <td>Short beep when "Too Hot" status (lower threshold to test)</td>
+          <td><input type="text" placeholder="What happened..."></td>
+          <td><select class="pf-select"><option>—</option><option>✅ Pass</option><option>❌ Fail</option></select></td>
+          <td><input type="text" placeholder="Fix..."></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Physical button detected</td>
+          <td>Message in Shell, LED flashes briefly</td>
+          <td><input type="text" placeholder="What happened..."></td>
+          <td><select class="pf-select"><option>—</option><option>✅ Pass</option><option>❌ Fail</option></select></td>
+          <td><input type="text" placeholder="Fix..."></td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Usability — unfamiliar user understands page</td>
+          <td>Person can understand status without explanation</td>
+          <td><input type="text" placeholder="What feedback did they give..."></td>
+          <td><select class="pf-select"><option>—</option><option>✅ Pass</option><option>❌ Fail</option></select></td>
+          <td><input type="text" placeholder="Fix..."></td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Auto-refresh works</td>
+          <td>Page reloads automatically after 10 seconds</td>
+          <td><input type="text" placeholder="What happened..."></td>
+          <td><select class="pf-select"><option>—</option><option>✅ Pass</option><option>❌ Fail</option></select></td>
+          <td><input type="text" placeholder="Fix..."></td>
+        </tr>
+        <tr>
+          <td style="color:var(--purple);font-weight:600;">9+</td>
+          <td colspan="5"><input type="text" placeholder="Add your own additional test here..."></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PART C: IMPROVEMENT -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-blue">🔧</span> Part C — Make One Improvement</div>
+    <div class="field-group">
+      <div class="field-label">What did a test failure or usability observation tell you needed improving?</div>
+      <textarea class="short" placeholder="Test 7 showed that... / I noticed that Aunty Leanne would find it confusing that..."></textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">What change did you make?</div>
+      <textarea class="short" placeholder="I changed... by..."></textarea>
+    </div>
+    <div class="field-group">
+      <div class="field-label">Take a before and after screenshot and describe what improved:</div>
+      <textarea class="short" placeholder="Before: the website... / After: it now...  / This is better because..."></textarea>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════ WORKSHEET 4 ════════════════════════════════ -->
+<div id="ws4" class="tab-panel">
+  <button class="print-btn" onclick="window.print()">🖨️ Print this worksheet</button>
+
+  <div class="ws-header">
+    <div class="ws-tag">Lesson 4 · Week 6</div>
+    <h1>Evaluating, Reflecting and Presenting</h1>
+    <p>Written evaluation · Video script · Folio completion</p>
+    <div class="ws-meta">
+      <div class="ws-meta-item"><strong>Name</strong><input type="text" style="width:160px;margin-top:2px;" placeholder="Your name"></div>
+      <div class="ws-meta-item"><strong>Date</strong><input type="text" style="width:100px;margin-top:2px;" placeholder="Date"></div>
+    </div>
+  </div>
+
+  <!-- PART A: EVALUATION -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-ochre">📊</span> Part A — Written Evaluation</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Use the sentence starters to write a structured evaluation. Aim for 200–300 words total. Every claim must link to <strong>specific evidence</strong> and to <strong>Aunty Leanne's needs</strong>.</p>
+
+    <div class="field-group">
+      <div class="field-label" style="color:var(--green);font-weight:600;">✅ Strengths — How does your solution meet user needs?</div>
+      <textarea placeholder="My solution meets Aunty Leanne's need for [clear/simple information] because...&#10;The [comfort status box / colour / label] makes it easy for her to [understand/decide] because...&#10;When I tested [condition], the result was [result], which confirms..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label" style="color:var(--red);font-weight:600;">⚠️ Limitations — What does your solution NOT do well?</div>
+      <textarea placeholder="A limitation of my solution is that it does not / cannot...&#10;For example, if [WiFi drops / sensor fails], the system...&#10;This could be a problem for Aunty Leanne because..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label" style="color:var(--blue);font-weight:600;">💡 Improvements — What would you change if you had more time?</div>
+      <textarea placeholder="If I had more time, I would improve the solution by [adding/changing]... because this would [help Aunty Leanne / make the system more reliable]...&#10;An alternative approach could have been [phone app / commercial sensor] which would..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label" style="color:var(--purple);font-weight:600;">🔄 Alternative solutions — what else could have been built?</div>
+      <textarea placeholder="An alternative digital solution could have been [a commercial temperature sensor / phone app / standalone display screen]...&#10;I chose a Pico W web server instead because...&#10;A drawback of my approach compared to [alternative] is..."></textarea>
+    </div>
+  </div>
+
+  <!-- PART B: FLOWCHART / ALGORITHM -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-green">📐</span> Part B — Algorithm Design <span class="diff-tag tag-all">Required for folio</span></div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Design the algorithm for your main system loop using a flowchart OR pseudocode. Both options are below.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--earth);margin-bottom:8px;">Option A — Pseudocode</p>
+        <textarea style="min-height:260px;font-family:'DM Mono',monospace;font-size:12px;" placeholder="BEGIN LOOP:
+    READ temperature FROM sensor
+    READ humidity FROM sensor
+    
+    IF temp > 30 OR hum > 70 THEN
+        SET status = 'Too Hot'
+        BUZZ briefly
+    ELSE IF temp > 26 OR hum > 60 THEN
+        SET status = 'Getting Warm'
+    ELSE
+        SET status = 'Comfortable'
+    END IF
+    
+    IF web request received THEN
+        ...
+    END IF
+END LOOP"></textarea>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--earth);margin-bottom:8px;">Option B — Flowchart sketch area</p>
+        <div class="diagram-box" style="min-height:260px;">
+          <p>Draw flowchart here using: oval = start/end, rectangle = process, diamond = decision, parallelogram = input/output</p>
+          <div style="height:200px;border:1px dashed var(--border);border-radius:6px;background:white;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;">[ Draw on paper and photograph for folio ]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART C: VIDEO SCRIPT -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-purple">🎬</span> Part C — Video Script Planner</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px;">Plan your 3-minute video before recording. Write your key points — do not read word-for-word, use these as prompts.</p>
+
+    <table class="ws-table">
+      <thead><tr><th>Time</th><th>Section</th><th>What I will say / show</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--ochre);font-weight:600;">0–30 sec</td>
+          <td>Intro</td>
+          <td><textarea class="short" placeholder="My name is... I built... The problem is... My user is Aunty Leanne who needs..."></textarea></td>
+        </tr>
+        <tr>
+          <td style="color:var(--green);font-weight:600;">30–90 sec</td>
+          <td>Demo</td>
+          <td><textarea class="short" placeholder="I will show... I will point to... I will demonstrate the buzzer by..."></textarea></td>
+        </tr>
+        <tr>
+          <td style="color:var(--blue);font-weight:600;">90–135 sec</td>
+          <td>Explain code</td>
+          <td><textarea class="short" placeholder="I will show my comfort_status() function and explain... The if/elif/else does..."></textarea></td>
+        </tr>
+        <tr>
+          <td style="color:var(--purple);font-weight:600;">135–180 sec</td>
+          <td>Evaluate</td>
+          <td><textarea class="short" placeholder="My solution works well because [strength 1] and [strength 2]. A limitation is... If I had more time I would..."></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box box-green" style="margin-top:12px;">
+      <h4>Recording tips</h4>
+      Record in a quiet spot · Show the physical hardware AND the web page on screen · Use landscape mode on your phone · Speak clearly — you don't need to be perfect · 3 short clips are fine if one take feels too much
+    </div>
+  </div>
+
+  <!-- PART D: SELF-ASSESSMENT -->
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-blue">⭐</span> Part D — Self-Assessment</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Rate your confidence in each area (5 stars = very confident):</p>
+
+    <div id="ratings">
+      <div class="rating-row">
+        <label>I can explain how the Pico W system works</label>
+        <div class="star-group" id="r1">
+          <input type="radio" name="r1" id="r1-5" value="5"><label for="r1-5">★</label>
+          <input type="radio" name="r1" id="r1-4" value="4"><label for="r1-4">★</label>
+          <input type="radio" name="r1" id="r1-3" value="3"><label for="r1-3">★</label>
+          <input type="radio" name="r1" id="r1-2" value="2"><label for="r1-2">★</label>
+          <input type="radio" name="r1" id="r1-1" value="1"><label for="r1-1">★</label>
+        </div>
+      </div>
+      <div class="rating-row">
+        <label>I can write and test Python if/elif/else logic</label>
+        <div class="star-group" id="r2">
+          <input type="radio" name="r2" id="r2-5" value="5"><label for="r2-5">★</label>
+          <input type="radio" name="r2" id="r2-4" value="4"><label for="r2-4">★</label>
+          <input type="radio" name="r2" id="r2-3" value="3"><label for="r2-3">★</label>
+          <input type="radio" name="r2" id="r2-2" value="2"><label for="r2-2">★</label>
+          <input type="radio" name="r2" id="r2-1" value="1"><label for="r2-1">★</label>
+        </div>
+      </div>
+      <div class="rating-row">
+        <label>I can wire components using a breadboard</label>
+        <div class="star-group" id="r3">
+          <input type="radio" name="r3" id="r3-5" value="5"><label for="r3-5">★</label>
+          <input type="radio" name="r3" id="r3-4" value="4"><label for="r3-4">★</label>
+          <input type="radio" name="r3" id="r3-3" value="3"><label for="r3-3">★</label>
+          <input type="radio" name="r3" id="r3-2" value="2"><label for="r3-2">★</label>
+          <input type="radio" name="r3" id="r3-1" value="1"><label for="r3-1">★</label>
+        </div>
+      </div>
+      <div class="rating-row">
+        <label>I can read error messages and fix bugs</label>
+        <div class="star-group" id="r4">
+          <input type="radio" name="r4" id="r4-5" value="5"><label for="r4-5">★</label>
+          <input type="radio" name="r4" id="r4-4" value="4"><label for="r4-4">★</label>
+          <input type="radio" name="r4" id="r4-3" value="3"><label for="r4-3">★</label>
+          <input type="radio" name="r4" id="r4-2" value="2"><label for="r4-2">★</label>
+          <input type="radio" name="r4" id="r4-1" value="1"><label for="r4-1">★</label>
+        </div>
+      </div>
+      <div class="rating-row">
+        <label>I can evaluate my solution against user needs</label>
+        <div class="star-group" id="r5">
+          <input type="radio" name="r5" id="r5-5" value="5"><label for="r5-5">★</label>
+          <input type="radio" name="r5" id="r5-4" value="4"><label for="r5-4">★</label>
+          <input type="radio" name="r5" id="r5-3" value="3"><label for="r5-3">★</label>
+          <input type="radio" name="r5" id="r5-2" value="2"><label for="r5-2">★</label>
+          <input type="radio" name="r5" id="r5-1" value="1"><label for="r5-1">★</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group" style="margin-top:14px;">
+      <div class="field-label">Is there anything you still feel unsure about? Write it here so you can ask your teacher:</div>
+      <textarea class="short" placeholder="I am still unsure about..."></textarea>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════ FOLIO CHECKLIST ════════════════════════════════ -->
+<div id="folio" class="tab-panel">
+  <button class="print-btn" onclick="window.print()">🖨️ Print this checklist</button>
+
+  <div class="ws-header">
+    <div class="ws-tag">Assessment 2 — Submission Checklist</div>
+    <h1>Digital Folio Self-Check</h1>
+    <p>Complete before submitting on 09/06/2026. Tick each item you have in ClassNotebook.</p>
+    <div class="ws-meta">
+      <div class="ws-meta-item"><strong>Name</strong><input type="text" style="width:160px;margin-top:2px;" placeholder="Your name"></div>
+      <div class="ws-meta-item"><strong>Submission date</strong><input type="text" style="width:130px;margin-top:2px;" placeholder="09/06/2026"></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div class="section">
+      <div class="section-title"><span class="section-icon icon-ochre">🔍</span> Investigating and Defining</div>
+      <ul class="checklist">
+        <li><input type="checkbox"> Problem description — why does it matter to the community?</li>
+        <li><input type="checkbox"> Reference to Five Bridges and Yarning Circles context</li>
+        <li><input type="checkbox"> Aunty Leanne persona — her needs listed specifically</li>
+        <li><input type="checkbox"> At least 3 design criteria written as "The website must..."</li>
+        <li><input type="checkbox"> Explanation of why a digital solution is appropriate</li>
+      </ul>
+      <div style="margin-top:10px;"><div class="field-label">Notes / what's missing:</div><textarea class="short" placeholder="..."></textarea></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="section-icon icon-green">📐</span> Generating and Designing</div>
+      <ul class="checklist">
+        <li><input type="checkbox"> Flowchart OR pseudocode for the main system loop</li>
+        <li><input type="checkbox"> Sketch/wireframe of the website layout (before coding)</li>
+        <li><input type="checkbox"> Annotation of layout decisions linked to user needs</li>
+        <li><input type="checkbox"> Description of how users interact with the website</li>
+        <li><input type="checkbox"> Algorithm is correct — matches actual code</li>
+      </ul>
+      <div style="margin-top:10px;"><div class="field-label">Notes / what's missing:</div><textarea class="short" placeholder="..."></textarea></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="section-icon icon-blue">🔨</span> Producing and Implementing</div>
+      <ul class="checklist">
+        <li><input type="checkbox"> Screenshot of full code in Thonny (annotated)</li>
+        <li><input type="checkbox"> Photo of hardware setup — breadboard, wiring labelled</li>
+        <li><input type="checkbox"> Screenshot of web page on a device (phone or laptop)</li>
+        <li><input type="checkbox"> Screenshot showing comfort status working correctly</li>
+        <li><input type="checkbox"> Code includes comfort_status() with 3 outcomes</li>
+        <li><input type="checkbox"> At least one interactive element beyond buttons (e.g. buzzer, physical button)</li>
+      </ul>
+      <div style="margin-top:10px;"><div class="field-label">Notes / what's missing:</div><textarea class="short" placeholder="..."></textarea></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><span class="section-icon icon-purple">📊</span> Evaluating</div>
+      <ul class="checklist">
+        <li><input type="checkbox"> Test table — minimum 8 tests completed with all columns</li>
+        <li><input type="checkbox"> At least one test failure documented with a fix</li>
+        <li><input type="checkbox"> Before/after improvement with annotation</li>
+        <li><input type="checkbox"> Written evaluation — strengths (linked to evidence)</li>
+        <li><input type="checkbox"> Written evaluation — limitations</li>
+        <li><input type="checkbox"> Written evaluation — improvements with reasoning</li>
+        <li><input type="checkbox"> Alternative solution compared to yours</li>
+        <li><input type="checkbox"> 3-minute video demonstration submitted</li>
+      </ul>
+      <div style="margin-top:10px;"><div class="field-label">Notes / what's missing:</div><textarea class="short" placeholder="..."></textarea></div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:4px;">
+    <div class="section-title"><span class="section-icon icon-ochre">📹</span> Video Checklist</div>
+    <ul class="checklist">
+      <li><input type="checkbox"> Video is under 3 minutes</li>
+      <li><input type="checkbox"> Shows physical hardware (Pico W, breadboard, sensor)</li>
+      <li><input type="checkbox"> Shows web page loading on a device</li>
+      <li><input type="checkbox"> Demonstrates comfort status changing</li>
+      <li><input type="checkbox"> Shows code in Thonny with verbal explanation of comfort_status()</li>
+      <li><input type="checkbox"> Includes evaluation — at least one strength and one limitation spoken aloud</li>
+      <li><input type="checkbox"> Your name is spoken at the start</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="section-icon icon-green">⭐</span> Extension Evidence (bonus)</div>
+    <ul class="checklist">
+      <li><input type="checkbox"> Photocell / light sensor added and working</li>
+      <li><input type="checkbox"> Trimpot used to set temperature threshold physically</li>
+      <li><input type="checkbox"> Multi-LED traffic light working automatically</li>
+      <li><input type="checkbox"> Reading history log displayed on web page</li>
+      <li><input type="checkbox"> Formal user stories written (As Aunty Leanne, I want...)</li>
+      <li><input type="checkbox"> Alternative solution compared with commercial product (research)</li>
+    </ul>
+  </div>
+
+  <div class="section" style="background:var(--earth);color:white;border-color:var(--earth);">
+    <div class="section-title" style="color:var(--ochre);">📅 Key Dates</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:4px;">
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:12px;"><strong style="color:var(--ochre);display:block;">05/05/2026</strong>Checkpoint 1 — Investigating<br><small style="color:rgba(255,255,255,0.6);">Problem analysis, user needs, design criteria</small></div>
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:12px;"><strong style="color:var(--ochre);display:block;">22/05/2026</strong>Checkpoint 2 — Developing<br><small style="color:rgba(255,255,255,0.6);">Algorithms, flowcharts, system design</small></div>
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:12px;"><strong style="color:var(--ochre);display:block;">01/06/2026</strong>Checkpoint 3 — Generating<br><small style="color:rgba(255,255,255,0.6);">Web server running with sensor data</small></div>
+      <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:12px;"><strong style="color:var(--ochre);display:block;">09/06/2026</strong>Final submission — 3pm<br><small style="color:rgba(255,255,255,0.6);">Folio + video + working solution</small></div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = ['ws1','ws2','ws3','ws4','folio'].indexOf(id);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+// Persist values to sessionStorage
+document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
+  const key = el.closest('.tab-panel')?.id + '_' + el.placeholder?.slice(0,20);
+  const saved = sessionStorage.getItem(key);
+  if (saved) el.value = saved;
+  el.addEventListener('input', () => sessionStorage.setItem(key, el.value));
+});
+</script>
+</body>
+</html>
