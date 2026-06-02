@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pico W Hotspot Mode — Student Instructions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F5F8FC; --white:#FFFFFF; --navy:#0D1B2A; --navy-mid:#1A3A5C;
+  --navy-light:#EDF4FB; --blue:#2B8BE0; --blue-light:#D6E8FB;
+  --blue-dark:#1A5C9E; --green:#1E6B42; --green-light:#D4EAE0;
+  --red:#9E2B22; --red-light:#F5D5D2; --amber:#7A5000;
+  --amber-light:#FFF8E6; --purple:#4D2472; --purple-light:#EBE0F5;
+  --text:#0D1B2A; --muted:#3D5A78; --border:#C4D8EE;
+  --code-bg:#0D1B2A; --code-text:#D6E8FB;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.7;padding:0 0 60px;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(145deg,#0D1B2A 0%,#1A3A5C 55%,#1E5799 100%);color:#fff;padding:36px 28px 30px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;border:2px solid rgba(43,139,224,0.25);pointer-events:none;}
+.hero-tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:28px;line-height:1.2;margin-bottom:8px;}
+.hero p{font-size:14px;color:rgba(255,255,255,0.72);max-width:560px;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;}
+.chip{background:rgba(43,139,224,0.12);border:1px solid rgba(43,139,224,0.35);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);}
+.chip-hi{border-color:var(--blue);color:var(--blue);font-weight:700;}
+
+/* ── LAYOUT ── */
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 0;}
+
+/* ── SECTION HEADS ── */
+h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy-mid);margin:32px 0 10px;padding-bottom:7px;border-bottom:2px solid var(--blue-light);}
+h3{font-size:14px;font-weight:600;color:var(--navy);margin:16px 0 7px;}
+
+/* ── BIG NUMBERED STEPS ── */
+.big-steps{list-style:none;padding:0;margin:0;}
+.big-step{display:flex;gap:16px;margin-bottom:22px;align-items:flex-start;}
+.big-num{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--blue);color:#fff;
+  font-size:20px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.big-body{flex:1;padding-top:4px;}
+.big-body strong{display:block;font-size:16px;color:var(--navy);margin-bottom:5px;}
+.big-body p{font-size:14px;color:var(--muted);}
+.big-body ul{padding-left:18px;margin-top:5px;}
+.big-body li{font-size:14px;color:var(--muted);margin-bottom:3px;}
+
+/* ── CONNECTOR LINE BETWEEN STEPS ── */
+.big-steps .big-step:not(:last-child){position:relative;}
+.big-steps .big-step:not(:last-child)::before{
+  content:'';position:absolute;left:21px;top:50px;
+  width:2px;height:calc(100% - 28px);
+  background:var(--border);
+}
+
+/* ── WIFI CARD (visual mock) ── */
+.wifi-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:12px;padding:18px 20px;margin:12px 0;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.wifi-icon{font-size:32px;flex-shrink:0;margin-top:2px;}
+.wifi-body{}
+.wifi-name{font-size:18px;font-weight:700;color:var(--navy);font-family:'DM Mono',monospace;}
+.wifi-sub{font-size:13px;color:var(--muted);margin-top:3px;}
+.wifi-badge{display:inline-block;background:var(--green-light);color:var(--green);font-size:11px;font-weight:700;padding:2px 9px;border-radius:4px;margin-top:6px;letter-spacing:0.3px;}
+
+/* ── PASSWORD BOX ── */
+.pw-box{
+  background:var(--navy-light);border:1px solid var(--border);
+  border-radius:10px;padding:14px 18px;margin:12px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.pw-label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}
+.pw-value{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--navy);letter-spacing:2px;}
+.pw-copy{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;flex-shrink:0;transition:background 0.15s;}
+.pw-copy:hover{background:var(--blue-dark);}
+
+/* ── URL BOX ── */
+.url-box{
+  background:var(--navy);color:var(--code-text);
+  border-radius:10px;padding:14px 18px;margin:12px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.url-label{font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}
+.url-value{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:#fff;letter-spacing:1px;}
+.url-copy{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:6px;padding:7px 14px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;flex-shrink:0;transition:background 0.15s;}
+.url-copy:hover{background:rgba(255,255,255,0.25);}
+
+/* ── BOXES ── */
+.box{border-radius:10px;padding:13px 16px;margin:12px 0;font-size:14px;border-left:4px solid;}
+.box .bx-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.box p,.box li{color:var(--muted);}
+.box strong{color:var(--text);}
+.box ul{padding-left:16px;margin-top:4px;}
+.box li{margin-bottom:3px;}
+.box-green{background:var(--green-light);border-color:var(--green);}
+.box-green .bx-title{color:var(--green);}
+.box-amber{background:var(--amber-light);border-color:#C4900A;}
+.box-amber .bx-title{color:var(--amber);}
+.box-red{background:var(--red-light);border-color:var(--red);}
+.box-red .bx-title{color:var(--red);}
+.box-blue{background:var(--blue-light);border-color:var(--blue);}
+.box-blue .bx-title{color:var(--blue-dark);}
+.box-navy{background:var(--navy-light);border-color:var(--navy-mid);}
+.box-navy .bx-title{color:var(--navy-mid);}
+
+/* ── CODE ── */
+.code-wrap{background:var(--code-bg);border:1px solid #1A3A5C;border-radius:10px;margin:12px 0;overflow:hidden;}
+.code-hdr{background:#0A1520;border-bottom:1px solid #1A3A5C;padding:7px 14px;display:flex;align-items:center;justify-content:space-between;}
+.code-fname{font-family:'DM Mono',monospace;font-size:11px;color:var(--blue);}
+.code-copy{background:none;border:1px solid #1A3A5C;border-radius:4px;color:rgba(255,255,255,0.4);font-size:11px;font-family:'DM Sans',sans-serif;padding:2px 9px;cursor:pointer;transition:all 0.15s;}
+.code-copy:hover{color:var(--blue);border-color:var(--blue);}
+pre{padding:16px 18px;overflow-x:auto;font-family:'DM Mono',monospace;font-size:13px;line-height:1.75;color:var(--code-text);margin:0;}
+.cm{color:#5A7A9A;} .ck{color:#79C0A8;} .cs{color:#A5C8E8;} .cn{color:#C8DDB0;}
+
+/* ── INLINE CODE ── */
+code{font-family:'DM Mono',monospace;font-size:12px;background:var(--blue-light);border:1px solid #A8CCEE;border-radius:3px;padding:1px 5px;color:var(--blue-dark);}
+
+/* ── PHONE MOCK ── */
+.phone-row{display:flex;gap:20px;align-items:flex-start;margin:14px 0;flex-wrap:wrap;}
+.phone-mock{
+  background:#1C1C1E;border-radius:20px;padding:14px;
+  width:180px;flex-shrink:0;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2);
+}
+.phone-screen{background:#000;border-radius:10px;padding:10px 8px;min-height:200px;}
+.phone-status{display:flex;justify-content:space-between;margin-bottom:8px;}
+.phone-status span{color:rgba(255,255,255,0.7);font-size:10px;}
+.phone-heading{color:rgba(255,255,255,0.6);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin:10px 0 5px;padding:0 2px;}
+.phone-wifi-row{background:rgba(255,255,255,0.08);border-radius:7px;padding:8px 10px;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
+.phone-wifi-row.connected{background:rgba(43,139,224,0.2);border:1px solid rgba(43,139,224,0.4);}
+.phone-wifi-name{color:#fff;font-size:11px;font-weight:500;}
+.phone-wifi-connected{color:#30D158;font-size:10px;}
+.phone-wifi-lock{color:rgba(255,255,255,0.4);font-size:10px;}
+.phone-caption{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5;}
+
+/* ── BROWSER MOCK ── */
+.browser-mock{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:14px 0;}
+.browser-bar{background:var(--navy);padding:8px 12px;display:flex;align-items:center;gap:6px;}
+.b-dot{width:8px;height:8px;border-radius:50%;}
+.b-urlbar{flex:1;background:rgba(255,255,255,0.1);border-radius:4px;padding:3px 10px;font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.75);margin:0 8px;}
+.browser-body{padding:16px 18px;}
+.db-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.db-reading{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.db-card{background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:10px 14px;min-width:100px;text-align:center;}
+.db-val{font-size:22px;font-weight:700;color:var(--navy);}
+.db-unit{font-size:12px;color:var(--muted);}
+.db-led{background:var(--green-light);border:1px solid #A8D5BF;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--green);display:inline-block;margin-bottom:8px;}
+.db-btn{display:inline-block;background:var(--navy);color:#fff;border-radius:7px;padding:8px 16px;font-size:13px;font-weight:600;margin:3px;}
+
+/* ── CHECKLIST ── */
+.checklist{list-style:none;padding:0;margin:10px 0;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text);}
+.checklist li:last-child{border-bottom:none;}
+.check-box{width:20px;height:20px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.check-box.done{background:var(--green);border-color:var(--green);}
+.check-box.done::after{content:'✓';color:#fff;font-size:12px;font-weight:700;}
+.checklist li.checked-item > span{color:var(--muted);text-decoration:line-through;}
+
+/* ── TABLE ── */
+.tbl{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin:12px 0;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{background:var(--blue-light);color:var(--blue-dark);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:7px 11px;text-align:left;border-bottom:1px solid var(--border);}
+td{padding:9px 11px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+tr:nth-child(even) td{background:#F8FBFF;}
+
+/* ── FOOTER ── */
+.footer{text-align:center;padding:24px 0 10px;border-top:1px solid var(--border);margin-top:40px;}
+.footer p{color:var(--muted);font-size:12px;line-height:1.8;}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+@media(max-width:520px){
+  .hero h1{font-size:22px;}
+  .big-num{width:36px;height:36px;font-size:17px;}
+  .pw-value{font-size:18px;}
+  .url-value{font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Year 10 Digital Technologies · Assessment 2</div>
+  <h1>Connecting to Your<br>Pico W Hotspot</h1>
+  <p>Your Pico W creates its own WiFi network. No school network needed. Follow these steps every time you want to view the dashboard.</p>
+  <div class="hero-chips">
+    <span class="chip chip-hi">📡 No school WiFi needed</span>
+    <span class="chip">Always: 192.168.4.1</span>
+    <span class="chip">Works on phone or laptop</span>
+    <span class="chip">5 steps · 2 minutes</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ══════════════ STEP BY STEP ══════════════ -->
+  <h2>Steps to connect</h2>
+
+  <ul class="big-steps">
+
+    <!-- STEP 1 -->
+    <li class="big-step">
+      <div class="big-num">1</div>
+      <div class="big-body">
+        <strong>Run the code in Thonny</strong>
+        <p>Open Thonny, make sure your Pico W is plugged in via USB, and press the green <strong>▶ Run</strong> button. Watch the Shell panel at the bottom.</p>
+        <div class="box box-green" style="margin-top:10px;">
+          <div class="bx-title">✅ What you should see in the Shell</div>
+          <p>After a few seconds these lines appear — this means the hotspot is ready:</p>
+        </div>
+        <div class="code-wrap" style="margin-top:8px;">
+          <div class="code-hdr"><span class="code-fname">Thonny Shell</span></div>
+          <pre><span class="cm">Starting Access Point...</span>
+<span class="cn">Access Point ready!</span>
+<span class="cn">Network name: YarningMonitor</span>
+<span class="cn">Password:     pico1234</span>
+<span class="cn">Web server running at http:// 192.168.4.1</span></pre>
+        </div>
+        <div class="box box-amber" style="margin-top:8px;">
+          <div class="bx-title">⚠️ Nothing appearing in the Shell?</div>
+          <p>Check the bottom-right corner of Thonny — it must say <strong>MicroPython (Raspberry Pi Pico)</strong>. If it says something else, click it and select the Pico W from the list.</p>
+        </div>
+      </div>
+    </li>
+
+    <!-- STEP 2 -->
+    <li class="big-step">
+      <div class="big-num">2</div>
+      <div class="big-body">
+        <strong>Go to WiFi settings on your device</strong>
+        <p>On the device you want to view the dashboard on — your phone, laptop, or tablet — open the WiFi settings. <strong>Do not close Thonny or unplug the Pico W.</strong></p>
+
+        <div class="phone-row" style="margin-top:12px;">
+          <div>
+            <div class="phone-mock">
+              <div class="phone-screen">
+                <div class="phone-status">
+                  <span>9:41</span>
+                  <span>WiFi ⚙</span>
+                </div>
+                <div class="phone-heading">WiFi</div>
+                <div class="phone-wifi-row connected">
+                  <div>
+                    <div class="phone-wifi-name">YarningMonitor</div>
+                    <div class="phone-wifi-connected">Connected ✓</div>
+                  </div>
+                  <span style="color:var(--blue);font-size:16px;">📶</span>
+                </div>
+                <div class="phone-heading" style="margin-top:10px;">Other networks</div>
+                <div class="phone-wifi-row">
+                  <div class="phone-wifi-name">StPeters_Staff</div>
+                  <div class="phone-wifi-lock">🔒</div>
+                </div>
+                <div class="phone-wifi-row">
+                  <div class="phone-wifi-name">StPeters_Student</div>
+                  <div class="phone-wifi-lock">🔒</div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-caption">Your phone's WiFi list<br>will show YarningMonitor</div>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div class="tbl"><table>
+              <tr><th>Device</th><th>How to open WiFi settings</th></tr>
+              <tr><td>iPhone</td><td>Settings → WiFi</td></tr>
+              <tr><td>Android</td><td>Settings → Network → WiFi</td></tr>
+              <tr><td>Windows laptop</td><td>Click WiFi icon (bottom right taskbar)</td></tr>
+              <tr><td>Mac laptop</td><td>Click WiFi icon (top right menu bar)</td></tr>
+              <tr><td>School laptop</td><td>Click WiFi icon in taskbar → choose network</td></tr>
+            </table></div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- STEP 3 -->
+    <li class="big-step">
+      <div class="big-num">3</div>
+      <div class="big-body">
+        <strong>Connect to the YarningMonitor network</strong>
+        <p>Find and tap <strong>YarningMonitor</strong> in the WiFi list. It will ask for a password.</p>
+
+        <div class="wifi-card" style="margin-top:10px;">
+          <div class="wifi-icon">📶</div>
+          <div class="wifi-body">
+            <div class="wifi-name">YarningMonitor</div>
+            <div class="wifi-sub">Your Pico W's hotspot network</div>
+            <span class="wifi-badge">Tap to connect</span>
+          </div>
+        </div>
+
+        <p style="color:var(--muted);font-size:14px;margin:10px 0 6px;">When it asks for the password, enter:</p>
+        <div class="pw-box">
+          <div>
+            <div class="pw-label">WiFi password</div>
+            <div class="pw-value">pico1234</div>
+          </div>
+          <button class="pw-copy" onclick="copyText('pico1234', this)">Copy</button>
+        </div>
+        <div class="box box-blue" style="margin-top:6px;">
+          <div class="bx-title">💡 Internet will stop working while connected</div>
+          <p>This is completely normal. Your device is connected to the Pico W's private network, not the internet. To use the internet again during the lesson, switch back to the school WiFi when you are done viewing the dashboard.</p>
+        </div>
+      </div>
+    </li>
+
+    <!-- STEP 4 -->
+    <li class="big-step">
+      <div class="big-num">4</div>
+      <div class="big-body">
+        <strong>Open a browser and go to the address</strong>
+        <p>Once connected to YarningMonitor, open <strong>any browser</strong> (Safari, Chrome, Edge — any of them work). Type this address in the address bar and press Enter/Go:</p>
+
+        <div class="url-box" style="margin-top:10px;">
+          <div>
+            <div class="url-label">Type this in your browser</div>
+            <div class="url-value">192.168.4.1</div>
+          </div>
+          <button class="url-copy" onclick="copyText('192.168.4.1', this)">Copy</button>
+        </div>
+
+        <div class="box box-amber" style="margin-top:8px;">
+          <div class="bx-title">⚠️ Important — type it exactly like this</div>
+          <ul>
+            <li>Type <strong>192.168.4.1</strong> — not google.com, not anything else</li>
+            <li>Do <strong>not</strong> add <code>www.</code> before it</li>
+            <li>You do <strong>not</strong> need to type <code>http://</code> — the browser adds it automatically</li>
+            <li>If it says "site can't be reached" — wait 10 seconds and try again. The Pico W may still be starting up.</li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+    <!-- STEP 5 -->
+    <li class="big-step">
+      <div class="big-num" style="background:var(--green);">✓</div>
+      <div class="big-body">
+        <strong>Your dashboard should appear!</strong>
+        <p>The Pico W dashboard loads in the browser showing live temperature, humidity, and the LED controls. It refreshes automatically every 5 seconds.</p>
+
+        <div class="browser-mock" style="margin-top:12px;">
+          <div class="browser-bar">
+            <div class="b-dot" style="background:#FF5F57;"></div>
+            <div class="b-dot" style="background:#FFBD2E;"></div>
+            <div class="b-dot" style="background:#28C840;"></div>
+            <div class="b-urlbar">192.168.4.1</div>
+          </div>
+          <div class="browser-body">
+            <div style="text-align:center;">
+              <div class="db-title">📊 Pico Dashboard</div>
+              <div class="db-reading">
+                <div class="db-card">
+                  <div class="db-val" style="color:#D73027;">24.5</div>
+                  <div class="db-unit">°C Temperature</div>
+                </div>
+                <div class="db-card">
+                  <div class="db-val" style="color:#1A88C9;">62</div>
+                  <div class="db-unit">% Humidity</div>
+                </div>
+              </div>
+              <div class="db-led">💡 LED is OFF</div><br>
+              <span class="db-btn">Turn LED ON</span>
+              <span class="db-btn" style="background:#7f0000;">Turn LED OFF</span>
+              <p style="font-size:11px;color:#999;margin-top:8px;">Auto refresh every 5 seconds</p>
+            </div>
+          </div>
+        </div>
+        <div class="box box-green" style="margin-top:6px;">
+          <div class="bx-title">✅ You're in! What to try</div>
+          <ul>
+            <li>Check the temperature and humidity readings update every 5 seconds</li>
+            <li>Press <strong>Turn LED ON</strong> — the physical LED on your breadboard should light up</li>
+            <li>Press <strong>Turn LED OFF</strong> — it should go off</li>
+            <li>Screenshot the dashboard and save it to your ClassNotebook folio as evidence</li>
+          </ul>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+
+  <!-- ══════════════ TROUBLESHOOTING ══════════════ -->
+  <h2>Something not working?</h2>
+
+  <div class="tbl"><table>
+    <tr><th>Problem</th><th>Fix</th></tr>
+    <tr>
+      <td>YarningMonitor doesn't appear in WiFi list</td>
+      <td>Check the Thonny Shell — it must say <strong>"Access Point ready!"</strong>. If not, press Run again. Also try scrolling down in the WiFi list or tapping "Refresh".</td>
+    </tr>
+    <tr>
+      <td>Password not accepted</td>
+      <td>Type exactly <code>pico1234</code> — all lowercase, no spaces. If your version of the code uses a different password, check the <code>AP_PASSWORD</code> line in Thonny.</td>
+    </tr>
+    <tr>
+      <td>Connected to WiFi but browser says "can't reach site"</td>
+      <td>Make sure you typed <code>192.168.4.1</code> exactly. Wait 10–15 seconds after connecting to WiFi before trying the browser — the Pico W needs a moment. Try a hard refresh: <strong>Ctrl+Shift+R</strong> (Windows) or <strong>Cmd+Shift+R</strong> (Mac).</td>
+    </tr>
+    <tr>
+      <td>Page loads but shows dashes instead of numbers</td>
+      <td>The DHT22 sensor gave an error reading. Wait 5 seconds — the page refreshes automatically and the reading should appear. If it keeps showing dashes, check the sensor is firmly pushed into GP13 on the breadboard.</td>
+    </tr>
+    <tr>
+      <td>LED button does nothing</td>
+      <td>Check the physical wiring — long leg of LED through a 220Ω resistor to GP11, short leg to GND. Also check the code is still running in Thonny (Shell should not show an error).</td>
+    </tr>
+    <tr>
+      <td>Page stopped updating</td>
+      <td>The Pico W may have hit an error. Check the Thonny Shell for a red error message. Press Stop then Run again to restart.</td>
+    </tr>
+    <tr>
+      <td>How do I get internet back on my phone?</td>
+      <td>Go back to WiFi settings and reconnect to <strong>StPeters_Student</strong> (or your home WiFi). You simply switch back — nothing is permanently changed.</td>
+    </tr>
+  </table></div>
+
+  <!-- ══════════════ LESSON CHECKLIST ══════════════ -->
+  <h2>Lesson completion checklist</h2>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:10px;">Tick each one off as you complete it. Save evidence in your ClassNotebook folio.</p>
+
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+    <ul class="checklist" id="checklist">
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Pico W running — Shell shows "Access Point ready!"</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Connected to YarningMonitor WiFi on my device</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Dashboard loads at 192.168.4.1 in a browser</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Temperature and humidity readings are showing</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>LED turns ON and OFF using the buttons</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Screenshot of the dashboard saved to ClassNotebook folio</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Reconnected to school WiFi when finished</span></li>
+    </ul>
+  </div>
+
+  <!-- ══════════════ QUICK REFERENCE CARD ══════════════ -->
+  <h2>Quick reference — keep this open during the lesson</h2>
+  <div style="background:var(--navy);border-radius:12px;padding:20px 22px;color:#fff;margin-top:4px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">WiFi network name</div>
+        <div style="font-family:'DM Mono',monospace;font-size:20px;color:#fff;font-weight:500;">YarningMonitor</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Password</div>
+        <div style="font-family:'DM Mono',monospace;font-size:20px;color:#fff;font-weight:500;letter-spacing:2px;">pico1234</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Browser address</div>
+        <div style="font-family:'DM Mono',monospace;font-size:20px;color:var(--blue);font-weight:500;">192.168.4.1</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Auto refresh</div>
+        <div style="font-size:18px;color:#fff;font-weight:500;">Every 5 seconds</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.15);font-size:13px;color:rgba(255,255,255,0.6);">
+      ⚠️ Internet stops while connected to YarningMonitor — switch back to StPeters_Student when done
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Year 10 Digital Technologies · 10DTEA 2026 · St Peters Lutheran College Springfield</p>
+    <p>Raspberry Pi Pico W · Access Point mode · DHT22 + LED web server</p>
+  </div>
+
+</div>
+
+<script>
+function copyText(txt, btn) {
+  navigator.clipboard.writeText(txt).then(() => {
+    const o = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = o, 1600);
+  });
+}
+function toggleCheck(li) {
+  const box = li.querySelector('.check-box');
+  const span = li.querySelector('span');
+  const done = box.classList.toggle('done');
+  li.classList.toggle('checked-item', done);
+}
+</script>
+</body>
+</html>
