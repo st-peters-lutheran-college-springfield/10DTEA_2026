@@ -194,17 +194,90 @@ tr:nth-child(even) td{background:#F8FBFF;}
 <!-- HERO -->
 <div class="hero">
   <div class="hero-tag">Year 10 Digital Technologies · Assessment 2</div>
-  <h1>Connecting to Your<br>Pico W Hotspot</h1>
-  <p>Your Pico W creates its own WiFi network. No school network needed. Follow these steps every time you want to view the dashboard.</p>
+  <h1>Setting Up and Connecting<br>to Your Pico W Hotspot</h1>
+  <p>Your Pico W creates its own WiFi network. Update two lines of code to give it a unique name, then connect and view the dashboard.</p>
   <div class="hero-chips">
     <span class="chip chip-hi">📡 No school WiFi needed</span>
+    <span class="chip">✏️ 2 lines to edit in Thonny</span>
     <span class="chip">Always: 192.168.4.1</span>
     <span class="chip">Works on phone or laptop</span>
-    <span class="chip">5 steps · 2 minutes</span>
+    <span class="chip">6 steps · 3 minutes</span>
   </div>
 </div>
 
 <div class="wrap">
+
+  <!-- ══════════════ DOWNLOAD ══════════════ -->
+  <h2>First — download the code file</h2>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:14px;">Download the Python file, open it in Thonny, and save it to your Pico W before following the steps below.</p>
+
+  <!-- DOWNLOAD CARD -->
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:8px;">
+
+    <div style="display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+
+      <!-- FILE ICON + INFO -->
+      <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:220px;">
+        <div style="width:52px;height:52px;background:var(--navy-light);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">🐍</div>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:var(--navy);">pico_dht22_led_server_2.py</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px;">MicroPython · Yarning Circle Monitor · Dual WiFi mode</div>
+          <div style="display:flex;gap:6px;margin-top:7px;flex-wrap:wrap;">
+            <span style="background:var(--blue-light);color:var(--blue-dark);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.3px;">HOTSPOT + ROUTER</span>
+            <span style="background:var(--green-light);color:var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.3px;">DHT22 SENSOR</span>
+            <span style="background:var(--navy-light);color:var(--navy-mid);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;letter-spacing:0.3px;">LED CONTROL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOWNLOAD BUTTON -->
+      <a href="https://raw.githubusercontent.com/st-peters-lutheran-college-springfield/10DTEA_2026/main/pico_dht22_led_server_2.py"
+         download="pico_dht22_led_server_2.py"
+         style="text-decoration:none;flex-shrink:0;align-self:center;">
+        <div style="background:var(--blue);color:#fff;border-radius:9px;padding:12px 22px;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;transition:background 0.15s;cursor:pointer;"
+             onmouseover="this.style.background='var(--blue-dark)'" onmouseout="this.style.background='var(--blue)'">
+          <span style="font-size:18px;">⬇</span> Download file
+        </div>
+      </a>
+
+    </div>
+
+    <!-- WHERE TO FIND IT ON GITHUB -->
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Also available directly on GitHub</div>
+      <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:12px;color:var(--navy-mid);word-break:break-all;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+        <span>github.com / st-peters-lutheran-college-springfield / <strong style="color:var(--navy);">10DTEA_2026</strong> / pico_dht22_led_server_2.py</span>
+        <button onclick="copyText('https://github.com/st-peters-lutheran-college-springfield/10DTEA_2026/blob/main/pico_dht22_led_server_2.py', this)"
+          style="background:none;border:1px solid var(--border);border-radius:4px;color:var(--muted);font-size:11px;font-family:'DM Sans',sans-serif;padding:3px 10px;cursor:pointer;flex-shrink:0;white-space:nowrap;">Copy link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO OPEN IN THONNY -->
+  <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:4px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--navy-mid);margin-bottom:10px;">After downloading — open it in Thonny</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
+      <div style="display:flex;align-items:flex-start;gap:8px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
+        <div style="font-size:13px;color:var(--muted);">Open <strong style="color:var(--text);">Thonny</strong> on your computer</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
+        <div style="font-size:13px;color:var(--muted);"><strong style="color:var(--text);">File → Open</strong> → find the downloaded <code>pico_dht22_led_server_2.py</code></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div>
+        <div style="font-size:13px;color:var(--muted);">Plug in your Pico W — bottom right of Thonny should say <strong style="color:var(--text);">MicroPython (Raspberry Pi Pico)</strong></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;">
+        <div style="width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">4</div>
+        <div style="font-size:13px;color:var(--muted);"><strong style="color:var(--text);">File → Save As</strong> → choose <strong style="color:var(--text);">Raspberry Pi Pico</strong> → save as <code>main.py</code></div>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:var(--amber-light);border-left:3px solid #C4900A;border-radius:0 6px 6px 0;padding:7px 12px;font-size:13px;color:var(--text);">
+      💡 Saving as <code>main.py</code> on the Pico means it runs automatically every time the Pico W is powered on — even without a computer connected.
+    </div>
+  </div>
 
   <!-- ══════════════ STEP BY STEP ══════════════ -->
   <h2>Steps to connect</h2>
@@ -236,9 +309,106 @@ tr:nth-child(even) td{background:#F8FBFF;}
       </div>
     </li>
 
-    <!-- STEP 2 -->
+    <!-- STEP 2 — CODE UPDATE -->
     <li class="big-step">
       <div class="big-num">2</div>
+      <div class="big-body">
+        <strong>Update your code — give your Pico W a unique name</strong>
+        <p>Every group needs a different hotspot name so 20 Pico Ws in the same room don't clash. Open your Python file in Thonny and find the two lines shown below. Change <strong>only</strong> the text inside the quotes.</p>
+
+        <div class="box box-amber" style="margin-top:10px;">
+          <div class="bx-title">⚠️ You must do this before running the code</div>
+          <p>If every group uses the same name <code>YarningMonitor</code>, all Picos broadcast the same hotspot name and you won't know which one to connect to. Change it to include your group number.</p>
+        </div>
+
+        <!-- LIVE EDITOR MOCK -->
+        <div style="margin:14px 0;">
+          <div style="background:#0A1520;border:1px solid #1A3A5C;border-radius:10px 10px 0 0;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue);">main.py — find these two lines near the top</span>
+            <span style="font-size:11px;color:rgba(255,255,255,0.35);">Thonny editor</span>
+          </div>
+          <div style="background:var(--code-bg);border:1px solid #1A3A5C;border-top:none;border-radius:0 0 10px 10px;padding:16px 18px;font-family:'DM Mono',monospace;font-size:13px;line-height:1.9;">
+
+            <div style="color:#5A7A9A;margin-bottom:4px;"># ── MODE A: HOTSPOT ──────────────────────────</div>
+
+            <!-- Line 1 -->
+            <div style="display:flex;align-items:center;gap:10px;background:rgba(43,139,224,0.08);border:1px solid rgba(43,139,224,0.2);border-radius:6px;padding:6px 10px;margin-bottom:6px;">
+              <div style="flex:1;">
+                <div style="color:#5A7A9A;font-size:11px;margin-bottom:3px;">Line to change &nbsp;①</div>
+                <div><span style="color:#79C0A8;">AP_SSID</span> <span style="color:var(--code-text);">=</span> <span style="color:#A5C8E8;">'</span><input id="ssid-input" type="text" value="YarningMonitor" maxlength="32"
+                  style="background:rgba(165,200,232,0.15);border:1px solid rgba(165,200,232,0.3);border-radius:4px;color:#A5C8E8;font-family:'DM Mono',monospace;font-size:13px;padding:1px 6px;width:180px;outline:none;"
+                  oninput="updatePreview()"><span style="color:#A5C8E8;">'</span>
+                  <span style="color:#5A7A9A;font-size:11px;margin-left:8px;"># WiFi name</span>
+                </div>
+              </div>
+              <div style="background:rgba(43,139,224,0.2);border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.5px;white-space:nowrap;">EDIT THIS</div>
+            </div>
+
+            <!-- Line 2 -->
+            <div style="display:flex;align-items:center;gap:10px;background:rgba(43,139,224,0.08);border:1px solid rgba(43,139,224,0.2);border-radius:6px;padding:6px 10px;margin-bottom:10px;">
+              <div style="flex:1;">
+                <div style="color:#5A7A9A;font-size:11px;margin-bottom:3px;">Line to change &nbsp;②</div>
+                <div><span style="color:#79C0A8;">AP_PASSWORD</span> <span style="color:var(--code-text);">=</span> <span style="color:#A5C8E8;">'</span><input id="pw-input" type="text" value="pico1234" maxlength="32"
+                  style="background:rgba(165,200,232,0.15);border:1px solid rgba(165,200,232,0.3);border-radius:4px;color:#A5C8E8;font-family:'DM Mono',monospace;font-size:13px;padding:1px 6px;width:160px;outline:none;"
+                  oninput="updatePreview()"><span style="color:#A5C8E8;">'</span>
+                  <span style="color:#5A7A9A;font-size:11px;margin-left:8px;"># 8+ characters</span>
+                </div>
+              </div>
+              <div style="background:rgba(43,139,224,0.2);border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.5px;white-space:nowrap;">EDIT THIS</div>
+            </div>
+
+            <div style="color:#5A7A9A;">ap.config(essid=AP_SSID, password=AP_PASSWORD)</div>
+            <div style="color:#5A7A9A;">...</div>
+          </div>
+        </div>
+
+        <!-- LIVE PREVIEW -->
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue-dark);margin-bottom:10px;">Live preview — your hotspot will look like this</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+              <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">WiFi name</div>
+              <div id="preview-ssid" style="font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:var(--navy);">YarningMonitor</div>
+            </div>
+            <div style="background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+              <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Password</div>
+              <div id="preview-pw" style="font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:var(--navy);">pico1234</div>
+            </div>
+          </div>
+          <div style="margin-top:10px;background:var(--navy-light);border:1px solid var(--border);border-radius:8px;padding:10px 14px;">
+            <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Browser address (never changes)</div>
+            <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:var(--blue);">http://192.168.4.1</div>
+          </div>
+          <div id="pw-warning" style="display:none;margin-top:8px;background:var(--red-light);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:7px 12px;font-size:13px;color:var(--red);">
+            ⚠️ Password must be 8 or more characters
+          </div>
+        </div>
+
+        <!-- GROUP SUGGESTIONS TABLE -->
+        <h3 style="margin-top:16px;">Suggested names by group number</h3>
+        <div class="tbl"><table>
+          <tr><th>Group</th><th>AP_SSID — type this exactly</th><th>AP_PASSWORD — type this exactly</th></tr>
+          <tr><td>Group 1</td><td><code>YarningCircle_01</code></td><td><code>yarning01</code></td></tr>
+          <tr><td>Group 2</td><td><code>YarningCircle_02</code></td><td><code>yarning02</code></td></tr>
+          <tr><td>Group 3</td><td><code>YarningCircle_03</code></td><td><code>yarning03</code></td></tr>
+          <tr><td>Group 4</td><td><code>YarningCircle_04</code></td><td><code>yarning04</code></td></tr>
+          <tr><td>Group 5</td><td><code>YarningCircle_05</code></td><td><code>yarning05</code></td></tr>
+          <tr><td>Group 6</td><td><code>YarningCircle_06</code></td><td><code>yarning06</code></td></tr>
+          <tr><td>Group 7</td><td><code>YarningCircle_07</code></td><td><code>yarning07</code></td></tr>
+          <tr><td>Group 8</td><td><code>YarningCircle_08</code></td><td><code>yarning08</code></td></tr>
+        </table></div>
+
+        <div class="box box-green" style="margin-top:4px;">
+          <div class="bx-title">✅ After changing the two lines</div>
+          <p>Press <strong>Ctrl + S</strong> to save, then press the green <strong>▶ Run</strong> button. Check the Shell shows your new name. Then continue to Step 3.</p>
+        </div>
+
+      </div>
+    </li>
+
+    <!-- STEP 3 (was Step 2) -->
+    <li class="big-step">
+      <div class="big-num">3</div>
       <div class="big-body">
         <strong>Go to WiFi settings on your device</strong>
         <p>On the device you want to view the dashboard on — your phone, laptop, or tablet — open the WiFi settings. <strong>Do not close Thonny or unplug the Pico W.</strong></p>
@@ -286,9 +456,9 @@ tr:nth-child(even) td{background:#F8FBFF;}
       </div>
     </li>
 
-    <!-- STEP 3 -->
+    <!-- STEP 4 -->
     <li class="big-step">
-      <div class="big-num">3</div>
+      <div class="big-num">4</div>
       <div class="big-body">
         <strong>Connect to the YarningMonitor network</strong>
         <p>Find and tap <strong>YarningMonitor</strong> in the WiFi list. It will ask for a password.</p>
@@ -317,9 +487,9 @@ tr:nth-child(even) td{background:#F8FBFF;}
       </div>
     </li>
 
-    <!-- STEP 4 -->
+    <!-- STEP 5 -->
     <li class="big-step">
-      <div class="big-num">4</div>
+      <div class="big-num">5</div>
       <div class="big-body">
         <strong>Open a browser and go to the address</strong>
         <p>Once connected to YarningMonitor, open <strong>any browser</strong> (Safari, Chrome, Edge — any of them work). Type this address in the address bar and press Enter/Go:</p>
@@ -344,7 +514,7 @@ tr:nth-child(even) td{background:#F8FBFF;}
       </div>
     </li>
 
-    <!-- STEP 5 -->
+    <!-- STEP 6 -->
     <li class="big-step">
       <div class="big-num" style="background:var(--green);">✓</div>
       <div class="big-body">
@@ -433,7 +603,8 @@ tr:nth-child(even) td{background:#F8FBFF;}
 
   <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
     <ul class="checklist" id="checklist">
-      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Pico W running — Shell shows "Access Point ready!"</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Two lines updated in Thonny — AP_SSID and AP_PASSWORD changed to my group name</span></li>
+      <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Code saved (Ctrl+S) and running — Shell shows my group's hotspot name</span></li>
       <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Connected to YarningMonitor WiFi on my device</span></li>
       <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Dashboard loads at 192.168.4.1 in a browser</span></li>
       <li onclick="toggleCheck(this)"><div class="check-box"></div><span>Temperature and humidity readings are showing</span></li>
@@ -489,6 +660,14 @@ function toggleCheck(li) {
   const span = li.querySelector('span');
   const done = box.classList.toggle('done');
   li.classList.toggle('checked-item', done);
+}
+function updatePreview() {
+  const ssid = document.getElementById('ssid-input').value || 'YarningMonitor';
+  const pw   = document.getElementById('pw-input').value   || 'pico1234';
+  document.getElementById('preview-ssid').textContent = ssid;
+  document.getElementById('preview-pw').textContent   = pw;
+  const warn = document.getElementById('pw-warning');
+  warn.style.display = pw.length > 0 && pw.length < 8 ? 'block' : 'none';
 }
 </script>
 </body>
